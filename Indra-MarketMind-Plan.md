@@ -842,6 +842,475 @@ gantt
 ---
 
 <!-- ═══════════════════════════════════════════════════════════ -->
+<!--           MICROSERVICES ARCHITECTURE                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+## 🏗️ Microservices Architecture
+
+> **Why Microservices?** Monolithic apps fail at scale. Microservices allow each component to scale independently, be deployed separately, and fail without bringing down the whole system.
+
+```mermaid
+graph TB
+    subgraph GATEWAY["🔀 API GATEWAY (Nginx / FastAPI Router)"]
+        GW["🌐 Single Entry Point\nRate Limiting · Auth · Load Balancing\nPort: 8000"]
+    end
+
+    subgraph SERVICES["⚙️ MICROSERVICES — Each Runs Independently"]
+        direction LR
+        S1["📡 Data Ingestion Service\n─────────────────\nFastAPI · Port 8001\nNewsAPI · Reddit · yFinance\nStockTwits · SEC EDGAR\n─────────────────\nScheduled: every 15 min"]
+
+        S2["🧠 Sentiment Service\n─────────────────\nFastAPI · Port 8002\nFinBERT · RoBERTa\nFinGPT · VADER\nGPU Accelerated\n─────────────────\nAsync batch inference"]
+
+        S3["📊 Analytics Service\n─────────────────\nFastAPI · Port 8003\nGranger Causality\nCorrelation Engine\nFear & Greed Index\nSector Rotation\n─────────────────\nStatistical compute"]
+
+        S4["🔮 ML Forecast Service\n─────────────────\nFastAPI · Port 8004\nLSTM · Prophet\nHybrid Forecast\nBacktesting Engine\n─────────────────\nModel inference"]
+
+        S5["🚨 Alert Service\n─────────────────\nFastAPI · Port 8005\nTelegram Bot\nEmail SMTP\nWebSocket Push\n─────────────────\nEvent-driven"]
+
+        S6["🖥️ Dashboard Service\n─────────────────\nStreamlit · Port 8501\n10-Page Frontend\nPlotly Charts\nReal-time WebSocket\n─────────────────\nUser-facing app"]
+    end
+
+    subgraph INFRA["🗄️ SHARED INFRASTRUCTURE"]
+        DB[("🗃️ PostgreSQL\nPrimary Store")]
+        CACHE[("⚡ Redis\nCache + Pub/Sub")]
+        QUEUE["📨 Message Queue\nRedis Streams\nEvent Bus"]
+        STORE["📁 File Store\nModel weights\nCSV exports"]
+    end
+
+    USER["👤 User / Browser"] --> GW
+    GW --> S1 & S2 & S3 & S4 & S5 & S6
+    S1 -->|"Raw data events"| QUEUE
+    QUEUE -->|"Triggers"| S2
+    S2 -->|"Sentiment results"| QUEUE
+    QUEUE -->|"Triggers"| S3 & S4 & S5
+    S1 & S2 & S3 & S4 & S5 --> DB
+    S2 & S3 & S4 --> CACHE
+    S4 --> STORE
+    S6 --> CACHE & DB
+
+    style GATEWAY fill:#1e3a5f,stroke:#60a5fa,color:#fff
+    style SERVICES fill:#1a1050,stroke:#a855f7,color:#fff
+    style INFRA fill:#1f2937,stroke:#6b7280,color:#fff
+    style S1 fill:#0f2847,stroke:#22d3ee,color:#fff
+    style S2 fill:#2d1b69,stroke:#c084fc,color:#fff
+    style S3 fill:#1e3a5f,stroke:#60a5fa,color:#fff
+    style S4 fill:#1f1035,stroke:#f97316,color:#fff
+    style S5 fill:#1a1a2e,stroke:#f43f5e,color:#fff
+    style S6 fill:#0a2e1a,stroke:#34d399,color:#fff
+```
+
+<br/>
+
+### 📦 Each Microservice — Independent Docker Container
+
+```yaml
+# docker-compose.yml
+services:
+  # ── API Gateway ─────────────────────────────────────
+  api-gateway:
+    build: ./services/gateway
+    ports: ["8000:8000"]
+    depends_on: [data-service, sentiment-service, analytics-service]
+
+  # ── Data Ingestion ──────────────────────────────────
+  data-service:
+    build: ./services/data_ingestion
+    ports: ["8001:8001"]
+    environment:
+      - NEWSAPI_KEY=${NEWSAPI_KEY}
+      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID}
+      - FINNHUB_API_KEY=${FINNHUB_API_KEY}
+
+  # ── Sentiment Engine ────────────────────────────────
+  sentiment-service:
+    build: ./services/sentiment
+    ports: ["8002:8002"]
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, capabilities: [gpu]}]  # GPU if available
+
+  # ── Analytics Engine ────────────────────────────────
+  analytics-service:
+    build: ./services/analytics
+    ports: ["8003:8003"]
+
+  # ── ML Forecasting ──────────────────────────────────
+  forecast-service:
+    build: ./services/forecasting
+    ports: ["8004:8004"]
+    volumes: ["./data/models_cache:/app/models"]
+
+  # ── Alert System ────────────────────────────────────
+  alert-service:
+    build: ./services/alerts
+    ports: ["8005:8005"]
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+
+  # ── Dashboard ───────────────────────────────────────
+  dashboard:
+    build: ./dashboard
+    ports: ["8501:8501"]
+
+  # ── Infrastructure ──────────────────────────────────
+  postgres:
+    image: postgres:16
+    ports: ["5432:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+```
+
+<br/>
+
+### 🔄 Inter-Service Communication
+
+```mermaid
+sequenceDiagram
+    participant S as ⏰ Scheduler
+    participant D as 📡 Data Service
+    participant Q as 📨 Redis Queue
+    participant N as 🧠 Sentiment Service
+    participant A as 📊 Analytics Service
+    participant AL as 🚨 Alert Service
+    participant U as 👤 Dashboard/User
+
+    S->>D: Trigger fetch (every 15 min)
+    D->>D: Fetch News + Stock + Social data
+    D->>Q: Publish "new_articles" event
+    Q->>N: Consume articles batch
+    N->>N: Run 5-model ensemble
+    N->>Q: Publish "sentiment_scores" event
+    Q->>A: Consume scores
+    A->>A: Run correlation + Fear&Greed
+    A->>Q: Publish "signal_generated" event
+    Q->>AL: Consume signal
+    AL->>U: Push Telegram/Email/WebSocket alert
+    U->>U: Dashboard auto-refreshes
+```
+
+<br/>
+
+### 📁 Updated Microservices Folder Structure
+
+<details>
+<summary><b>📁 Click to see microservices project layout</b></summary>
+
+```
+Indra-MarketMind/
+│
+├── 📂 services/                         ← All Microservices
+│   ├── 📂 gateway/                      # API Gateway (FastAPI)
+│   │   ├── main.py                      # Route forwarding + auth
+│   │   ├── middleware.py                # Rate limiting + CORS
+│   │   └── Dockerfile
+│   │
+│   ├── 📂 data_ingestion/               # Service 1 (Port 8001)
+│   │   ├── main.py                      # FastAPI app
+│   │   ├── fetchers/                    # All data fetchers
+│   │   ├── scheduler.py                 # APScheduler
+│   │   └── Dockerfile
+│   │
+│   ├── 📂 sentiment/                    # Service 2 (Port 8002)
+│   │   ├── main.py                      # FastAPI app
+│   │   ├── models/                      # FinBERT, RoBERTa, FinGPT
+│   │   ├── ensemble.py                  # Ensemble scorer
+│   │   └── Dockerfile
+│   │
+│   ├── 📂 analytics/                    # Service 3 (Port 8003)
+│   │   ├── main.py                      # FastAPI app
+│   │   ├── correlation.py               # Granger + Pearson
+│   │   ├── fear_greed.py                # 7-factor index
+│   │   └── Dockerfile
+│   │
+│   ├── 📂 forecasting/                  # Service 4 (Port 8004)
+│   │   ├── main.py                      # FastAPI app
+│   │   ├── lstm.py                      # LSTM model
+│   │   ├── prophet.py                   # Prophet model
+│   │   └── Dockerfile
+│   │
+│   └── 📂 alerts/                       # Service 5 (Port 8005)
+│       ├── main.py                      # FastAPI app
+│       ├── telegram_bot.py
+│       ├── email_sender.py
+│       └── Dockerfile
+│
+├── 📂 dashboard/                        # Service 6 (Port 8501)
+│   ├── app.py                           # Streamlit entry
+│   └── pages/                           # 10 pages
+│
+├── 📂 shared/                           # Shared code across services
+│   ├── models.py                        # SQLAlchemy models
+│   ├── config.py                        # Common config
+│   └── utils.py                         # Shared utilities
+│
+├── docker-compose.yml                   # Full orchestration
+├── docker-compose.dev.yml               # Dev override
+└── .env                                 # All service secrets
+```
+
+</details>
+
+<br/>
+
+### 🆕 Microservices — New Tech Added
+
+| Category | Tool | Purpose |
+|:--|:--|:--|
+| 🔀 **API Gateway** | `FastAPI` + `httpx` | Route requests to correct service |
+| 📨 **Message Queue** | `Redis Streams` | Async inter-service events |
+| 🐋 **Containers** | `Docker` + `docker-compose` | Each service isolated |
+| 🗃️ **Database** | `PostgreSQL` (upgrade from SQLite) | Production-grade persistence |
+| ⚡ **Cache** | `Redis` | Fast read cache + session store |
+| 🏥 **Health Checks** | `FastAPI /health` endpoints | Service monitoring |
+| 📊 **Metrics** | `Prometheus` + `Grafana` | Service performance monitoring |
+| 🔐 **Auth** | `JWT tokens` | API authentication |
+
+<br/>
+
+---
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!--           USER-FRIENDLY DESIGN                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+## 🎨 User-Friendly Design — UX/UI Plan
+
+> **Philosophy**: *"If a user needs a tutorial to use it, we failed."* — Every feature should be discoverable, intuitive, and beautiful.
+
+### 🖥️ Dashboard UX Principles
+
+```mermaid
+mindmap
+  root((👤 User Experience))
+    🎯 Simplicity
+      One-click stock search
+      Auto-detect user timezone
+      Smart defaults
+      Progressive disclosure
+    🎨 Visual Design
+      Dark mode default
+      Light mode toggle
+      Color-blind safe palette
+      Responsive layout
+    ⚡ Performance
+      Sub-2s page loads
+      Live WebSocket updates
+      Skeleton loading states
+      Cached API responses
+    🧭 Navigation
+      Sticky sidebar
+      Breadcrumb trails
+      Keyboard shortcuts
+      Global search bar
+    📱 Accessibility
+      Screen reader support
+      High contrast mode
+      Font size controls
+      Mobile responsive
+    🔔 Smart Alerts
+      Customizable thresholds
+      Do Not Disturb hours
+      Alert history log
+      Priority levels
+```
+
+<br/>
+
+### 📱 User Journey — First-Time Experience
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║                    USER ONBOARDING FLOW                         ║
+╠══════════════════════════════════════════════════════════════════╣
+║                                                                  ║
+║  STEP 1: Welcome Screen                                          ║
+║  ┌────────────────────────────────────────┐                      ║
+║  │  👋 Welcome to Indra-MarketMind!        │                      ║
+║  │  Let's set up your watchlist in 2 min  │                      ║
+║  │                                         │                      ║
+║  │  🌍 Select your region:                 │                      ║
+║  │  [🇮🇳 India] [🇺🇸 US] [🌍 Global]       │                      ║
+║  └────────────────────────────────────────┘                      ║
+║                      ↓                                           ║
+║  STEP 2: Pick Your Stocks                                        ║
+║  ┌────────────────────────────────────────┐                      ║
+║  │  🔍 Search: "Reliance"                  │                      ║
+║  │  ✓ RELIANCE.NS  ✓ TCS.NS  ✓ INFY.NS   │                      ║
+║  │  [+ Add to Watchlist]                   │                      ║
+║  └────────────────────────────────────────┘                      ║
+║                      ↓                                           ║
+║  STEP 3: Set Alert Preferences                                   ║
+║  ┌────────────────────────────────────────┐                      ║
+║  │  🔔 Alert me when:                      │                      ║
+║  │  ○ Sentiment > 0.8 (Strong Bullish)    │                      ║
+║  │  ○ Sentiment < -0.6 (Bearish)          │                      ║
+║  │  📬 Via: [Telegram] [Email] [In-App]   │                      ║
+║  └────────────────────────────────────────┘                      ║
+║                      ↓                                           ║
+║  STEP 4: Your Personalized Dashboard Ready! 🎉                   ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+<br/>
+
+### 🧩 Key User-Friendly Features
+
+<details open>
+<summary><b>🔍 Feature A · Global Search Bar</b></summary>
+
+- Search any stock by **name or ticker** — `"Apple"` → auto-suggests `AAPL`
+- Search by **country** — `"India"` → shows NSE/BSE stocks
+- Keyboard shortcut: `Ctrl + K` to focus search anywhere
+- Recent searches remembered
+
+</details>
+
+<details>
+<summary><b>⭐ Feature B · Personal Watchlist</b></summary>
+
+| Function | Detail |
+|:--|:--|
+| Add/Remove stocks | Click ⭐ on any stock card |
+| Watchlist dashboard | Dedicated page showing only your stocks |
+| Import CSV | Bulk import from Zerodha/Groww portfolio |
+| Max watchlist size | 50 stocks (free tier) |
+| Watchlist alerts | Get alerts only for watchlist stocks |
+
+</details>
+
+<details>
+<summary><b>📊 Feature C · One-Click Stock Report</b></summary>
+
+Click any stock → Instant **AI-Generated Summary Card**:
+
+```
+╔══════════════════════════════════════════════╗
+║  📊 RELIANCE.NS — Quick Intelligence Card    ║
+╠══════════════════════════════════════════════╣
+║  💰 Price:     ₹2,847.50  (+1.23% today)    ║
+║  🧠 Sentiment: BULLISH (+0.79)               ║
+║  📰 Top News:  "Reliance expands Jio 5G..."  ║
+║  📈 7d Trend:  ↗️ Rising sentiment           ║
+║  😱 Fear/Greed: 67 — GREED zone             ║
+║  👔 Insiders:  3 buys this week (Bullish)   ║
+╚══════════════════════════════════════════════╝
+```
+
+</details>
+
+<details>
+<summary><b>🌓 Feature D · Dark / Light Mode</b></summary>
+
+- **Default**: Premium dark mode (easy on eyes for traders)
+- **Toggle**: One-click light mode for daytime use
+- **Auto**: Follows system OS preference
+- **Saved**: Preference remembered across sessions
+
+</details>
+
+<details>
+<summary><b>📱 Feature E · Mobile Responsive Design</b></summary>
+
+| Screen | Layout |
+|:--|:--|
+| 🖥️ Desktop (>1200px) | Full 3-column layout with sidebar |
+| 💻 Laptop (768-1200px) | 2-column layout, collapsible sidebar |
+| 📱 Mobile (<768px) | Single column, bottom navigation bar |
+| ⌚ Tablet (600-768px) | 2-column compact layout |
+
+</details>
+
+<details>
+<summary><b>⚡ Feature F · Real-Time Live Updates</b></summary>
+
+- **WebSocket connection** — no page reload needed
+- **Live ticker tape** — scrolling real-time prices at top
+- **Auto-refresh indicator** — shows `"Last updated: 2 min ago"`
+- **Green/Red flash** — price change animation on update
+- **Sentiment stream** — live news with instant sentiment badges
+
+</details>
+
+<details>
+<summary><b>⌨️ Feature G · Keyboard Shortcuts</b></summary>
+
+| Shortcut | Action |
+|:--|:--|
+| `Ctrl + K` | Open global search |
+| `Ctrl + D` | Go to Dashboard |
+| `Ctrl + W` | Go to Watchlist |
+| `Ctrl + F` | Go to Forecast page |
+| `Ctrl + T` | Toggle Dark/Light mode |
+| `Escape` | Close any modal |
+| `?` | Show all shortcuts |
+
+</details>
+
+<details>
+<summary><b>♿ Feature H · Accessibility (WCAG 2.1 AA)</b></summary>
+
+- ✅ Screen reader compatible (`aria-labels` everywhere)
+- ✅ Keyboard-only navigation supported
+- ✅ Color-blind safe palettes (deuteranopia/protanopia modes)
+- ✅ Minimum contrast ratio 4.5:1 for all text
+- ✅ Font size controls (`A-` / `A+` buttons)
+- ✅ Focus indicators clearly visible
+- ✅ Alt text on all images and charts
+
+</details>
+
+<br/>
+
+### 🎨 Design System — Color Palette & Typography
+
+```
+╔═══════════════════════════════════════════════════════════════╗
+║              INDRA-MARKETMIND DESIGN SYSTEM                   ║
+╠═══════════════════════════════════════════════════════════════╣
+║                                                               ║
+║  🟣 Primary     #6C63FF  — Purple (main brand color)         ║
+║  🟠 Accent      #F97316  — Orange (alerts, highlights)        ║
+║  🩵 Success     #22D3EE  — Teal (positive/bullish)           ║
+║  🔴 Danger      #F43F5E  — Red (negative/bearish)            ║
+║  ⚪ Neutral     #9CA3AF  — Gray (inactive states)            ║
+║  🌑 Background  #0D1117  — Near-black (dark mode)            ║
+║  📄 Surface     #161B22  — Card background                   ║
+║  ─────────────────────────────────────────────────────────── ║
+║  📝 Font Stack:                                               ║
+║     Headings:  Inter 700 / Poppins 800                        ║
+║     Body:      Inter 400 / DM Sans 400                        ║
+║     Monospace: JetBrains Mono / Fira Code                     ║
+║  ─────────────────────────────────────────────────────────── ║
+║  📐 Spacing:   4px base unit (4, 8, 12, 16, 24, 32, 48, 64) ║
+║  🔘 Radius:    4px (small), 8px (card), 16px (modal)         ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+<br/>
+
+### 📊 Updated Progress Tracker (with Microservices + UX)
+
+| Phase | Task | Status | Progress |
+|:--|:--|:--:|:--|
+| 🏗️ Phase 1 | Foundation + Microservice Scaffold | 🔄 In Progress | `██░░░░░░░░` 20% |
+| 📡 Phase 2 | Data Ingestion Service (8001) | ⏳ Planned | `░░░░░░░░░░` 0% |
+| 🧠 Phase 3 | Sentiment Service (8002) | ⏳ Planned | `░░░░░░░░░░` 0% |
+| 📊 Phase 4 | Analytics Service (8003) | ⏳ Planned | `░░░░░░░░░░` 0% |
+| 🔮 Phase 5 | Forecast Service (8004) | ⏳ Planned | `░░░░░░░░░░` 0% |
+| 🚨 Phase 6 | Alert Service (8005) | ⏳ Planned | `░░░░░░░░░░` 0% |
+| 🖥️ Phase 7 | Dashboard + UX (10 pages) | ⏳ Planned | `░░░░░░░░░░` 0% |
+| 🎨 Phase 8 | User-Friendly Polish + A11y | ⏳ Planned | `░░░░░░░░░░` 0% |
+| 🚀 Phase 9 | Docker Compose + CI/CD Launch | ⏳ Planned | `░░░░░░░░░░` 0% |
+
+<br/>
+
+---
+
+<!-- ═══════════════════════════════════════════════════════════ -->
 <!--               COMPETITION COMPARISON                      -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 
