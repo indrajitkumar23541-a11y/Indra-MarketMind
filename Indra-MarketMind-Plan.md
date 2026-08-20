@@ -4,11 +4,12 @@
 <!--                    HERO SECTION                           -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&text=Indra-MarketMind&fontSize=62&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=🌍%20World's%20Most%20Advanced%20AI%20Market%20Sentiment%20Intelligence%20Platform&descAlignY=62&descSize=16&descColor=a8edea" width="100%"/>
+<!-- ══ COLORFUL ANIMATED SVG BANNER ══ -->
+<img src="assets/banner.svg" width="100%" alt="Indra-MarketMind — AI-Powered Market Sentiment Intelligence"/>
 
 <br/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&duration=3000&pause=1000&color=00D4AA&center=true&vCenter=true&multiline=true&width=800&height=80&lines=🧠+5+AI+Models+%7C+FinBERT+%2B+RoBERTa+%2B+FinGPT+%2B+VADER+%2B+TextBlob;🌍+50%2B+Global+Exchanges+%7C+NSE+%7C+NYSE+%7C+LSE+%7C+TSE+%7C+Crypto" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&duration=2800&pause=800&color=00D4AA&center=true&vCenter=true&multiline=true&width=860&height=75&lines=5+AI+Models+%7C+FinBERT+%2B+RoBERTa+%2B+FinGPT+%2B+VADER+%2B+TextBlob;50%2B+Global+Exchanges+%7C+NSE+%7C+NYSE+%7C+LSE+%7C+TSE+%7C+Crypto" alt="Typing SVG" />
 
 <br/><br/>
 

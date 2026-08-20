@@ -1,0 +1,234 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420">
+  <defs>
+
+    <!-- ══ BACKGROUND GRADIENT ══ -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#0d0221"/>
+      <stop offset="35%"  stop-color="#1a1050"/>
+      <stop offset="70%"  stop-color="#0f2847"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </linearGradient>
+
+    <!-- ══ RAINBOW LINE GRADIENT ══ -->
+    <linearGradient id="rainbowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#a855f7"/>
+      <stop offset="25%"  stop-color="#f97316"/>
+      <stop offset="50%"  stop-color="#eab308"/>
+      <stop offset="75%"  stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+
+    <!-- ══ INDRA TEXT GRADIENT (Purple → Blue) ══ -->
+    <linearGradient id="indraGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#c084fc"/>
+      <stop offset="50%"  stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+
+    <!-- ══ MARKET TEXT GRADIENT (Orange → Red) ══ -->
+    <linearGradient id="marketGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#fb923c"/>
+      <stop offset="50%"  stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+
+    <!-- ══ MIND TEXT GRADIENT (Teal → Green) ══ -->
+    <linearGradient id="mindGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#22d3ee"/>
+      <stop offset="50%"  stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#4ade80"/>
+    </linearGradient>
+
+    <!-- ══ SUBTITLE GRADIENT ══ -->
+    <linearGradient id="subGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#a8edea"/>
+      <stop offset="100%" stop-color="#fed6e3"/>
+    </linearGradient>
+
+    <!-- ══ PURPLE GLOW FILTER ══ -->
+    <filter id="glowPurple" x="-25%" y="-60%" width="150%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-color="#a855f7" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- ══ ORANGE GLOW FILTER ══ -->
+    <filter id="glowOrange" x="-25%" y="-60%" width="150%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-color="#f97316" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- ══ TEAL GLOW FILTER ══ -->
+    <filter id="glowTeal" x="-25%" y="-60%" width="150%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-color="#06b6d4" flood-opacity="0.5" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+      <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- ══ SOFT GLOW FILTER ══ -->
+    <filter id="softGlow" x="-15%" y="-40%" width="130%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+  </defs>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--                      BACKGROUND                          -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <rect width="1200" height="420" fill="url(#bgGrad)"/>
+
+  <!-- Nebula blobs -->
+  <ellipse cx="180"  cy="180" rx="320" ry="160" fill="#2d1b69" opacity="0.35"/>
+  <ellipse cx="1020" cy="230" rx="280" ry="140" fill="#1e3a5f" opacity="0.30"/>
+  <ellipse cx="600"  cy="50"  rx="400" ry="80"  fill="#1a1050" opacity="0.25"/>
+  <ellipse cx="600"  cy="390" rx="350" ry="60"  fill="#0f2847" opacity="0.20"/>
+
+  <!-- ══ TOP RAINBOW BORDER ══ -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#rainbowGrad)" opacity="1"/>
+
+  <!-- ══ BOTTOM RAINBOW BORDER ══ -->
+  <rect x="0" y="416" width="1200" height="4" fill="url(#rainbowGrad)" opacity="1"/>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--                   STARS / PARTICLES                      -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- Far left stars -->
+  <circle cx="30"  cy="45"  r="1.8" fill="white"   opacity="0.8"><animate attributeName="opacity" values="0.8;0.2;0.8" dur="2.3s" repeatCount="indefinite"/></circle>
+  <circle cx="75"  cy="20"  r="1.2" fill="#c084fc"  opacity="0.9"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.7s" repeatCount="indefinite"/></circle>
+  <circle cx="120" cy="90"  r="2.2" fill="white"   opacity="0.6"><animate attributeName="opacity" values="0.6;0.1;0.6" dur="3.1s" repeatCount="indefinite"/></circle>
+  <circle cx="55"  cy="130" r="1.0" fill="#60a5fa"  opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.8s" repeatCount="indefinite"/></circle>
+  <circle cx="160" cy="55"  r="1.5" fill="white"   opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="4.2s" repeatCount="indefinite"/></circle>
+  <circle cx="25"  cy="200" r="1.0" fill="#34d399"  opacity="0.6"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="3.6s" repeatCount="indefinite"/></circle>
+  <circle cx="95"  cy="290" r="1.3" fill="white"   opacity="0.4"><animate attributeName="opacity" values="0.4;0.1;0.4" dur="2.9s" repeatCount="indefinite"/></circle>
+  <circle cx="145" cy="350" r="1.8" fill="#c084fc"  opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="3.4s" repeatCount="indefinite"/></circle>
+  <circle cx="40"  cy="380" r="1.0" fill="white"   opacity="0.6"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.1s" repeatCount="indefinite"/></circle>
+
+  <!-- Far right stars -->
+  <circle cx="1165" cy="35"  r="1.8" fill="white"   opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.5s" repeatCount="indefinite"/></circle>
+  <circle cx="1110" cy="80"  r="1.2" fill="#fb923c"  opacity="0.9"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.9s" repeatCount="indefinite"/></circle>
+  <circle cx="1175" cy="130" r="2.0" fill="white"   opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="3.3s" repeatCount="indefinite"/></circle>
+  <circle cx="1050" cy="50"  r="1.5" fill="#22d3ee"  opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.2s" repeatCount="indefinite"/></circle>
+  <circle cx="1135" cy="200" r="1.0" fill="white"   opacity="0.6"><animate attributeName="opacity" values="0.6;0.1;0.6" dur="4.0s" repeatCount="indefinite"/></circle>
+  <circle cx="1090" cy="310" r="1.5" fill="#f43f5e"  opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.7s" repeatCount="indefinite"/></circle>
+  <circle cx="1160" cy="360" r="1.0" fill="white"   opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="3.8s" repeatCount="indefinite"/></circle>
+  <circle cx="1020" cy="390" r="1.8" fill="#c084fc"  opacity="0.4"><animate attributeName="opacity" values="0.4;0.1;0.4" dur="2.4s" repeatCount="indefinite"/></circle>
+
+  <!-- Top center stars -->
+  <circle cx="450" cy="18"  r="1.2" fill="white"   opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="3.7s" repeatCount="indefinite"/></circle>
+  <circle cx="600" cy="12"  r="1.8" fill="#c084fc"  opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.6s" repeatCount="indefinite"/></circle>
+  <circle cx="780" cy="22"  r="1.0" fill="white"   opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="4.3s" repeatCount="indefinite"/></circle>
+  <circle cx="320" cy="30"  r="1.5" fill="#22d3ee"  opacity="0.6"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="3.0s" repeatCount="indefinite"/></circle>
+  <circle cx="900" cy="25"  r="1.2" fill="#fb923c"  opacity="0.6"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.9s" repeatCount="indefinite"/></circle>
+
+  <!-- Bottom center stars -->
+  <circle cx="380" cy="400" r="1.0" fill="white"   opacity="0.4"><animate attributeName="opacity" values="0.4;0.1;0.4" dur="3.5s" repeatCount="indefinite"/></circle>
+  <circle cx="600" cy="408" r="1.5" fill="#34d399"  opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.3s" repeatCount="indefinite"/></circle>
+  <circle cx="820" cy="402" r="1.2" fill="white"   opacity="0.4"><animate attributeName="opacity" values="0.4;0.1;0.4" dur="4.1s" repeatCount="indefinite"/></circle>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--                  CORNER BRACKETS                         -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- Top Left -->
+  <path d="M 12 8 L 12 55 L 60 55" stroke="#c084fc" stroke-width="2.5" fill="none" opacity="0.7" filter="url(#softGlow)"/>
+  <!-- Top Right -->
+  <path d="M 1188 8 L 1188 55 L 1140 55" stroke="#22d3ee" stroke-width="2.5" fill="none" opacity="0.7" filter="url(#softGlow)"/>
+  <!-- Bottom Left -->
+  <path d="M 12 412 L 12 365 L 60 365" stroke="#c084fc" stroke-width="2.5" fill="none" opacity="0.7" filter="url(#softGlow)"/>
+  <!-- Bottom Right -->
+  <path d="M 1188 412 L 1188 365 L 1140 365" stroke="#22d3ee" stroke-width="2.5" fill="none" opacity="0.7" filter="url(#softGlow)"/>
+
+  <!-- Corner dots -->
+  <circle cx="12"  cy="8"   r="4" fill="#c084fc" opacity="0.9" filter="url(#softGlow)"/>
+  <circle cx="1188" cy="8"  r="4" fill="#22d3ee" opacity="0.9" filter="url(#softGlow)"/>
+  <circle cx="12"  cy="412" r="4" fill="#c084fc" opacity="0.9" filter="url(#softGlow)"/>
+  <circle cx="1188" cy="412" r="4" fill="#22d3ee" opacity="0.9" filter="url(#softGlow)"/>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--                    MAIN TITLE TEXT                       -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- ══ "INDRA" — Centered, Purple Gradient, Glow ══ -->
+  <text
+    x="600" y="128"
+    text-anchor="middle"
+    font-family="'Courier New', 'Lucida Console', monospace"
+    font-size="108"
+    font-weight="900"
+    letter-spacing="28"
+    fill="url(#indraGrad)"
+    filter="url(#glowPurple)">INDRA
+    <animate attributeName="opacity" values="0;1" dur="1.2s" fill="freeze"/>
+  </text>
+
+  <!-- ══ "MARKET" — Centered, Orange Gradient, Glow ══ -->
+  <text
+    x="600" y="240"
+    text-anchor="middle"
+    font-family="'Courier New', 'Lucida Console', monospace"
+    font-size="88"
+    font-weight="900"
+    letter-spacing="22"
+    fill="url(#marketGrad)"
+    filter="url(#glowOrange)">MARKET
+    <animate attributeName="opacity" values="0;1" dur="1.8s" fill="freeze"/>
+  </text>
+
+  <!-- ══ "MIND" — Centered, Teal Gradient, Glow ══ -->
+  <text
+    x="600" y="330"
+    text-anchor="middle"
+    font-family="'Courier New', 'Lucida Console', monospace"
+    font-size="78"
+    font-weight="900"
+    letter-spacing="38"
+    fill="url(#mindGrad)"
+    filter="url(#glowTeal)">MIND
+    <animate attributeName="opacity" values="0;1" dur="2.4s" fill="freeze"/>
+  </text>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--              SEPARATOR + SUBTITLE + TAGLINE              -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+
+  <!-- Separator line -->
+  <line x1="80" y1="355" x2="1120" y2="355" stroke="url(#rainbowGrad)" stroke-width="1.5" opacity="0.5">
+    <animate attributeName="opacity" values="0;0.5" dur="3s" fill="freeze"/>
+  </line>
+
+  <!-- Diamond center on separator -->
+  <polygon points="600,348 608,355 600,362 592,355" fill="white" opacity="0.6" filter="url(#softGlow)">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+  </polygon>
+
+  <!-- Subtitle -->
+  <text
+    x="600" y="385"
+    text-anchor="middle"
+    font-family="'Courier New', Courier, monospace"
+    font-size="13.5"
+    letter-spacing="4"
+    fill="url(#subGrad)"
+    opacity="0.9">✦  AI-POWERED GLOBAL MARKET SENTIMENT INTELLIGENCE PLATFORM  ✦
+    <animate attributeName="opacity" values="0;0.9" dur="3.5s" fill="freeze"/>
+  </text>
+
+  <!-- Tagline -->
+  <text
+    x="600" y="408"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="12"
+    font-style="italic"
+    letter-spacing="2"
+    fill="#818cf8"
+    opacity="0.75">"Markets are moved by emotions. We decode the emotions."
+    <animate attributeName="opacity" values="0;0.75" dur="4s" fill="freeze"/>
+  </text>
+
+</svg>
