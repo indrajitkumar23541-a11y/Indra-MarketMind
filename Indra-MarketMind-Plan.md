@@ -4,47 +4,28 @@
 <!--                    HERO SECTION                           -->
 <!-- ═══════════════════════════════════════════════════════════ -->
 
-```
-██╗███╗   ██╗██████╗ ██████╗  █████╗       
-██║████╗  ██║██╔══██╗██╔══██╗██╔══██╗      
-██║██╔██╗ ██║██║  ██║██████╔╝███████║      
-██║██║╚██╗██║██║  ██║██╔══██╗██╔══██║      
-██║██║ ╚████║██████╔╝██║  ██║██║  ██║      
-╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝      
-                                            
-███╗   ███╗ █████╗ ██████╗ ██╗  ██╗███████╗████████╗    
-████╗ ████║██╔══██╗██╔══██╗██║ ██╔╝██╔════╝╚══██╔══╝    
-██╔████╔██║███████║██████╔╝█████╔╝ █████╗     ██║       
-██║╚██╔╝██║██╔══██║██╔══██╗██╔═██╗ ██╔══╝     ██║       
-██║ ╚═╝ ██║██║  ██║██║  ██║██║  ██╗███████╗   ██║       
-╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝       
-                                            
-███╗   ███╗██╗███╗   ██╗██████╗              
-████╗ ████║██║████╗  ██║██╔══██╗             
-██╔████╔██║██║██╔██╗ ██║██║  ██║             
-██║╚██╔╝██║██║██║╚██╗██║██║  ██║             
-██║ ╚═╝ ██║██║██║ ╚████║██████╔╝             
-╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝              
-```
-
-### ✦ &nbsp; *The World's Most Advanced AI-Powered Market Sentiment Intelligence Platform* &nbsp; ✦
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&text=Indra-MarketMind&fontSize=62&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=🌍%20World's%20Most%20Advanced%20AI%20Market%20Sentiment%20Intelligence%20Platform&descAlignY=62&descSize=16&descColor=a8edea" width="100%"/>
 
 <br/>
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&duration=3000&pause=1000&color=00D4AA&center=true&vCenter=true&multiline=true&width=800&height=80&lines=🧠+5+AI+Models+%7C+FinBERT+%2B+RoBERTa+%2B+FinGPT+%2B+VADER+%2B+TextBlob;🌍+50%2B+Global+Exchanges+%7C+NSE+%7C+NYSE+%7C+LSE+%7C+TSE+%7C+Crypto" alt="Typing SVG" />
+
+<br/><br/>
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![AI Models](https://img.shields.io/badge/AI_Models-5_Ensemble-FF6B35?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co)
 [![Exchanges](https://img.shields.io/badge/Exchanges-50+_Global-00D4AA?style=for-the-badge&logo=tradingview&logoColor=white)](#)
 [![Languages](https://img.shields.io/badge/Languages-55_Supported-9B59B6?style=for-the-badge&logo=googletranslate&logoColor=white)](#)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-In_Development-FF4757?style=for-the-badge&logo=rocket&logoColor=white)](#)
 
 <br/>
 
-[![FinBERT](https://img.shields.io/badge/FinBERT-✓_Active-1a1a2e?style=flat-square&logo=pytorch)](https://huggingface.co/ProsusAI/finbert)
-[![RoBERTa](https://img.shields.io/badge/Financial_RoBERTa-✓_Active-16213e?style=flat-square&logo=pytorch)](https://huggingface.co)
-[![FinGPT](https://img.shields.io/badge/FinGPT_v3-✓_Active-0f3460?style=flat-square&logo=openai)](https://github.com/AI4Finance-Foundation/FinGPT)
-[![VADER](https://img.shields.io/badge/VADER-✓_Active-533483?style=flat-square&logo=nltk)](https://www.nltk.org)
-[![TextBlob](https://img.shields.io/badge/TextBlob-✓_Active-e94560?style=flat-square)](https://textblob.readthedocs.io)
+[![FinBERT](https://img.shields.io/badge/FinBERT-✓_Active-6C63FF?style=flat-square&logo=pytorch&logoColor=white)](https://huggingface.co/ProsusAI/finbert)
+[![RoBERTa](https://img.shields.io/badge/Financial_RoBERTa-✓_Active-FF6B6B?style=flat-square&logo=pytorch&logoColor=white)](https://huggingface.co)
+[![FinGPT](https://img.shields.io/badge/FinGPT_v3-✓_Active-4ECDC4?style=flat-square&logo=openai&logoColor=white)](https://github.com/AI4Finance-Foundation/FinGPT)
+[![VADER](https://img.shields.io/badge/VADER-✓_Active-FFE66D?style=flat-square&logoColor=black)](https://www.nltk.org)
+[![TextBlob](https://img.shields.io/badge/TextBlob-✓_Active-FF8B64?style=flat-square&logoColor=white)](https://textblob.readthedocs.io)
 
 <br/>
 
