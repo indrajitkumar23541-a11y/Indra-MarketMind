@@ -14,11 +14,22 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+import sys
+import os
+from pathlib import Path
+
+# Add project root to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from shared.models import Base
+from shared.config import settings
+
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = None
+target_metadata = Base.metadata
+
+# Override sqlalchemy.url with our environment configuration
+config.set_main_option("sqlalchemy.url", settings.sync_database_url)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
