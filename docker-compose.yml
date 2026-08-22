@@ -1,54 +1,99 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # ────────────────────────────────────────────────────────
-  # INFRASTRUCTURE SERVICES
-  # ────────────────────────────────────────────────────────
-  
+  # ── Infrastructure ──────────────────────────────────
   postgres:
     image: postgres:16-alpine
-    container_name: marketmind_postgres
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-indra_admin}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-marketmind_db}
+    container_name: indra_db
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_USER=indra
+      - POSTGRES_PASSWORD=marketmind
+      - POSTGRES_DB=marketmind
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-indra_admin} -d ${POSTGRES_DB:-marketmind_db}"]
+      test: ["CMD-SHELL", "pg_isready -U indra -d marketmind"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: marketmind_redis
-    restart: always
+    container_name: indra_redis
     ports:
       - "6379:6379"
-    volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
-  qdrant:
-    image: qdrant/qdrant:latest
-    container_name: marketmind_qdrant
-    restart: always
+  # ── Microservices ───────────────────────────────────
+  data-service:
+    build:
+      context: .
+      dockerfile: services/data_ingestion/Dockerfile
+    container_name: indra_data
     ports:
-      - "6333:6333" # REST API
-      - "6334:6334" # gRPC
-    volumes:
-      - qdrant_data:/qdrant/storage
+      - "8001:8001"
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://indra:marketmind@postgres:5432/marketmind
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  sentiment-service:
+    build:
+      context: .
+      dockerfile: services/sentiment/Dockerfile
+    container_name: indra_sentiment
+    ports:
+      - "8002:8002"
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://indra:marketmind@postgres:5432/marketmind
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
+  forecast-service:
+    build:
+      context: .
+      dockerfile: services/forecasting/Dockerfile
+    container_name: indra_forecast
+    ports:
+      - "8004:8004"
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://indra:marketmind@postgres:5432/marketmind
+    depends_on:
+      - postgres
+
+  alert-service:
+    build:
+      context: .
+      dockerfile: services/alerts/Dockerfile
+    container_name: indra_alerts
+    ports:
+      - "8005:8005"
+    env_file: .env
+    depends_on:
+      - postgres
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+    container_name: indra_dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_GATEWAY_URL=http://data-service:8001  # Mocking gateway pointing to internal service
+    depends_on:
+      - data-service
+      - sentiment-service
 
 volumes:
   postgres_data:
-  redis_data:
-  qdrant_data:

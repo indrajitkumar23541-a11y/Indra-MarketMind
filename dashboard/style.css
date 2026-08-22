@@ -1,0 +1,122 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
+
+/* Global Reset */
+html, body, [class*="css"]  {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Hide Streamlit Branding */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Custom Background & Scrollbar */
+.stApp {
+    background: radial-gradient(circle at 15% 50%, #0d1117, #07090c);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0d1117;
+}
+::-webkit-scrollbar-thumb {
+    background: #2a313c;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #6C63FF;
+}
+
+/* Sidebar Enhancements */
+[data-testid="stSidebar"] {
+    background-color: #11151c !important;
+    border-right: 1px solid #232a35;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+}
+
+/* Glassmorphism Metric Cards */
+[data-testid="stMetricValue"] {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem !important;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+[data-testid="stMetricDelta"] {
+    font-weight: 600;
+}
+[data-testid="metric-container"] {
+    background: rgba(22, 27, 34, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s;
+}
+[data-testid="metric-container"]:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(108, 99, 255, 0.2);
+    border: 1px solid rgba(108, 99, 255, 0.5);
+}
+
+/* Beautiful Buttons */
+.stButton > button {
+    background: linear-gradient(135deg, #6C63FF 0%, #8A2BE2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+}
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.5);
+    border: none;
+    color: white;
+}
+
+/* Headers */
+h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    background: -webkit-linear-gradient(45deg, #FFFFFF, #6C63FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+/* Input Fields */
+.stTextInput > div > div > input {
+    background-color: rgba(22, 27, 34, 0.8);
+    border: 1px solid #2d333b;
+    border-radius: 8px;
+    color: white;
+    transition: border 0.3s;
+}
+.stTextInput > div > div > input:focus {
+    border-color: #6C63FF;
+    box-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
+}
+
+/* Dataframe customization */
+[data-testid="stDataFrame"] {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2d333b;
+}
+
+/* Animations */
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.stApp {
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}

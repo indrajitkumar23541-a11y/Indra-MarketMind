@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     FINNHUB_API_KEY: str | None = None
     REDDIT_CLIENT_ID: str | None = None
     REDDIT_CLIENT_SECRET: str | None = None
+    REDDIT_USER_AGENT: str = "IndraMarketMind Bot v1.0"
+    SEC_EDGAR_USER_AGENT: str = "IndraMarketMind indrajitkumar23541@gmail.com"
     TELEGRAM_BOT_TOKEN: str | None = None
 
     # Database URLs
