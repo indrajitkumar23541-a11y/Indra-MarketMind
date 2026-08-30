@@ -1,6 +1,6 @@
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&display=swap');
 
 /* Global Reset */
 html, body, [class*="css"]  {
@@ -12,9 +12,9 @@ html, body, [class*="css"]  {
 footer {visibility: hidden;}
 header {visibility: hidden;}
 
-/* Custom Background & Scrollbar */
+/* Custom Background - Deep Sci-Fi 3D Depth */
 .stApp {
-    background: radial-gradient(circle at 15% 50%, #0d1117, #07090c);
+    background: radial-gradient(circle at 50% 0%, #151a28 0%, #080a0f 60%, #030407 100%);
 }
 
 ::-webkit-scrollbar {
@@ -22,101 +22,146 @@ header {visibility: hidden;}
     height: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: #0d1117;
+    background: #030407;
 }
 ::-webkit-scrollbar-thumb {
-    background: #2a313c;
+    background: #1e2638;
     border-radius: 4px;
+    border: 1px solid #334155;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #6C63FF;
+    background: #00F0FF;
+    box-shadow: 0 0 10px #00F0FF;
 }
 
-/* Sidebar Enhancements */
+/* Sidebar 3D Enhancements */
 [data-testid="stSidebar"] {
-    background-color: #11151c !important;
-    border-right: 1px solid #232a35;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+    background: linear-gradient(180deg, rgba(8,10,15,0.95) 0%, rgba(3,4,7,0.98) 100%) !important;
+    border-right: 1px solid rgba(0, 240, 255, 0.1);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.8);
 }
 
-/* Glassmorphism Metric Cards */
+/* 3D Glassmorphism Neumorphic Metric Cards */
 [data-testid="stMetricValue"] {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 2rem !important;
-    font-weight: 700;
+    font-size: 2.2rem !important;
+    font-weight: 900;
     color: #FFFFFF;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 [data-testid="stMetricDelta"] {
-    font-weight: 600;
+    font-weight: 700;
 }
 [data-testid="metric-container"] {
-    background: rgba(22, 27, 34, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 15px 20px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s;
-}
-[data-testid="metric-container"]:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px 0 rgba(108, 99, 255, 0.2);
-    border: 1px solid rgba(108, 99, 255, 0.5);
+    background: linear-gradient(145deg, #111621, #0e121b);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* True 3D Neumorphism shadows for dark mode */
+    box-shadow: 
+        8px 8px 16px rgba(0, 0, 0, 0.6), 
+        -4px -4px 12px rgba(255, 255, 255, 0.03),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px 25px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translateZ(0); /* Hardware acceleration */
 }
 
-/* Beautiful Buttons */
+/* Sci-fi Accent Line */
+[data-testid="metric-container"]::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, #00F0FF, transparent);
+    opacity: 0.5;
+}
+
+[data-testid="metric-container"]:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        12px 12px 24px rgba(0, 0, 0, 0.8), 
+        -2px -2px 8px rgba(255, 255, 255, 0.05),
+        0 0 20px rgba(0, 240, 255, 0.2),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+}
+
+/* 3D Tactile Buttons */
 .stButton > button {
-    background: linear-gradient(135deg, #6C63FF 0%, #8A2BE2 100%);
-    color: white;
-    border: none;
+    background: linear-gradient(145deg, #2a1b54, #1b1136);
+    color: #00F0FF;
+    border: 1px solid rgba(0, 240, 255, 0.2);
     border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+    padding: 0.6rem 1.2rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+    box-shadow: 
+        4px 4px 10px rgba(0,0,0,0.5), 
+        -2px -2px 5px rgba(255,255,255,0.05),
+        inset 2px 2px 5px rgba(255,255,255,0.05);
 }
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.5);
-    border: none;
-    color: white;
+    background: linear-gradient(145deg, #372370, #221545);
+    color: #FFFFFF;
+    border-color: #00F0FF;
+    box-shadow: 
+        0 0 15px rgba(0, 240, 255, 0.5),
+        4px 4px 12px rgba(0,0,0,0.6);
+}
+.stButton > button:active {
+    transform: translateY(2px);
+    box-shadow: inset 4px 4px 10px rgba(0,0,0,0.6);
 }
 
 /* Headers */
 h1 {
     font-family: 'Space Grotesk', sans-serif;
-    background: -webkit-linear-gradient(45deg, #FFFFFF, #6C63FF);
+    background: -webkit-linear-gradient(45deg, #FFFFFF, #00F0FF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: 700;
+    font-weight: 900;
+    letter-spacing: -1px;
+    filter: drop-shadow(0px 4px 10px rgba(0, 240, 255, 0.2));
 }
 
-/* Input Fields */
+/* Input Fields - 3D Inset */
 .stTextInput > div > div > input {
-    background-color: rgba(22, 27, 34, 0.8);
-    border: 1px solid #2d333b;
+    background: #0a0c11;
+    border: 1px solid #1e2638;
     border-radius: 8px;
-    color: white;
-    transition: border 0.3s;
+    color: #00F0FF;
+    font-weight: 600;
+    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.6), inset -1px -1px 4px rgba(255,255,255,0.02);
+    transition: all 0.3s;
 }
 .stTextInput > div > div > input:focus {
-    border-color: #6C63FF;
-    box-shadow: 0 0 10px rgba(108, 99, 255, 0.3);
+    border-color: #00F0FF;
+    box-shadow: 
+        inset 2px 2px 5px rgba(0,0,0,0.8),
+        0 0 15px rgba(0, 240, 255, 0.3);
 }
 
 /* Dataframe customization */
 [data-testid="stDataFrame"] {
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid #2d333b;
+    border: 1px solid #1e2638;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 /* Animations */
-@keyframes fadeUp {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes fadeUp3D {
+    0% { opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(-5deg); }
+    100% { opacity: 1; transform: translateY(0) translateZ(0) rotateX(0deg); }
 }
 .stApp {
-    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeUp3D 1s cubic-bezier(0.16, 1, 0.3, 1);
+    perspective: 1000px;
 }
