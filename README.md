@@ -20,7 +20,7 @@
       <td align="center">Python 3.10+</td>
       <td align="center">FastAPI</td>
       <td align="center">PyTorch & NLP</td>
-      <td align="center">Streamlit 3D UI</td>
+      <td align="center">Next.js 14 UI</td>
       <td align="center">Docker Ready</td>
     </tr>
   </table>
@@ -49,8 +49,8 @@ By utilizing a highly parallelized Microservices architecture, it ingests millio
         <p>Utilizes <i>FinBERT, RoBERTa, FinGPT, VADER, and TextBlob</i> working in harmony to score sentiment with unparalleled accuracy.</p>
       </td>
       <td width="50%" align="center">
-        <h3>🌌 Premium 3D UI</h3>
-        <p>A custom-built Streamlit frontend featuring Dark Sci-Fi Neumorphism, glassmorphism layers, and Plotly interactive 3D charts.</p>
+        <h3>🌌 Premium UI</h3>
+        <p>A custom-built Next.js + React frontend featuring Dark Sci-Fi Neumorphism, glassmorphism layers, and dynamic interactive charts.</p>
       </td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@ Indra-MarketMind is engineered for massive scale and extreme low-latency using a
 ```mermaid
 graph TB
     subgraph GATEWAY["🔀 Gateway / Client"]
-        UI["🖥️ Premium 3D Dashboard (Port 8501)"]
+        UI["🖥️ Premium Dashboard (Next.js - Port 3000)"]
     end
 
     subgraph SERVICES["⚙️ Microservices (FastAPI)"]
@@ -128,14 +128,22 @@ cp .env.example .env
 ```
 *(No API keys? No problem. The system will automatically use intelligent mock fallbacks so you can explore the UI immediately!)*
 
-### 3. Ignite the Cluster
+### 3. Ignite the Backend Cluster
 ```bash
 docker-compose up --build
 ```
 
-### 4. Enter the Dashboard
+### 4. Start the Next.js Frontend
+Open a new terminal window:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### 5. Enter the Dashboard
 Once the microservices achieve harmony, open your browser and witness the magic:
-👉 **[http://localhost:8501](http://localhost:8501)**
+👉 **[http://localhost:3000](http://localhost:3000)**
 
 ---
 
@@ -145,7 +153,8 @@ Once the microservices achieve harmony, open your browser and witness the magic:
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
   <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
-  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" />
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
   <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" />
