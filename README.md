@@ -1,61 +1,90 @@
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=6C63FF&height=250&section=header&text=⚡%20Indra-MarketMind&fontSize=70&fontColor=ffffff&animation=fadeIn" alt="Header" />
   
-  <h3>The World's Most Advanced AI-Powered Financial Intelligence Platform</h3>
+  <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind">
+    <img src="https://capsule-render.vercel.app/api?type=waving&color=00F0FF&height=300&section=header&text=⚡%20Indra-MarketMind&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=The%20World's%20Most%20Advanced%20AI%20Financial%20Intelligence%20Platform&descAlignY=55&descAlign=60" alt="Header" />
+  </a>
   
-  <p>
-    Built with a microservices architecture, 5 NLP models, ML Forecasting, and Real-Time analytics to decode market emotions and predict trends.
+  <p align="center">
+    <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/stargazers"><img src="https://img.shields.io/github/stars/indrajitkumar23541-a11y/Indra-MarketMind?color=00F0FF&logo=github&style=for-the-badge" alt="Stars" /></a>
+    <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/network/members"><img src="https://img.shields.io/github/forks/indrajitkumar23541-a11y/Indra-MarketMind?color=6C63FF&logo=github&style=for-the-badge" alt="Forks" /></a>
+    <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/issues"><img src="https://img.shields.io/github/issues/indrajitkumar23541-a11y/Indra-MarketMind?color=FF3366&logo=github&style=for-the-badge" alt="Issues" /></a>
+    <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge&color=00F0FF" alt="License" /></a>
   </p>
 
-  <p>
-    <a href="#-architecture">Architecture</a> • 
-    <a href="#-core-features">Features</a> • 
-    <a href="#-quickstart">Quickstart</a> • 
-    <a href="#-tech-stack">Tech Stack</a>
-  </p>
+  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=700&size=24&duration=3000&pause=1000&color=00F0FF&center=true&vCenter=true&width=800&height=50&lines=Decoding+Market+Emotions...;Predicting+Trends+with+Deep+Learning...;Real-Time+Sentiment+Analysis...;Welcome+to+Indra-MarketMind!" alt="Typing Animation" />
   
-  <p>
-    <img src="https://img.shields.io/badge/Version-2.0-6C63FF?style=for-the-badge" alt="Version" />
-    <img src="https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge&logo=python" alt="Python" />
-    <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker" alt="Docker" />
-    <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge" alt="License" />
-  </p>
+  <br>
+  
+  <table>
+    <tr>
+      <td align="center">Python 3.10+</td>
+      <td align="center">FastAPI</td>
+      <td align="center">PyTorch & NLP</td>
+      <td align="center">Streamlit 3D UI</td>
+      <td align="center">Docker Ready</td>
+    </tr>
+  </table>
+
 </div>
 
 ---
 
-## 🚀 What is Indra-MarketMind?
+## 🚀 Welcome to the Future of Trading
 
-**Indra-MarketMind** is an enterprise-grade, open-source market intelligence platform. While traditional tools look at historical prices, MarketMind uses cutting-edge Natural Language Processing (NLP) to read thousands of news articles, social media posts, and SEC filings in real-time to gauge **market sentiment**, and then feeds that sentiment into a **Deep Learning Forecasting Engine** to predict future price movements.
+**Indra-MarketMind** is a state-of-the-art, enterprise-grade open-source market intelligence platform. Created exclusively by **Indrajit Kumar**, this system doesn't just look at numbers—it reads the market's mind.
 
-*Why pay $35,000/yr for Bloomberg when you can run Indra-MarketMind for free?*
+By utilizing a highly parallelized Microservices architecture, it ingests millions of data points across global news, social media, and SEC filings. It then processes them through an ensemble of **5 cutting-edge NLP models** to quantify market emotion, feeding this directly into a **Deep Learning Hybrid Forecaster** to predict price action before it happens.
 
-## ✨ Core Features
-
-| Feature | Description |
-| :--- | :--- |
-| 🌍 **Global Sentiment Map** | Track real-time bullish/bearish sentiment across 50+ global exchanges. |
-| 🧠 **5-Model NLP Ensemble** | Uses FinBERT, RoBERTa, FinGPT, VADER, and TextBlob for unparalleled accuracy. |
-| 🔮 **Hybrid ML Forecaster** | Combines Prophet (for baseline trends) and PyTorch LSTMs (for sentiment residuals). |
-| 😱 **Fear & Greed Index** | A proprietary 7-factor gauge tracking momentum, volatility, and safe-haven demand. |
-| 🔭 **Sector Rotation** | Visualize institutional money flow across 11 major market sectors. |
-| 👔 **Insider Signals** | Track SEC Form 4 filings to see what CEOs and CFOs are doing with their money. |
-| 🚨 **Automated Alerts** | Instant Telegram and Email alerts when critical market shifts occur. |
-| 🖥️ **Ultra-Premium UI** | A stunning 10-page Streamlit dashboard with custom glassmorphism styling. |
+> *Why pay $35,000/yr for traditional terminal software when you can run a superior AI brain locally?*
 
 ---
 
-## 🏗️ Architecture
+## ✨ Features That Defy Gravity
 
-Indra-MarketMind is built on a highly scalable **Microservices Architecture**.
+<div align="center">
+  <table>
+    <tr>
+      <td width="50%" align="center">
+        <h3>🧠 5-Model NLP Ensemble</h3>
+        <p>Utilizes <i>FinBERT, RoBERTa, FinGPT, VADER, and TextBlob</i> working in harmony to score sentiment with unparalleled accuracy.</p>
+      </td>
+      <td width="50%" align="center">
+        <h3>🌌 Premium 3D UI</h3>
+        <p>A custom-built Streamlit frontend featuring Dark Sci-Fi Neumorphism, glassmorphism layers, and Plotly interactive 3D charts.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" align="center">
+        <h3>🔮 Hybrid ML Forecasting</h3>
+        <p>Combines Facebook Prophet (for baseline trends) and PyTorch LSTMs (for sentiment-driven volatility spikes).</p>
+      </td>
+      <td width="50%" align="center">
+        <h3>🔭 3D Sector Rotation</h3>
+        <p>Visualize institutional money flow across 11 major market sectors in a stunning interactive 3D WebGL space.</p>
+      </td>
+    </tr>
+  </table>
+</div>
+
+### 🔥 More Core Modules
+- 🌍 **Global Sentiment Map:** Track real-time bullish/bearish heatmaps across 50+ global exchanges.
+- 😱 **Fear & Greed Index:** A proprietary 7-factor gauge tracking momentum, volatility, and safe-haven demand.
+- 👔 **Insider Signals:** Track SEC Form 4 filings to see what CEOs and CFOs are doing with their capital.
+- 🚨 **Automated Alerts:** Instant Telegram and Email alerts when critical market shifts occur.
+
+---
+
+## 🏗️ The Neural Architecture
+
+Indra-MarketMind is engineered for massive scale and extreme low-latency using asynchronous Python microservices.
 
 ```mermaid
 graph TB
-    subgraph GATEWAY["🔀 Gateway / Routing"]
-        UI["🖥️ Streamlit Dashboard (Port 8501)"]
+    subgraph GATEWAY["🔀 Gateway / Client"]
+        UI["🖥️ Premium 3D Dashboard (Port 8501)"]
     end
 
-    subgraph SERVICES["⚙️ Python Microservices (FastAPI)"]
+    subgraph SERVICES["⚙️ Microservices (FastAPI)"]
         direction LR
         S1["📡 Data Ingestion (8001)"]
         S2["🧠 Sentiment Engine (8002)"]
@@ -63,83 +92,86 @@ graph TB
         S4["🚨 Alert System (8005)"]
     end
 
-    subgraph INFRA["🗄️ Infrastructure"]
-        DB[("🗃️ PostgreSQL")]
-        CACHE[("⚡ Redis Queue")]
+    subgraph INFRA["🗄️ Core Infrastructure"]
+        DB[("🗃️ PostgreSQL 16")]
+        CACHE[("⚡ Redis 7 Queue")]
     end
 
-    UI --> SERVICES
-    S1 -->|"Raw text"| CACHE
-    CACHE -->|"Triggers"| S2
-    S2 -->|"Scores"| DB
-    S2 -->|"Signals"| S4
-    S3 -->|"Predictions"| DB
+    UI ===>|REST API| SERVICES
+    S1 --->|"Raw Market Data"| CACHE
+    CACHE --->|"Async Triggers"| S2
+    S2 --->|"Processed Scores"| DB
+    S2 --->|"Anomaly Signals"| S4
+    S3 --->|"LSTM Predictions"| DB
 ```
 
 ---
 
-## ⚡ Quickstart
+## ⚡ Quickstart Guide
 
-Getting Indra-MarketMind up and running is incredibly simple using Docker.
+Getting your personal AI financial terminal online takes less than 3 minutes.
 
 ### Prerequisites
-- Docker & Docker Compose installed.
+- **Docker** & **Docker Compose** installed on your machine.
 - Git.
 
-### 1. Clone the repository
+### 1. Clone the Brain
 ```bash
 git clone https://github.com/indrajitkumar23541-a11y/Indra-MarketMind.git
 cd Indra-MarketMind
 ```
 
-### 2. Configure Environment Variables
-Copy the `.env.example` file to `.env` and add your API keys (NewsAPI, Finnhub, Telegram Bot).
+### 2. Configure the Synapses
+Copy the example environment file and insert your API keys (NewsAPI, Finnhub, etc.).
 ```bash
 cp .env.example .env
 ```
-*(Note: Even without API keys, the system will use smart mock fallbacks so you can test the UI!)*
+*(No API keys? No problem. The system will automatically use intelligent mock fallbacks so you can explore the UI immediately!)*
 
-### 3. Launch the Cluster
+### 3. Ignite the Cluster
 ```bash
 docker-compose up --build
 ```
 
-### 4. Access the Platform
-Once the containers are running, open your browser and navigate to:
+### 4. Enter the Dashboard
+Once the microservices achieve harmony, open your browser and witness the magic:
 👉 **[http://localhost:8501](http://localhost:8501)**
 
 ---
 
-## 💻 Tech Stack
+## 💻 Elite Tech Stack
 
-- **Backend Framework**: `FastAPI`
-- **Data Science / ML**: `PyTorch`, `Prophet`, `Scikit-Learn`, `Pandas`, `NumPy`
-- **NLP Models**: `HuggingFace Transformers`, `FinBERT`, `NLTK`, `TextBlob`
-- **Frontend / UI**: `Streamlit`, `Plotly`, `Custom CSS (Glassmorphism)`
-- **Database / Cache**: `PostgreSQL 16`, `Redis 7`
-- **Orchestration**: `Docker`, `Docker Compose`, `APScheduler`
-
----
-
-## 🤝 Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
+  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" />
+</p>
 
 ---
 
-## 📝 License
+## 👑 About the Creator
+
+<div align="center">
+  <a href="https://github.com/indrajitkumar23541-a11y">
+    <img src="https://github-readme-stats.vercel.app/api?username=indrajitkumar23541-a11y&show_icons=true&theme=radical&hide_border=true&bg_color=0D1117&title_color=00F0FF&text_color=FFFFFF" alt="Indrajit's GitHub Stats" />
+  </a>
+</div>
+
+This platform is a testament to the intersection of Artificial Intelligence and Finance. Built from the ground up by **Indrajit Kumar**.
+
+---
+
+## 📝 License & Disclaimer
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
----
+> **Disclaimer:** Indra-MarketMind is an intelligence tool, not a financial advisor. The AI predictions and sentiment scores are for educational and research purposes only. Always do your own due diligence before trading.
+
 <div align="center">
-  <b>Built with ❤️ by <a href="https://github.com/indrajitkumar23541-a11y">Indrajit Kumar</a></b>
-  <br><br>
-  <i>"Markets are moved by emotions. We decode the emotions."</i>
+  <br>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=00F0FF&height=100&section=footer" width="100%" />
 </div>
