@@ -14,38 +14,55 @@ setup_page("Insider Signals", "👔")
 st.title("👔 SEC Insider Trading Signals")
 st.markdown("Track what CEOs, CFOs, and major shareholders are doing with their own money.")
 
-# Mock Insider Data
-insiders = ["Elon Musk", "Tim Cook", "Satya Nadella", "Jensen Huang", "Mark Zuckerberg"]
-tickers = ["TSLA", "AAPL", "MSFT", "NVDA", "META"]
-types = ["BUY", "SELL", "OPTION EXERCISE"]
+from api_client import APIClient
+
+st.spinner("Fetching real SEC Edgar filings from database...")
+articles = APIClient.get_recent_news(limit=50)
 
 data = []
-now = datetime.now()
-for i in range(20):
-    txn_type = random.choice(types)
-    shares = random.randint(1000, 500000)
-    price = random.uniform(50, 500)
-    value = shares * price
-    
-    data.append({
-        "Date": (now - timedelta(days=random.randint(0, 14))).strftime("%Y-%m-%d"),
-        "Ticker": random.choice(tickers),
-        "Insider Name": random.choice(insiders),
-        "Title": random.choice(["CEO", "CFO", "Director", "10% Owner"]),
-        "Transaction Type": txn_type,
-        "Shares": f"{shares:,}",
-        "Value ($)": f"${value:,.2f}",
-        "Signal": "🟢 Bullish" if txn_type == "BUY" else ("🔴 Bearish" if txn_type == "SELL" else "⚪ Neutral")
-    })
+# Filter for SEC filings
+sec_articles = [a for a in articles if "SEC" in a.get("source", "").upper()]
 
-df = pd.DataFrame(data).sort_values(by="Date", ascending=False).reset_index(drop=True)
+if not sec_articles:
+    st.warning("No SEC filings found in recent data. Please trigger ingestion or wait for data.")
+    # Fallback empty state
+    data = [{
+        "Date": "-",
+        "Ticker": "-",
+        "Insider Name": "-",
+        "Title": "No Data",
+        "Transaction Type": "-",
+        "Shares": "-",
+        "Value ($)": "-",
+        "Signal": "⚪ Neutral"
+    }]
+else:
+    for a in sec_articles:
+        pub_time = a.get("published_at", "")[:10]
+        title = a.get("title", "")
+        # Very basic parsing/inference (since full Form 4 XML parsing isn't implemented in backend yet)
+        txn_type = "BUY" if "purchase" in title.lower() else ("SELL" if "sale" in title.lower() else "OPTION EXERCISE")
+        
+        data.append({
+            "Date": pub_time,
+            "Ticker": "Multiple", # Not parsed from title yet
+            "Insider Name": "See Filing",
+            "Title": title,
+            "Transaction Type": txn_type,
+            "Shares": "N/A",
+            "Value ($)": "N/A",
+            "Signal": "🟢 Bullish" if txn_type == "BUY" else ("🔴 Bearish" if txn_type == "SELL" else "⚪ Neutral")
+        })
+
+df = pd.DataFrame(data)
 
 # Filters
 col1, col2 = st.columns(2)
 with col1:
-    filter_ticker = st.selectbox("Filter by Ticker", ["All"] + tickers)
+    unique_tickers = df["Ticker"].unique().tolist() if not df.empty else []
+    filter_ticker = st.selectbox("Filter by Ticker", ["All"] + unique_tickers)
 with col2:
-    filter_type = st.selectbox("Transaction Type", ["All", "BUY", "SELL"])
+    filter_type = st.selectbox("Transaction Type", ["All", "BUY", "SELL", "OPTION EXERCISE", "-"])
 
 # Apply filters
 if filter_ticker != "All":

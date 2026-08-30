@@ -21,14 +21,19 @@ if refresh:
     # Simulate polling (in real app, use st_autorefresh or similar)
     st.caption("Auto-refreshing every 30 seconds...")
 
-# Mock Feed Data
-def get_mock_feed():
-    sources = ["Bloomberg", "Reuters", "Reddit /r/wallstreetbets", "Twitter", "SEC EDGAR"]
+from api_client import APIClient
+
+# Real Feed Data
+def get_real_feed():
+    articles = APIClient.get_recent_news(limit=15)
     feed = []
-    now = datetime.now()
     
-    for i in range(15):
-        sentiment = random.uniform(-1, 1)
+    if not articles:
+        # Fallback empty state
+        return pd.DataFrame([{"Time": "-", "Source": "System", "Headline": "No real data found. Please check API keys.", "Sentiment": "⚪ NEUTRAL"}])
+        
+    for article in articles:
+        sentiment = article.get("sentiment_score", 0.0)
         if sentiment > 0.3:
             badge = "🟢 BULLISH"
         elif sentiment < -0.3:
@@ -36,15 +41,26 @@ def get_mock_feed():
         else:
             badge = "⚪ NEUTRAL"
             
+        pub_time_raw = article.get("published_at")
+        if pub_time_raw:
+            try:
+                # Handle isoformat or similar
+                pub_time = datetime.fromisoformat(pub_time_raw.replace('Z', '+00:00')).strftime("%H:%M")
+            except:
+                pub_time = pub_time_raw[:5] # Fallback
+        else:
+            pub_time = "N/A"
+            
         feed.append({
-            "Time": (now - timedelta(minutes=random.randint(1, 60))).strftime("%H:%M"),
-            "Source": random.choice(sources),
-            "Headline": f"Mock headline about market event {i+1}...",
+            "Time": pub_time,
+            "Source": article.get("source", "Unknown"),
+            "Headline": article.get("title", "Untitled"),
             "Sentiment": f"{sentiment:.2f} {badge}"
         })
-    return pd.DataFrame(feed).sort_values(by="Time", ascending=False).reset_index(drop=True)
+    return pd.DataFrame(feed)
 
-feed_df = get_mock_feed()
+st.spinner("Fetching latest news...")
+feed_df = get_real_feed()
 
 # Display Feed
 for index, row in feed_df.iterrows():

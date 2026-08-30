@@ -14,8 +14,17 @@ setup_page("Fear & Greed", "😱")
 st.title("😱 Market Fear & Greed Index")
 st.markdown("7-factor proprietary emotional gauge of the market.")
 
-# Gauge Chart
-current_score = 67
+from api_client import APIClient
+
+st.spinner("Calculating Fear & Greed Index from real-time sentiment...")
+recent_news = APIClient.get_recent_news(limit=50)
+
+# Calculate a basic score from news sentiment (-1 to 1 mapped to 0 to 100)
+if recent_news and len(recent_news) > 0:
+    avg_sentiment = sum(a.get("sentiment_score", 0) for a in recent_news) / len(recent_news)
+    current_score = int(((avg_sentiment + 1) / 2) * 100)
+else:
+    current_score = 50 # Neutral Fallback
 fig = go.Figure(go.Indicator(
     mode = "gauge+number",
     value = current_score,

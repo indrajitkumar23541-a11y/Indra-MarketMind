@@ -17,26 +17,22 @@ st.markdown("Detailed technical and sentiment analysis for a specific asset.")
 
 ticker = st.text_input("Enter Ticker Symbol", value="RELIANCE.NS")
 
-# Mock historical data
-dates = [datetime.now() - timedelta(days=i) for i in range(100)]
-dates.reverse()
+from api_client import APIClient
 
-# Generate realistic looking stock data
-base_price = 2500
-close_prices = []
-for i in range(100):
-    change = np.random.normal(0, 20)
-    base_price += change
-    close_prices.append(base_price)
+st.spinner(f"Fetching historical data for {ticker}...")
+# Fetch real historical data
+historical_data = APIClient.get_historical_data(ticker, "6mo")
 
-df = pd.DataFrame({
-    'Date': dates,
-    'Open': [p - np.random.normal(0, 10) for p in close_prices],
-    'High': [p + abs(np.random.normal(0, 15)) for p in close_prices],
-    'Low': [p - abs(np.random.normal(0, 15)) for p in close_prices],
-    'Close': close_prices,
-    'Volume': [int(10000 + np.random.normal(0, 5000)) for _ in range(100)]
-})
+if historical_data and len(historical_data) > 0:
+    df = pd.DataFrame(historical_data)
+    # yfinance output gives: datetime, open, high, low, close, volume (lowercase mostly via our endpoint)
+    # the endpoint might return dicts with these keys. Let's ensure standard casing.
+    df.columns = [c.capitalize() for c in df.columns]
+    if 'Datetime' in df.columns:
+        df.rename(columns={'Datetime': 'Date'}, inplace=True)
+else:
+    st.warning("Could not fetch real historical data. Please check if the ticker is valid or API is up. Using empty state.")
+    df = pd.DataFrame(columns=["Date", "Open", "High", "Low", "Close", "Volume"])
 
 # Create Candlestick
 fig = go.Figure(data=[go.Candlestick(x=df['Date'],
