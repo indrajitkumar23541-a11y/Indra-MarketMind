@@ -95,7 +95,7 @@ async def fetch_social_stocktwits(ticker: str, db: Session = Depends(get_db)):
             
     return {"ticker": ticker, "fetched": len(articles), "saved": saved_count}
 
-@app.post("/fetch/news/sec/{ticker}")
+@app.get("/fetch/news/sec/{ticker}")
 async def fetch_news_sec(ticker: str, db: Session = Depends(get_db)):
     """Fetch recent SEC EDGAR filings for a ticker and store in DB."""
     fetcher = SecEdgarFetcher()
@@ -108,6 +108,28 @@ async def fetch_news_sec(ticker: str, db: Session = Depends(get_db)):
             saved_count += 1
             
     return {"ticker": ticker, "fetched": len(articles), "saved": saved_count}
+
+@app.get("/news/recent")
+async def get_recent_news(limit: int = 15, db: Session = Depends(get_db)):
+    from shared.models import Article
+    articles = db.query(Article).order_by(Article.published_at.desc()).limit(limit).all()
+    return [{
+        "id": a.id,
+        "title": a.title,
+        "source": a.source,
+        "published_at": a.published_at,
+        "sentiment_score": a.sentiment_score,
+        "sentiment_label": a.sentiment_label
+    } for a in articles]
+
+@app.get("/news/count")
+async def get_news_count(hours_back: int = 24, db: Session = Depends(get_db)):
+    from shared.models import Article
+    from datetime import datetime, timedelta, timezone
+    
+    cutoff_time = datetime.now(timezone.utc) - timedelta(hours=hours_back)
+    count = db.query(Article).filter(Article.created_at >= cutoff_time).count()
+    return {"count": count, "hours_back": hours_back}
 
 @app.get("/fetch/social/trends/{ticker}")
 async def fetch_social_trends(ticker: str, timeframe: str = "today 7-d"):
