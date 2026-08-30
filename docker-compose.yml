@@ -37,6 +37,9 @@ services:
     environment:
       - DATABASE_URL=postgresql://indra:marketmind@postgres:5432/marketmind
       - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./services/data_ingestion:/app/services/data_ingestion
+      - ./shared:/app/shared
     depends_on:
       postgres:
         condition: service_healthy
@@ -91,6 +94,9 @@ services:
       - "8501:8501"
     environment:
       - API_GATEWAY_URL=http://data-service:8001  # Mocking gateway pointing to internal service
+    volumes:
+      - ./dashboard:/app/dashboard
+      - ./shared:/app/shared
     depends_on:
       - data-service
       - sentiment-service
