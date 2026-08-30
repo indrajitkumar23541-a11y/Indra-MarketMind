@@ -10,6 +10,7 @@ DATA_SERVICE_URL = os.getenv("DATA_SERVICE_URL", "http://data-service:8001")
 SENTIMENT_SERVICE_URL = os.getenv("SENTIMENT_SERVICE_URL", "http://sentiment-service:8002")
 FORECAST_SERVICE_URL = os.getenv("FORECAST_SERVICE_URL", "http://forecast-service:8004")
 ALERT_SERVICE_URL = os.getenv("ALERT_SERVICE_URL", "http://alert-service:8005")
+ANALYTICS_SERVICE_URL = os.getenv("ANALYTICS_SERVICE_URL", "http://analytics-service:8003")
 
 TIMEOUT = 10  # seconds
 
@@ -88,3 +89,58 @@ class APIClient:
         except Exception as e:
             logger.error(f"Error fetching news count: {e}")
             return 0
+
+    @staticmethod
+    def get_fear_greed_index():
+        try:
+            response = requests.get(f"{ANALYTICS_SERVICE_URL}/signals/fear-greed", timeout=TIMEOUT)
+            if response.status_code == 200:
+                return response.json()
+            return None
+        except Exception as e:
+            logger.error(f"Error fetching fear greed: {e}")
+            return None
+
+    @staticmethod
+    def get_sector_rotation():
+        try:
+            response = requests.get(f"{ANALYTICS_SERVICE_URL}/signals/sector-rotation", timeout=TIMEOUT)
+            if response.status_code == 200:
+                return response.json()
+            return []
+        except Exception as e:
+            logger.error(f"Error fetching sector rotation: {e}")
+            return []
+
+    @staticmethod
+    def get_insider_signals(limit: int = 10):
+        try:
+            response = requests.get(f"{ANALYTICS_SERVICE_URL}/signals/insider?limit={limit}", timeout=TIMEOUT)
+            if response.status_code == 200:
+                return response.json()
+            return []
+        except Exception as e:
+            logger.error(f"Error fetching insider signals: {e}")
+            return []
+            
+    @staticmethod
+    def get_correlation_stats(ticker: str):
+        try:
+            response = requests.get(f"{ANALYTICS_SERVICE_URL}/analyze/correlation/{ticker}", timeout=TIMEOUT)
+            if response.status_code == 200:
+                return response.json()
+            return None
+        except Exception as e:
+            logger.error(f"Error fetching correlation for {ticker}: {e}")
+            return None
+
+    @staticmethod
+    def get_granger_causality(ticker: str):
+        try:
+            response = requests.get(f"{ANALYTICS_SERVICE_URL}/analyze/granger/{ticker}", timeout=TIMEOUT)
+            if response.status_code == 200:
+                return response.json()
+            return None
+        except Exception as e:
+            logger.error(f"Error fetching granger causality for {ticker}: {e}")
+            return None

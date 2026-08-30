@@ -123,12 +123,15 @@ async def get_recent_news(limit: int = 15, db: Session = Depends(get_db)):
     } for a in articles]
 
 @app.get("/news/count")
-async def get_news_count(hours_back: int = 24, db: Session = Depends(get_db)):
+async def get_news_count(hours_back: int = 24, db = Depends(get_db)):
     from shared.models import Article
     from datetime import datetime, timedelta, timezone
+    from sqlalchemy import select, func
     
     cutoff_time = datetime.now(timezone.utc) - timedelta(hours=hours_back)
-    count = db.query(Article).filter(Article.created_at >= cutoff_time).count()
+    stmt = select(func.count(Article.id)).where(Article.published_at >= cutoff_time)
+    result = await db.execute(stmt)
+    count = result.scalar_one()
     return {"count": count, "hours_back": hours_back}
 
 @app.get("/fetch/social/trends/{ticker}")
@@ -140,12 +143,38 @@ async def fetch_social_trends(ticker: str, timeframe: str = "today 7-d"):
 
 @app.get("/fetch/market/{ticker}/quote")
 async def fetch_market_quote(ticker: str):
-    """Fetch real-time quote from Finnhub."""
-    fetcher = FinnhubFetcher()
-    quote = fetcher.fetch_quote(ticker=ticker)
-    if not quote:
-        raise HTTPException(status_code=404, detail="Quote not found or error fetching.")
-    return quote
+    """Fetch real-time quote from Finnhub, fallback to yfinance."""
+    try:
+        fetcher = FinnhubFetcher()
+        quote = fetcher.fetch_quote(ticker=ticker)
+        if quote and quote.get('c'):
+            return quote
+    except Exception:
+        pass
+        
+    # Fallback to direct Yahoo API
+    import requests
+    try:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        res = requests.get(url, headers=headers)
+        if res.status_code == 200:
+            data = res.json()
+            meta = data['chart']['result'][0]['meta']
+            current_price = meta['regularMarketPrice']
+            prev_close = meta['chartPreviousClose']
+            change = current_price - prev_close
+            percent_change = (change / prev_close) * 100 if prev_close else 0
+            
+            return {
+                "c": current_price,
+                "d": change,
+                "dp": percent_change
+            }
+    except Exception as e:
+        pass
+        
+    raise HTTPException(status_code=404, detail="Quote not found or error fetching.")
 
 @app.get("/fetch/market/{ticker}/historical")
 async def fetch_market_historical(ticker: str, period: str = "1mo"):

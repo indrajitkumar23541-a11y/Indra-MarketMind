@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-manrope: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-space: var(--font-space), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: #05070D;
+    --foreground: #F8FAFC;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #1E293B;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #22D3EE;
+  }
+
+  .neon-text-cyan {
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  }
+  
+  .glass-panel {
+    @apply bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-2xl;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}

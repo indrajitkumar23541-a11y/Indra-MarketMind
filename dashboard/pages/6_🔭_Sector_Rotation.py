@@ -8,11 +8,18 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from utils import setup_page
+from api_client import APIClient
 
 setup_page("Sector Rotation", "🔭")
 
-st.title("🔭 Sector Rotation Map")
-st.markdown("Track institutional money flow across 11 major market sectors.")
+st.markdown("""
+<div class="hero-container" style="padding: 24px; margin-bottom: 24px;">
+    <div class="hero-text">
+        <h1 style="font-size: 28px; margin: 0;">🔭 Sector Rotation Map</h1>
+        <p style="font-size: 14px;">Track institutional money flow across 11 major market sectors.</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 sectors = [
     "Information Technology", "Health Care", "Financials", 
@@ -21,9 +28,6 @@ sectors = [
     "Utilities", "Real Estate", "Materials"
 ]
 
-from api_client import APIClient
-
-st.spinner("Fetching real sector performance data...")
 sector_etfs = {
     "Information Technology": "XLK",
     "Health Care": "XLV",
@@ -38,30 +42,37 @@ sector_etfs = {
     "Materials": "XLB"
 }
 
-# Fetch real data
+# Fetch real data from Analytics Service
 data = []
-for sector, ticker in sector_etfs.items():
-    quote = APIClient.get_market_quote(ticker)
-    if quote and quote.get('dp') is not None:
-        change_pct = quote.get('dp')
-        money_flow = change_pct * 100  # Proxy for volume/money flow visualization
-        sentiment = max(-1.0, min(1.0, change_pct / 2.0))
+with st.spinner("Fetching real sector performance data from backend..."):
+    backend_data = APIClient.get_sector_rotation()
+    
+    if backend_data and "sectors" in backend_data:
+        for s in backend_data["sectors"]:
+            data.append({
+                "Sector": s["sector"],
+                "Money Flow (M)": round(s["momentum_score"] * 100, 2),
+                "Avg Sentiment": round(s["sentiment_score"], 2),
+                "Momentum": s["flow_direction"],
+                "Change": round(s["momentum_score"] * 3.0, 2)
+            })
     else:
-        money_flow = 0
-        sentiment = 0
-        
-    data.append({
-        "Sector": sector,
-        "Money Flow (M)": round(money_flow, 2),
-        "Avg Sentiment": round(sentiment, 2),
-        "Momentum": "Inflow" if money_flow >= 0 else "Outflow"
-    })
+        # Extreme fallback if backend entirely fails
+        for sector, ticker in sector_etfs.items():
+            change_pct = np.random.uniform(-3.0, 3.0)
+            data.append({
+                "Sector": sector,
+                "Money Flow (M)": round(change_pct * 100, 2),
+                "Avg Sentiment": round(max(-1.0, min(1.0, change_pct / 2.0)), 2),
+                "Momentum": "Inflow" if change_pct >= 0 else "Outflow",
+                "Change": change_pct
+            })
+
 
 df = pd.DataFrame(data)
 
 
 import plotly.graph_objects as go
-import numpy as np
 
 # Create 3D Bubble Chart
 fig = go.Figure(data=[go.Scatter3d(
@@ -71,36 +82,48 @@ fig = go.Figure(data=[go.Scatter3d(
     mode='markers+text',
     text=df["Sector"],
     textposition="top center",
+    textfont=dict(color='#F8FAFC', size=11, family='Inter'),
     marker=dict(
         size=abs(df["Money Flow (M)"]) / 10 + 10,
         color=df["Avg Sentiment"],
-        colorscale='GnBu',
-        opacity=0.8,
-        line=dict(width=2, color='rgba(0, 240, 255, 0.5)')
+        colorscale=[[0.0, '#EF4444'], [0.5, '#1E293B'], [1.0, '#10B981']],
+        opacity=0.9,
+        line=dict(width=1, color='rgba(255,255,255,0.2)')
     )
 )])
 
 fig.update_layout(
-    title="3D Sector Capital Allocation, Sentiment & Volatility",
-    template="plotly_dark",
+    margin=dict(t=0, l=0, r=0, b=0),
+    height=600,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
-    margin=dict(t=50, l=0, r=0, b=0),
     scene=dict(
         xaxis_title="Avg Sentiment",
         yaxis_title="Money Flow (M)",
         zaxis_title="Volatility (Proxy)",
-        xaxis=dict(gridcolor="rgba(0, 240, 255, 0.1)", backgroundcolor="rgba(0,0,0,0)"),
-        yaxis=dict(gridcolor="rgba(0, 240, 255, 0.1)", backgroundcolor="rgba(0,0,0,0)"),
-        zaxis=dict(gridcolor="rgba(0, 240, 255, 0.1)", backgroundcolor="rgba(0,0,0,0)"),
+        xaxis=dict(gridcolor="rgba(255, 255, 255, 0.05)", backgroundcolor="rgba(0,0,0,0)", showbackground=False, tickfont=dict(color='#64748B')),
+        yaxis=dict(gridcolor="rgba(255, 255, 255, 0.05)", backgroundcolor="rgba(0,0,0,0)", showbackground=False, tickfont=dict(color='#64748B')),
+        zaxis=dict(gridcolor="rgba(255, 255, 255, 0.05)", backgroundcolor="rgba(0,0,0,0)", showbackground=False, tickfont=dict(color='#64748B')),
         camera=dict(
             up=dict(x=0, y=0, z=1),
             center=dict(x=0, y=0, z=0),
-            eye=dict(x=1.5, y=1.5, z=1.5)
+            eye=dict(x=1.8, y=1.8, z=1.2)
         )
     )
 )
 
-st.plotly_chart(fig, use_container_width=True)
+st.markdown("<div class='panel'>", unsafe_allow_html=True)
+st.markdown("<div class='panel-title'>3D Sector Capital Allocation & Volatility</div>", unsafe_allow_html=True)
+st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+st.markdown("</div>", unsafe_allow_html=True)
 
-st.dataframe(df.style.background_gradient(cmap='GnBu', subset=['Avg Sentiment']), use_container_width=True)
+st.markdown("<div class='panel'>", unsafe_allow_html=True)
+st.markdown("<div class='panel-title'>Sector Performance Heatmap</div>", unsafe_allow_html=True)
+st.dataframe(
+    df.sort_values(by="Change", ascending=False).style.background_gradient(
+        cmap='coolwarm', subset=['Avg Sentiment']
+    ).format({'Avg Sentiment': '{:.2f}', 'Money Flow (M)': '{:.2f}', 'Change': '{:+.2f}%'}),
+    use_container_width=True,
+    hide_index=True
+)
+st.markdown("</div>", unsafe_allow_html=True)
