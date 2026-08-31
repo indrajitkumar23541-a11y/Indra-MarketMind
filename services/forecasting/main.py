@@ -23,28 +23,78 @@ async def health_check():
 @app.post("/forecast/prophet", response_model=ForecastResponse)
 async def forecast_prophet(request: ForecastRequest):
     """Generates a forecast using only the Prophet model (Trend & Seasonality)."""
-    # TODO: Fetch actual OHLCV data from DB
-    # For now, we mock the dataframe fetching
-    # df = await get_stock_data(request.ticker)
+    import yfinance as yf
+    try:
+        df = yf.download(request.ticker, period="1y")
+        df.reset_index(inplace=True)
+        if 'Date' in df.columns:
+            df = df.rename(columns={'Date': 'date', 'Close': 'close'})
+        elif 'Datetime' in df.columns:
+            df = df.rename(columns={'Datetime': 'date', 'Close': 'close'})
+            
+        prophet_model.train(df, date_col='date', target_col='close')
+        forecast_df = prophet_model.predict(days=request.days)
+        
+        # Only return the future predictions
+        future_forecast = forecast_df.tail(request.days)
+        
+        forecast_points = [
+            ForecastPoint(
+                date=row['ds'].strftime('%Y-%m-%d'),
+                predicted_close=round(float(row['yhat']), 2),
+                lower_bound=round(float(row['yhat_lower']), 2),
+                upper_bound=round(float(row['yhat_upper']), 2)
+            )
+            for _, row in future_forecast.iterrows()
+        ]
+    except Exception as e:
+        logger.error(f"Error generating forecast: {e}")
+        forecast_points = []
     
     return ForecastResponse(
         ticker=request.ticker,
         forecast_days=request.days,
         model_used="Prophet",
-        forecast=[],
+        forecast=forecast_points,
         generated_at=datetime.utcnow().isoformat()
     )
 
 @app.post("/forecast/hybrid", response_model=ForecastResponse)
 async def forecast_hybrid(request: ForecastRequest):
     """Generates a forecast using the Hybrid Prophet+LSTM model."""
-    # TODO: Fetch actual OHLCV and Sentiment data from DB
+    import yfinance as yf
+    try:
+        df = yf.download(request.ticker, period="1y")
+        df.reset_index(inplace=True)
+        if 'Date' in df.columns:
+            df = df.rename(columns={'Date': 'date', 'Close': 'close'})
+        elif 'Datetime' in df.columns:
+            df = df.rename(columns={'Datetime': 'date', 'Close': 'close'})
+            
+        hybrid_model.train(df, date_col='date', target_col='close')
+        forecast_df = hybrid_model.predict(days=request.days)
+        
+        # Only return the future predictions
+        future_forecast = forecast_df.tail(request.days)
+        
+        forecast_points = [
+            ForecastPoint(
+                date=row['ds'].strftime('%Y-%m-%d'),
+                predicted_close=round(float(row['yhat']), 2),
+                lower_bound=round(float(row['yhat_lower']), 2),
+                upper_bound=round(float(row['yhat_upper']), 2)
+            )
+            for _, row in future_forecast.iterrows()
+        ]
+    except Exception as e:
+        logger.error(f"Error generating hybrid forecast: {e}")
+        forecast_points = []
     
     return ForecastResponse(
         ticker=request.ticker,
         forecast_days=request.days,
         model_used="Hybrid",
-        forecast=[],
+        forecast=forecast_points,
         generated_at=datetime.utcnow().isoformat()
     )
 

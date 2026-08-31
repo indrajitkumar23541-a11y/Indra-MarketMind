@@ -22,6 +22,9 @@ from services.analytics.schemas import (
 import yfinance as yf
 import random
 import numpy as np
+import requests
+import pandas as pd
+from statsmodels.tsa.stattools import grangercausalitytests
 
 # In-memory cache for API rate limits
 cache = {}
@@ -54,26 +57,50 @@ async def health_check():
 
 @app.get("/analyze/correlation/{ticker}", response_model=CorrelationResponse)
 async def get_correlation(ticker: str, window_days: int = 30):
-    # Dynamically generate realistic correlation data
-    pearson_r = random.uniform(0.4, 0.85) if random.random() > 0.5 else random.uniform(-0.6, -0.2)
+    try:
+        # Fetch data for ticker and NIFTY 50 as benchmark
+        end_date = datetime.now()
+        start_date = end_date - pd.Timedelta(days=window_days * 2) # Get extra days for trading days
+        df = yf.download([ticker, "^NSEI"], start=start_date, end=end_date)['Close']
+        df = df.dropna().tail(window_days)
+        
+        if len(df) > 5:
+            pearson_r = df[ticker].corr(df['^NSEI'])
+        else:
+            pearson_r = 0.0
+    except Exception as e:
+        pearson_r = 0.0
+        
+    if pd.isna(pearson_r): pearson_r = 0.0
+    
     return CorrelationResponse(
         ticker=ticker,
         window_days=window_days,
-        pearson_r=round(pearson_r, 4),
-        is_significant=abs(pearson_r) > 0.5,
+        pearson_r=round(float(pearson_r), 4),
+        is_significant=abs(float(pearson_r)) > 0.5,
         timestamp=datetime.utcnow()
     )
 
 @app.get("/analyze/granger/{ticker}", response_model=GrangerCausalityResponse)
 async def get_granger_causality(ticker: str, lag_days: int = 1):
-    f_stat = random.uniform(1.5, 6.5)
-    p_val = random.uniform(0.01, 0.15)
+    try:
+        df = yf.download([ticker, "^NSEI"], period="3mo")['Close']
+        df = df.dropna()
+        if len(df) > 30:
+            gc_res = grangercausalitytests(df[[ticker, "^NSEI"]], maxlag=[lag_days], verbose=False)
+            f_stat = gc_res[lag_days][0]['ssr_ftest'][0]
+            p_val = gc_res[lag_days][0]['ssr_ftest'][1]
+        else:
+            f_stat, p_val = 0.0, 1.0
+    except Exception:
+        f_stat, p_val = 0.0, 1.0
+        
     return GrangerCausalityResponse(
         ticker=ticker,
         lag_days=lag_days,
-        f_statistic=round(f_stat, 4),
-        p_value=round(p_val, 4),
-        is_significant=p_val < 0.05,
+        f_statistic=round(float(f_stat), 4),
+        p_value=round(float(p_val), 4),
+        is_significant=float(p_val) < 0.05,
         timestamp=datetime.utcnow()
     )
 
@@ -91,8 +118,20 @@ async def get_fear_greed_index():
     except Exception:
         volatility_score = 50.0
 
-    momentum = random.uniform(40, 80)
-    sentiment = random.uniform(30, 90)
+    try:
+        spy = yf.Ticker("SPY").history(period="125d")
+        if not spy.empty and len(spy) > 10:
+            current_spy = spy['Close'].iloc[-1]
+            ma_125_spy = spy['Close'].mean()
+            # Momentum > 1 means Greed, < 1 means Fear
+            momentum_ratio = current_spy / ma_125_spy
+            momentum = max(0, min(100, (momentum_ratio - 0.9) * 500)) # roughly 0 to 100
+        else:
+            momentum = 50.0
+    except Exception:
+        momentum = 50.0
+
+    sentiment = 50.0 # Default to neutral if we don't have aggregated text sentiment
     
     score = (volatility_score * 0.4) + (momentum * 0.3) + (sentiment * 0.3)
     
@@ -115,31 +154,63 @@ async def get_fear_greed_index():
 
 @app.get("/signals/sector-rotation")
 async def get_sector_rotation():
-    sectors = ["Technology", "Healthcare", "Financials", "Energy", "Consumer Discretionary"]
+    sectors_map = {
+        "Technology": "XLK",
+        "Healthcare": "XLV",
+        "Financials": "XLF",
+        "Energy": "XLE",
+        "Consumer Discretionary": "XLY"
+    }
     data = []
-    for s in sectors:
-        data.append({
-            "sector": s,
-            "momentum_score": random.uniform(-1.0, 1.0),
-            "sentiment_score": random.uniform(-1.0, 1.0),
-            "flow_direction": random.choice(["Inflow", "Outflow", "Neutral"])
-        })
+    try:
+        etfs = list(sectors_map.values())
+        df = yf.download(etfs, period="1mo")['Close']
+        for name, ticker in sectors_map.items():
+            if ticker in df and len(df[ticker].dropna()) >= 2:
+                recent = df[ticker].dropna()
+                ret = (recent.iloc[-1] / recent.iloc[0]) - 1
+                momentum_score = ret * 10 # Scale it up slightly for the score
+                flow = "Inflow" if momentum_score > 0 else "Outflow"
+                data.append({
+                    "sector": name,
+                    "momentum_score": round(float(momentum_score), 2),
+                    "sentiment_score": round(float(momentum_score), 2),
+                    "flow_direction": flow
+                })
+    except Exception:
+        pass
+        
     return {"sectors": data, "timestamp": datetime.utcnow().isoformat()}
 
 @app.get("/signals/insider")
 async def get_insider_signals(limit: int = 10):
-    tickers = ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "AAPL", "MSFT", "NVDA"]
-    names = ["Mukesh Ambani", "K. Krithivasan", "Salil Parekh", "Sashidhar Jagdishan", "Tim Cook", "Satya Nadella", "Jensen Huang"]
+    if not settings.FINNHUB_API_KEY:
+        return {"signals": [], "timestamp": datetime.utcnow().isoformat()}
+        
+    # Finnhub doesn't support bulk insider endpoint easily without specific ticker, 
+    # so we'll fetch for a few top tickers to simulate a market-wide feed.
+    tickers = ["AAPL", "MSFT", "NVDA", "AMZN"]
     signals = []
-    for _ in range(limit):
-        signals.append({
-            "Ticker": random.choice(tickers),
-            "Insider Name": random.choice(names),
-            "Transaction Type": random.choice(["Buy", "Buy", "Sell"]), # Weight towards buy
-            "Shares": random.randint(1000, 50000),
-            "Value": f"${random.randint(50, 5000)}k",
-            "Date": datetime.utcnow().strftime("%Y-%m-%d")
-        })
+    
+    try:
+        for t in tickers:
+            res = requests.get(f"https://finnhub.io/api/v1/stock/insider-transactions?symbol={t}&token={settings.FINNHUB_API_KEY}")
+            if res.status_code == 200:
+                data = res.json().get("data", [])
+                for tx in data[:3]:
+                    signals.append({
+                        "Ticker": t,
+                        "Insider Name": tx.get("name", "Unknown"),
+                        "Transaction Type": "Buy" if tx.get("change", 0) > 0 else "Sell",
+                        "Shares": abs(tx.get("change", 0)),
+                        "Value": f"${abs(tx.get("change", 0) * tx.get("transactionPrice", 0)):,.0f}",
+                        "Date": tx.get("transactionDate", "")
+                    })
+    except Exception as e:
+        print(f"Error fetching insider signals: {e}")
+        
+    # Sort by date descending and limit
+    signals = sorted(signals, key=lambda x: x["Date"], reverse=True)[:limit]
     return {"signals": signals, "timestamp": datetime.utcnow().isoformat()}
 
 if __name__ == "__main__":

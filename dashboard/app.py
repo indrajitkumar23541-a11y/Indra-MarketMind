@@ -4,6 +4,7 @@ import os
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
+import yfinance as yf
 from datetime import datetime, timedelta
 
 # Add current directory to path so we can import utils
@@ -45,8 +46,26 @@ st.sidebar.markdown("""
 
 # --- DATA FETCHING ---
 nifty_quote = APIClient.get_market_quote("^NSEI")
-nifty_price = f"{nifty_quote.get('c', 0):,.2f}" if nifty_quote else "22,500.35"
-nifty_change_val = nifty_quote.get('dp', 0) if nifty_quote else 1.20
+if not nifty_quote:
+    try:
+        yf_ticker = yf.Ticker("^NSEI")
+        hist = yf_ticker.history(period="2d")
+        if len(hist) >= 2:
+            prev_close = hist['Close'].iloc[0]
+            curr_close = hist['Close'].iloc[1]
+            nifty_price = f"{curr_close:,.2f}"
+            nifty_change_val = ((curr_close - prev_close) / prev_close) * 100
+        else:
+            curr_close = hist['Close'].iloc[-1] if not hist.empty else 22500.35
+            nifty_price = f"{curr_close:,.2f}"
+            nifty_change_val = 1.20
+    except Exception:
+        nifty_price = "22,500.35"
+        nifty_change_val = 1.20
+else:
+    nifty_price = f"{nifty_quote.get('c', 0):,.2f}"
+    nifty_change_val = nifty_quote.get('dp', 0)
+
 nifty_change = f"{nifty_change_val:+.2f}%"
 nifty_color = "positive" if nifty_change_val >= 0 else "negative"
 nifty_arrow = "↗" if nifty_change_val >= 0 else "↘"
@@ -125,10 +144,17 @@ with col1:
         times = pd.to_datetime(df['timestamp'])
         prices = df['close']
     else:
-        # Fallback if API fails
-        np.random.seed(42)
-        times = pd.date_range("09:15", "15:30", freq="5min")
-        prices = 22200 + np.cumsum(np.random.randn(len(times)) * 15)
+        # Fallback to direct yfinance if internal API fails
+        try:
+            yf_ticker = yf.Ticker("^NSEI")
+            df = yf_ticker.history(period="1d", interval="5m")
+            times = df.index
+            prices = df['Close']
+        except Exception as e:
+            # Absolute fallback if no internet
+            np.random.seed(42)
+            times = pd.date_range("09:15", "15:30", freq="5min")
+            prices = 22200 + np.cumsum(np.random.randn(len(times)) * 15)
     
     fig = go.Figure()
     fig.add_trace(go.Scatter(
