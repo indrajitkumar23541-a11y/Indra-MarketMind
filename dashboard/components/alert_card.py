@@ -1,10 +1,10 @@
 import streamlit as st
 
 def render_alert_card(title: str, message: str, alert_type: str = "info", time_ago: str = "Just now"):
-    \"\"\"
+    """
     Render a styled alert card using HTML/CSS.
     alert_type: "bullish", "bearish", "info", "warning"
-    \"\"\"
+    """
     
     if alert_type == "bullish":
         bg_color = "rgba(16, 185, 129, 0.1)"
@@ -27,7 +27,7 @@ def render_alert_card(title: str, message: str, alert_type: str = "info", time_a
         icon_color = "#3B82F6"
         icon_svg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
 
-    html = f\"\"\"
+    html = f"""
     <div style="
         background: {bg_color}; 
         border: 1px solid {border_color}; 
@@ -51,6 +51,6 @@ def render_alert_card(title: str, message: str, alert_type: str = "info", time_a
             </div>
         </div>
     </div>
-    \"\"\"
+    """
     
     st.markdown(html, unsafe_allow_html=True)

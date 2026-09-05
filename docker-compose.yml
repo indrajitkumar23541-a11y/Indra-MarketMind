@@ -3,7 +3,7 @@ version: "3.8"
 services:
   # ── Infrastructure ──────────────────────────────────
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     container_name: indra_db
     ports:
       - "5432:5432"
@@ -84,6 +84,45 @@ services:
     env_file: .env
     depends_on:
       - postgres
+
+  auto-trading:
+    build:
+      context: .
+      dockerfile: services/auto_trading/Dockerfile
+    container_name: indra_auto_trading
+    ports:
+      - "8007:8007"
+    env_file: .env
+    environment:
+      - MAX_RISK_PER_TRADE=${MAX_RISK_PER_TRADE}
+      - IBKR_ACCOUNT_ID=${IBKR_ACCOUNT_ID}
+    depends_on:
+      - alert-service
+
+  rag-chatbot:
+    build:
+      context: .
+      dockerfile: services/rag_chatbot/Dockerfile
+    container_name: indra_chatbot
+    ports:
+      - "8006:8006"
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://indra:marketmind@postgres:5432/marketmind
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    depends_on:
+      - postgres
+
+  multimodal-service:
+    build:
+      context: .
+      dockerfile: services/multimodal/Dockerfile
+    container_name: indra_multimodal
+    ports:
+      - "8008:8008"
+    env_file: .env
+    depends_on:
+      - sentiment-service
 
   dashboard:
     build:

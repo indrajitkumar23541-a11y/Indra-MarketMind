@@ -10,12 +10,12 @@ from components.alert_card import render_alert_card
 
 setup_page("Signal Center", "🚨")
 
-st.markdown(\"\"\"
+st.markdown("""
 <div>
     <h1>🚨 Signal <span style='color: #00F0FF;'>Center</span></h1>
     <p style='color: #94A3B8;'>Real-time AI alerts, trend shifts, and institutional flow signals.</p>
 </div>
-\"\"\", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 st.markdown("### 🔔 Live Alerts Stream")
 
@@ -55,7 +55,7 @@ with col1:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col2:
-    st.markdown(\"\"\"
+    st.markdown("""
     <div class='panel' style='padding: 20px;'>
         <div class='panel-title'>Signal Filters</div>
         <div style='margin-bottom: 15px;'>
@@ -76,4 +76,4 @@ with col2:
             </div>
         </div>
     </div>
-    \"\"\", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)

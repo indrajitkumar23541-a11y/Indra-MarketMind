@@ -1,7 +1,9 @@
 import os
 import requests
 import logging
+from dotenv import load_dotenv
 
+load_dotenv()
 logger = logging.getLogger(__name__)
 
 # Base URLs for the internal docker network

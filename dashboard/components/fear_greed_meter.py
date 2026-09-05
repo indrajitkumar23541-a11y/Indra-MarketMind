@@ -2,9 +2,9 @@ import streamlit as st
 import plotly.graph_objects as go
 
 def render_fear_greed_meter(score: int, previous_score: int = None):
-    \"\"\"
+    """
     Render a custom circular dial for the Fear & Greed index (0-100).
-    \"\"\"
+    """
     if score <= 25:
         category = "Extreme Fear"
         color = "#EF4444"

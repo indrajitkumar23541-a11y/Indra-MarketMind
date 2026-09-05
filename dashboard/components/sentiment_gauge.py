@@ -2,9 +2,9 @@ import streamlit as st
 import plotly.graph_objects as go
 
 def render_sentiment_gauge(score, title="Sentiment Score"):
-    \"\"\"
+    """
     Render a gauge chart for sentiment scores (-1.0 to 1.0).
-    \"\"\"
+    """
     # Normalize score for the gauge (0 to 100)
     normalized_score = (score + 1) * 50
     

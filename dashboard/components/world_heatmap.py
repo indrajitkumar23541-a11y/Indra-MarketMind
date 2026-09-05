@@ -3,10 +3,10 @@ import plotly.graph_objects as go
 import pandas as pd
 
 def render_world_heatmap(data: pd.DataFrame):
-    \"\"\"
+    """
     Render a choropleth map showing global market sentiment.
     Expected data columns: 'country_code' (ISO 3), 'country_name', 'sentiment_score' (-1 to 1)
-    \"\"\"
+    """
     fig = go.Figure(data=go.Choropleth(
         locations=data['country_code'],
         z=data['sentiment_score'],

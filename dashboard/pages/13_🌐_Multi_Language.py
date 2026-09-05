@@ -10,21 +10,21 @@ from api_client import APIClient
 
 setup_page("Multi-Language Feed", "🌐")
 
-st.markdown(\"\"\"
+st.markdown("""
 <div>
     <h1>🌐 Multi-Language <span style='color: #00F0FF;'>Global Intelligence</span></h1>
     <p style='color: #94A3B8;'>Real-time AI translation and sentiment analysis across 55 languages.</p>
 </div>
-\"\"\", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-st.markdown(\"\"\"
+st.markdown("""
 <div class='panel'>
     <div class='panel-title'>Global Sentiment Flow</div>
     <p style='color: #E2E8F0; font-size: 14px;'>
         Our deep-translator pipeline automatically normalizes global news into English for our transformer models.
     </p>
 </div>
-\"\"\", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # Fetch dynamic ingestion count
 news_count = APIClient.get_news_count(hours_back=24)

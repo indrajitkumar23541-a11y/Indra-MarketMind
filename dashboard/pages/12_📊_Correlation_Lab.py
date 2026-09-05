@@ -8,14 +8,14 @@ from utils import setup_page
 
 setup_page("Correlation Lab", "📊")
 
-st.markdown(\"\"\"
+st.markdown("""
 <div>
     <h1>📊 Correlation <span style='color: #00F0FF;'>Lab</span></h1>
     <p style='color: #94A3B8;'>Granger Causality and Pearson Correlation testing environment.</p>
 </div>
-\"\"\", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
-st.markdown(\"\"\"
+st.markdown("""
 <div class='panel'>
     <div class='panel-title'>Statistical Proof: Does Sentiment CAUSE Price Action?</div>
     <p style='color: #E2E8F0; font-size: 14px; margin-bottom: 20px;'>
@@ -51,4 +51,4 @@ st.markdown(\"\"\"
         </div>
     </div>
 </div>
-\"\"\", unsafe_allow_html=True)
+""", unsafe_allow_html=True)

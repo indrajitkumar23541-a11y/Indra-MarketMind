@@ -2,10 +2,10 @@ import streamlit as st
 import plotly.graph_objects as go
 
 def render_model_comparison(finbert, roberta, fingpt, vader, textblob):
-    \"\"\"
+    """
     Render a radar chart comparing the 5 sentiment models.
     Scores should be between -1.0 and +1.0.
-    \"\"\"
+    """
     categories = ['FinBERT', 'RoBERTa', 'FinGPT', 'VADER', 'TextBlob']
     
     # Scale scores from [-1, 1] to [0, 100] for better radar visualization

@@ -3,10 +3,10 @@ import plotly.graph_objects as go
 import pandas as pd
 
 def render_stock_chart(df: pd.DataFrame, ticker: str):
-    \"\"\"
+    """
     Render a candlestick chart with optional sentiment overlay.
     Requires dataframe with columns: 'Date', 'Open', 'High', 'Low', 'Close'
-    \"\"\"
+    """
     fig = go.Figure(data=[go.Candlestick(x=df['Date'],
                 open=df['Open'],
                 high=df['High'],

@@ -198,12 +198,15 @@ async def get_insider_signals(limit: int = 10):
             if res.status_code == 200:
                 data = res.json().get("data", [])
                 for tx in data[:3]:
+                    change = tx.get("change", 0)
+                    price = tx.get("transactionPrice", 0)
+                    value_str = f"${abs(change * price):,.0f}"
                     signals.append({
                         "Ticker": t,
                         "Insider Name": tx.get("name", "Unknown"),
-                        "Transaction Type": "Buy" if tx.get("change", 0) > 0 else "Sell",
-                        "Shares": abs(tx.get("change", 0)),
-                        "Value": f"${abs(tx.get("change", 0) * tx.get("transactionPrice", 0)):,.0f}",
+                        "Transaction Type": "Buy" if change > 0 else "Sell",
+                        "Shares": abs(change),
+                        "Value": value_str,
                         "Date": tx.get("transactionDate", "")
                     })
     except Exception as e:
