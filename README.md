@@ -38,21 +38,14 @@
 ---
 
 ## 📑 Table of Contents
-- [🌟 Executive Summary](#-executive-summary)
-- [✨ Core Breakthrough Features](#-core-breakthrough-features)
-  - [1. 🌍 Worldwide Financial Exchanges Radar (19 Hubs)](#1--worldwide-financial-exchanges-radar-19-hubs)
-  - [2. 📊 Real-World Functional Market Overview](#2--real-world-functional-market-overview)
-  - [3. 🧠 5-Model NLP Sentiment Ensemble](#3--5-model-nlp-sentiment-ensemble)
-  - [4. 🔮 Hybrid Deep Learning Forecaster](#4--hybrid-deep-learning-forecaster)
-  - [5. ⚡ Automated Trading & Risk Manager](#5--automated-trading--risk-manager)
-  - [6. 🎙️ Multimodal Audio Earnings Intelligence](#6-️-multimodal-audio-earnings-intelligence)
-  - [7. 🐋 Crypto On-Chain & Alt Data Scrapers](#7--crypto-on-chain--alt-data-scrapers)
-- [🏗️ Microservices System Architecture](#️-microservices-system-architecture)
-- [🔌 Microservices Registry & Port Mapping](#-microservices-registry--port-mapping)
-- [🚀 Quickstart & Setup Guide](#-quickstart--setup-guide)
-- [☸️ Production Kubernetes Deployment](#️-production-kubernetes-deployment)
-- [👑 Author & Visionary](#-author--visionary)
-- [📝 License & Disclaimer](#-license--disclaimer)
+
+<div align="center">
+
+| 🧭 **Discovery & Radar** | 🧠 **Intelligence & Engines** | ⚙️ **Architecture & Deployment** |
+| :--- | :--- | :--- |
+| • [🌟 **Executive Summary**](#-executive-summary)<br>• [✨ **Core Breakthrough Features**](#-core-breakthrough-features)<br>• [🌍 **19 Global Radar Hubs**](#1--worldwide-financial-exchanges-radar-19-hubs)<br>• [📊 **Live Market Dynamics**](#2--real-world-functional-market-overview) | • [🧠 **5-Model NLP Sentiment**](#3--5-model-nlp-sentiment-ensemble)<br>• [🔮 **Hybrid DL Forecaster**](#4--hybrid-deep-learning-forecaster)<br>• [⚡ **Automated Trading & Risk**](#5--automated-trading--risk-manager)<br>• [🎙️ **Multimodal Audio AI**](#6-️-multimodal-audio-earnings-intelligence)<br>• [🐋 **Crypto On-Chain & Alt Data**](#7--crypto-on-chain--alt-data-scrapers) | • [🏗️ **Microservices Architecture**](#️-microservices-system-architecture)<br>• [🔌 **Registry & Port Mapping**](#-microservices-registry--port-mapping)<br>• [🚀 **Quickstart & Setup Guide**](#-quickstart--setup-guide)<br>• [☸️ **Kubernetes Deployment**](#️-production-kubernetes-deployment)<br>• [👑 **Author & Visionary**](#-author--visionary)<br>• [📝 **License & Disclaimer**](#-license--disclaimer) |
+
+</div>
 
 ---
 
@@ -260,11 +253,23 @@ docker compose up --build
 ```
 
 ### 4. Access the Unified Web Terminal
-Once containers are healthy, open:
-👉 **[http://localhost:3000](http://localhost:3000)** — Next.js 16 Unified Financial Terminal  
-👉 **[http://localhost:3000/global-map](http://localhost:3000/global-map)** — 19 Global Exchanges Radar  
-👉 **[http://localhost:3000/research](http://localhost:3000/research)** — AI Quant Lab & NLP Ensemble  
-👉 **[http://localhost:8000/docs](http://localhost:8000/docs)** — Interactive Swagger API Gateway  
+
+Once containers or local microservices are booted, launch the unified ecosystem via the mission-control consoles:
+
+<div align="center">
+
+| Console / Dashboard | Direct Access URL | Port | Service Status | Primary Capabilities |
+| :--- | :---: | :---: | :---: | :--- |
+| **🌌 Unified Web Terminal** | [**`localhost:3000`**](http://localhost:3000) | `3000` | `🟢 ONLINE` | Next.js 16 Dark Sci-Fi UI, global search (`Ctrl + /`), live market quotes, and order desk. |
+| **🌍 Global Exchanges Radar** | [**`localhost:3000/global-map`**](http://localhost:3000/global-map) | `3000` | `🟢 ONLINE` | 19 international exchange hubs with live trading session status, local clocks, & market returns. |
+| **🔬 AI Quant Lab & Research** | [**`localhost:3000/research`**](http://localhost:3000/research) | `3000` | `🟢 ONLINE` | Embedded Streamlit analytics, 5-model sentiment gauge, Granger causality, and Fear & Greed. |
+| **⚡ Microservices API Gateway** | [**`localhost:8000/docs`**](http://localhost:8000/docs) | `8000` | `🟢 ONLINE` | Interactive OpenAPI Swagger documentation across all 10 Python backend microservices. |
+| **📊 Standalone Streamlit Hub** | [**`localhost:8501`**](http://localhost:8501) | `8501` | `🟢 ONLINE` | Direct standalone quantitative lab with Prophet curves, LSTM projections, and backtest results. |
+
+</div>
+
+> [!TIP]
+> **🚀 Universal Keyboard Command Palette:** Press <kbd>Ctrl</kbd> + <kbd>/</kbd> (or <kbd>⌘</kbd> + <kbd>/</kbd> on macOS) anywhere inside the Next.js Terminal to summon the universal search palette and jump instantly to any stock ticker, exchange hub, or microservice!
 
 ---
 
@@ -316,31 +321,88 @@ For detailed cluster provisioning and ingress TLS setup, see [`k8s/README.md`](k
 ## 👑 Author & Visionary
 
 <div align="center">
-  <a href="https://github.com/indrajitkumar23541-a11y">
-    <img src="./github_stats.svg" alt="Indrajit's GitHub Profile & Statistics" width="620" />
-  </a>
-  <br><br>
-  <a href="https://github.com/indrajitkumar23541-a11y">
-    <img src="https://streak-stats.demolab.com?user=indrajitkumar23541-a11y&theme=radical&background=05070D&ring=00F0FF&fire=00F0FF&currStreakNum=00F0FF&sideNums=FFFFFF&sideLabels=94A3B8&dates=64748B&border=00F0FF" alt="Indrajit's GitHub Contribution Streak" width="500" />
-  </a>
-</div>
 
-**Indra-MarketMind** is engineered and maintained with pride by **Indrajit Kumar**:
-- 🌐 GitHub: [@indrajitkumar23541-a11y](https://github.com/indrajitkumar23541-a11y)
-- 💼 Project Repository: [Indra-MarketMind](https://github.com/indrajitkumar23541-a11y/Indra-MarketMind)
-- 💡 Passion: High-Performance Distributed Systems, AI Quantitative Finance & Autonomous Agents
+### ⚡ Architected & Engineered by Indrajit Kumar
+*Full-Stack AI Quantitative Developer • Distributed Systems Architect • Open-Source Visionary*
+
+<p align="center">
+  <a href="https://github.com/indrajitkumar23541-a11y">
+    <img src="https://img.shields.io/badge/GitHub-indrajitkumar23541--a11y-00F0FF?style=for-the-badge&logo=github&logoColor=000000" alt="GitHub Profile" />
+  </a>
+  &nbsp;
+  <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind">
+    <img src="https://img.shields.io/badge/Repository-Indra--MarketMind-00E676?style=for-the-badge&logo=git&logoColor=000000" alt="Repository" />
+  </a>
+  &nbsp;
+  <a href="https://github.com/indrajitkumar23541-a11y?tab=followers">
+    <img src="https://img.shields.io/github/followers/indrajitkumar23541-a11y?label=Followers&style=for-the-badge&color=7928CA&logo=github" alt="GitHub Followers" />
+  </a>
+  &nbsp;
+  <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/stargazers">
+    <img src="https://img.shields.io/github/stars/indrajitkumar23541-a11y/Indra-MarketMind?label=Stars&style=for-the-badge&color=FFB800&logo=github" alt="Repository Stars" />
+  </a>
+</p>
+
+<br>
+
+<!-- Verified Self-Hosted Profile Metrics Card -->
+<a href="https://github.com/indrajitkumar23541-a11y">
+  <img src="./github_stats.svg" alt="Indrajit's GitHub Profile & Statistics" width="620" />
+</a>
+
+<br><br>
+
+<!-- Verified Real-Time Streak Stats -->
+<a href="https://github.com/indrajitkumar23541-a11y">
+  <img src="https://streak-stats.demolab.com?user=indrajitkumar23541-a11y&theme=radical&background=05070D&ring=00F0FF&fire=00F0FF&currStreakNum=00F0FF&sideNums=FFFFFF&sideLabels=94A3B8&dates=64748B&border=00F0FF" alt="Indrajit's GitHub Contribution Streak" width="500" />
+</a>
+
+<br><br>
+
+| 🌐 Profile Domain | 🎯 Focus & Contribution |
+| :--- | :--- |
+| 💻 **Engineering Focus** | High-Throughput Microservices, Deep Learning Quant Pipelines, Real-Time Market Telemetry |
+| ⚡ **System Philosophy** | Democratizing institutional-grade financial intelligence through open-source software |
+| 🤝 **Open Collaboration** | Contributions, feature requests, algorithmic PRs, and discussions are warmly welcomed! |
+
+</div>
 
 ---
 
 ## 📝 License & Disclaimer
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+<div align="center">
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-00F0FF?style=for-the-badge&logo=opensourceinitiative&logoColor=000" alt="MIT License" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Commercial_Use-Permitted-00E676?style=for-the-badge&logo=checkmarx&logoColor=000" alt="Commercial Use" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Modification-Permitted-7928CA?style=for-the-badge&logo=git&logoColor=fff" alt="Modification" />
+  &nbsp;
+  <img src="https://img.shields.io/badge/Open_Source-True-FF007A?style=for-the-badge&logo=github&logoColor=fff" alt="Open Source" />
+</p>
+
+This software is proudly open-source under the terms of the [**MIT License**](LICENSE).  
+Copyright © 2026 **Indrajit Kumar**. All rights reserved.
+
+</div>
 
 > [!CAUTION]
-> **Financial & Investment Disclaimer:**  
-> Indra-MarketMind is an advanced research and quantitative intelligence tool. It does **not** constitute financial, investment, legal, or tax advice. Past market sentiment or algorithmic predictions do not guarantee future performance. Always conduct independent verification before deploying real capital.
+> ### ⚠️ Institutional & Regulatory Disclaimer
+> **Indra-MarketMind** is engineered exclusively for academic research, quantitative exploration, algorithmic simulation, and educational purposes.
+> 
+> - **No Financial Advice:** Nothing published in this repository—including 5-model NLP sentiment classifications, PyTorch LSTM / Prophet price forecasts, automated trading triggers, or portfolio risk metrics—constitutes financial, investment, trading, legal, or tax advice.
+> - **Capital Risk:** Trading equities, derivatives, commodities, and cryptocurrencies entails substantial risk of capital loss. Past backtested performance and synthetic simulations do not guarantee future profitability.
+> - **Independent Verification:** Always conduct independent technical verification and seek counsel from a registered financial advisor prior to allocating real capital to any algorithmic trading strategy.
 
 <div align="center">
   <br>
+  <p><b>⭐ If you find Indra-MarketMind valuable, please star the repository on GitHub! ⭐</b></p>
+  <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/stargazers">
+    <img src="https://img.shields.io/badge/★_Star_Indra--MarketMind-00F0FF?style=for-the-badge&logo=github&logoColor=000" alt="Star Repository" />
+  </a>
+  <br><br>
   <img src="./footer.svg" alt="Footer Wave" width="100%" />
 </div>
+
