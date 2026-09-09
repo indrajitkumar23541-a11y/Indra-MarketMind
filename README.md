@@ -1,13 +1,13 @@
 <div align="center">
   
   <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind">
-    <img src="./logo.png" alt="Indra-MarketMind Logo" width="220" style="border-radius: 28px; box-shadow: 0 0 40px rgba(0, 240, 255, 0.4); margin-bottom: 6px;" />
+    <img src="./logo.png" alt="Indra-MarketMind Logo" width="120" />
   </a>
 
-  <br>
+  <br><br>
 
   <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind">
-    <img src="https://capsule-render.vercel.app/api?type=waving&color=00F0FF&height=300&section=header&text=⚡%20Indra-MarketMind&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Enterprise%20AI%20Financial%20Intelligence%20%26%20Global%20Exchange%20Terminal&descAlignY=55&descAlign=60" alt="Indra-MarketMind Header" width="100%" />
+    <img src="./banner.png" alt="Indra-MarketMind Header" width="100%" />
   </a>
   
   <p align="center">
@@ -340,5 +340,5 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 <div align="center">
   <br>
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=00F0FF&height=100&section=footer" width="100%" />
+  <img src="./footer.svg" alt="Footer Wave" width="100%" />
 </div>

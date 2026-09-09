@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" width="100%" height="260" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#05070D" />
+      <stop offset="50%" stop-color="#0B132B" />
+      <stop offset="100%" stop-color="#070C18" />
+    </linearGradient>
+
+    <!-- Wave Gradients -->
+    <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F0FF" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.8" />
+    </linearGradient>
+
+    <linearGradient id="waveGradient2" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#00F0FF" stop-opacity="0.3" />
+      <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0.3" />
+    </linearGradient>
+
+    <!-- Text Glow -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="badgeGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Pattern Grid -->
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="260" rx="16" fill="url(#bgGradient)" />
+  <rect width="1200" height="260" rx="16" fill="url(#grid)" />
+
+  <!-- Ambient Light Orbs -->
+  <circle cx="200" cy="80" r="120" fill="#00F0FF" opacity="0.08" filter="blur(40px)" />
+  <circle cx="1000" cy="140" r="140" fill="#8B5CF6" opacity="0.08" filter="blur(50px)" />
+
+  <!-- Flowing Tech Wave at Bottom -->
+  <path d="M 0,210 C 250,170 450,240 700,195 C 950,150 1100,225 1200,200 L 1200,260 L 0,260 Z" fill="url(#waveGradient2)" />
+  <path d="M 0,225 C 200,195 400,250 650,215 C 900,180 1050,240 1200,215 L 1200,260 L 0,260 Z" fill="url(#waveGradient1)" />
+
+  <!-- Main Content -->
+  <g text-anchor="middle">
+    <!-- Platform Badge -->
+    <g transform="translate(600, 48)">
+      <rect x="-140" y="-14" width="280" height="28" rx="14" fill="#06B6D4" fill-opacity="0.12" stroke="#00F0FF" stroke-opacity="0.4" stroke-width="1" />
+      <circle cx="-116" cy="0" r="4" fill="#10B981" filter="url(#badgeGlow)" />
+      <text x="-98" y="4.5" fill="#00F0FF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Space Grotesk', sans-serif" font-size="11" font-weight="700" letter-spacing="2">INSTITUTIONAL AI TERMINAL</text>
+    </g>
+
+    <!-- Main Title -->
+    <text x="600" y="125" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Space Grotesk', sans-serif" font-size="52" font-weight="900" letter-spacing="3" filter="url(#glow)">
+      ⚡ INDRA-<tspan fill="#00F0FF">MARKETMIND</tspan>
+    </text>
+
+    <!-- Subtitle -->
+    <text x="600" y="165" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="500" letter-spacing="1.5">
+      The World's Most Advanced AI Financial Intelligence &amp; Global Exchange Platform
+    </text>
+  </g>
+</svg>
