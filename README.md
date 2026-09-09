@@ -1,10 +1,8 @@
 <div align="center">
   
   <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind">
-    <img src="./logo.png" alt="Indra-MarketMind Logo" width="120" />
+    <img src="./logo.png" alt="Indra-MarketMind Logo" width="165" />
   </a>
-
-  <br><br>
 
   <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind">
     <img src="./banner.png" alt="Indra-MarketMind Header" width="100%" />
