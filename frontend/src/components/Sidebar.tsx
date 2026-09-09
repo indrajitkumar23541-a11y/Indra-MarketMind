@@ -17,7 +17,8 @@ import {
   Bell, 
   Settings, 
   HelpCircle, 
-  Zap
+  Zap,
+  FlaskConical
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -33,6 +34,7 @@ export default function Sidebar() {
   ];
 
   const toolsLinks = [
+    { name: "AI Quant Lab", href: "/research", icon: FlaskConical, badge: "Live" },
     { name: "Stock Screener", href: "/screener", icon: Activity, badge: "New" },
     { name: "Sector Rotation", href: "/sector", icon: RefreshCcw },
     { name: "Insider Signals", href: "/insider", icon: Key },
