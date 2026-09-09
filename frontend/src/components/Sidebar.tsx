@@ -50,8 +50,12 @@ export default function Sidebar() {
   return (
     <aside className="w-64 flex flex-col h-full bg-[#05070D] border-r border-white/5 overflow-y-auto custom-scrollbar flex-shrink-0">
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-8">
-          <Zap className="w-6 h-6 text-[#00F0FF] fill-[#00F0FF]/20 drop-shadow-[0_0_5px_rgba(0,240,255,0.5)]" />
+        <div className="flex items-center gap-3 mb-8">
+          <img 
+            src="/logo.png" 
+            alt="Indra-MarketMind Logo" 
+            className="w-9 h-9 rounded-xl object-cover border border-[#00F0FF]/40 shadow-[0_0_15px_rgba(0,240,255,0.4)]" 
+          />
           <div>
             <h1 className="font-space font-bold text-lg tracking-tight m-0 text-slate-100">
               Indra-<span className="text-[#00F0FF]">MarketMind</span>
