@@ -1,27 +1,31 @@
 <div align="center">
   
   <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind">
-    <img src="https://capsule-render.vercel.app/api?type=waving&color=00F0FF&height=300&section=header&text=⚡%20Indra-MarketMind&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=The%20World's%20Most%20Advanced%20AI%20Financial%20Intelligence%20Platform&descAlignY=55&descAlign=60" alt="Header" />
+    <img src="https://capsule-render.vercel.app/api?type=waving&color=00F0FF&height=300&section=header&text=⚡%20Indra-MarketMind&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Enterprise%20AI%20Financial%20Intelligence%20%26%20Global%20Exchange%20Terminal&descAlignY=55&descAlign=60" alt="Indra-MarketMind Header" width="100%" />
   </a>
   
   <p align="center">
     <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/stargazers"><img src="https://img.shields.io/github/stars/indrajitkumar23541-a11y/Indra-MarketMind?color=00F0FF&logo=github&style=for-the-badge" alt="Stars" /></a>
     <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/network/members"><img src="https://img.shields.io/github/forks/indrajitkumar23541-a11y/Indra-MarketMind?color=6C63FF&logo=github&style=for-the-badge" alt="Forks" /></a>
     <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/issues"><img src="https://img.shields.io/github/issues/indrajitkumar23541-a11y/Indra-MarketMind?color=FF3366&logo=github&style=for-the-badge" alt="Issues" /></a>
-    <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge&color=00F0FF" alt="License" /></a>
+    <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-00F0FF?style=for-the-badge" alt="License" /></a>
+    <img src="https://img.shields.io/badge/Next.js-16%20Turbopack-black?style=for-the-badge&logo=nextdotjs" alt="Next.js 16" />
+    <img src="https://img.shields.io/badge/Microservices-10%20Services-00C7B7?style=for-the-badge&logo=fastapi" alt="Microservices" />
+    <img src="https://img.shields.io/badge/Global%20Exchanges-19%20Hubs-10B981?style=for-the-badge&logo=googleearth" alt="Global Exchanges" />
   </p>
 
-  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=700&size=24&duration=3000&pause=1000&color=00F0FF&center=true&vCenter=true&width=800&height=50&lines=Decoding+Market+Emotions...;Predicting+Trends+with+Deep+Learning...;Real-Time+Sentiment+Analysis...;Welcome+to+Indra-MarketMind!" alt="Typing Animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=700&size=23&duration=3000&pause=1000&color=00F0FF&center=true&vCenter=true&width=850&height=50&lines=Decoding+Global+Market+Emotions+with+5+NLP+Models...;Live+Quotes+%26+Accurate+Trading+Hours+Across+19+Global+Exchanges...;Hybrid+Prophet+%2B+PyTorch+LSTM+Price+Forecasting...;Unified+Dark+Sci-Fi+Terminal+at+http%3A%2F%2Flocalhost%3A3000!;Welcome+to+Indra-MarketMind!" alt="Typing Animation" />
   
   <br>
   
   <table>
     <tr>
-      <td align="center">Python 3.10+</td>
-      <td align="center">FastAPI</td>
-      <td align="center">PyTorch & NLP</td>
-      <td align="center">Next.js 14 UI</td>
-      <td align="center">Docker Ready</td>
+      <td align="center"><b>🐍 Python 3.10+</b></td>
+      <td align="center"><b>⚡ FastAPI Mesh</b></td>
+      <td align="center"><b>🧠 5-Model NLP Ensemble</b></td>
+      <td align="center"><b>🔮 PyTorch & Prophet</b></td>
+      <td align="center"><b>🌌 Next.js 16 UI</b></td>
+      <td align="center"><b>🐳 Docker & K8s</b></td>
     </tr>
   </table>
 
@@ -29,127 +33,243 @@
 
 ---
 
-## 🚀 Welcome to the Future of Trading
-
-**Indra-MarketMind** is a state-of-the-art, enterprise-grade open-source market intelligence platform. Created exclusively by **Indrajit Kumar**, this system doesn't just look at numbers—it reads the market's mind.
-
-By utilizing a highly parallelized Microservices architecture, it ingests millions of data points across global news, social media, and SEC filings. It then processes them through an ensemble of **5 cutting-edge NLP models** to quantify market emotion, feeding this directly into a **Deep Learning Hybrid Forecaster** to predict price action before it happens.
-
-> *Why pay $35,000/yr for traditional terminal software when you can run a superior AI brain locally?*
+## 📑 Table of Contents
+- [🌟 Executive Summary](#-executive-summary)
+- [✨ Core Breakthrough Features](#-core-breakthrough-features)
+  - [1. 🌍 Worldwide Financial Exchanges Radar (19 Hubs)](#1--worldwide-financial-exchanges-radar-19-hubs)
+  - [2. 📊 Real-World Functional Market Overview](#2--real-world-functional-market-overview)
+  - [3. 🧠 5-Model NLP Sentiment Ensemble](#3--5-model-nlp-sentiment-ensemble)
+  - [4. 🔮 Hybrid Deep Learning Forecaster](#4--hybrid-deep-learning-forecaster)
+  - [5. ⚡ Automated Trading & Risk Manager](#5--automated-trading--risk-manager)
+  - [6. 🎙️ Multimodal Audio Earnings Intelligence](#6-️-multimodal-audio-earnings-intelligence)
+  - [7. 🐋 Crypto On-Chain & Alt Data Scrapers](#7--crypto-on-chain--alt-data-scrapers)
+- [🏗️ Microservices System Architecture](#️-microservices-system-architecture)
+- [🔌 Microservices Registry & Port Mapping](#-microservices-registry--port-mapping)
+- [🚀 Quickstart & Setup Guide](#-quickstart--setup-guide)
+- [☸️ Production Kubernetes Deployment](#️-production-kubernetes-deployment)
+- [👑 Author & Visionary](#-author--visionary)
+- [📝 License & Disclaimer](#-license--disclaimer)
 
 ---
 
-## ✨ Features That Defy Gravity
+## 🌟 Executive Summary
+
+**Indra-MarketMind** is a state-of-the-art, institutional-grade AI market intelligence and algorithmic trading ecosystem created by **Indrajit Kumar**. Traditional financial terminals cost $30,000+ per year and provide raw statistics without reasoning. **Indra-MarketMind reads the market's mind**:
+
+1. Ingests raw news, social streams, SEC Form 4 insider filings, and live tick streams across global exchanges.
+2. Evaluates narrative polarity and institutional psychology using an ensemble of **5 state-of-the-art NLP models** (*FinBERT, RoBERTa-Financial, FinGPT, VADER, and TextBlob*).
+3. Forecasts price trends with a **Hybrid Machine Learning pipeline** uniting Bayesian trend decomposition (*Prophet*) and deep sequential memory (*PyTorch Bi-LSTM*).
+4. Monitors **19 global financial exchanges** in real time with timezone-aware trading sessions, official market hours, and live quote benchmarks.
+5. Delivers all intelligence through a **single unified Dark Sci-Fi Web Terminal (`http://localhost:3000`)** built on Next.js 16, glassmorphism aesthetics, and instant keyboard search (`Ctrl + /`).
+
+---
+
+## ✨ Core Breakthrough Features
+
+### 1. 🌍 Worldwide Financial Exchanges Radar (19 Hubs)
+A premier geopolitical and market session radar visualizing 19 major global financial capitals on an interactive Mercator canvas:
 
 <div align="center">
-  <table>
-    <tr>
-      <td width="50%" align="center">
-        <h3>🧠 5-Model NLP Ensemble</h3>
-        <p>Utilizes <i>FinBERT, RoBERTa, FinGPT, VADER, and TextBlob</i> working in harmony to score sentiment with unparalleled accuracy.</p>
-      </td>
-      <td width="50%" align="center">
-        <h3>🌌 Premium UI</h3>
-        <p>A custom-built Next.js + React frontend featuring Dark Sci-Fi Neumorphism, glassmorphism layers, and dynamic interactive charts.</p>
-      </td>
-    </tr>
-    <tr>
-      <td width="50%" align="center">
-        <h3>🔮 Hybrid ML Forecasting</h3>
-        <p>Combines Facebook Prophet (for baseline trends) and PyTorch LSTMs (for sentiment-driven volatility spikes).</p>
-      </td>
-      <td width="50%" align="center">
-        <h3>🔭 3D Sector Rotation</h3>
-        <p>Visualize institutional money flow across 11 major market sectors in a stunning interactive 3D WebGL space.</p>
-      </td>
-    </tr>
-  </table>
+
+| Region | Exchanges & Benchmark Indices | Local Trading Hours | Live Detection |
+|:---|:---|:---|:---|
+| **Asia-Pacific** | 🇮🇳 **Mumbai** (NSE / NIFTY 50 `^NSEI`, SENSEX `^BSESN`)<br>🇯🇵 **Tokyo** (TSE / Nikkei 225 `^N225`)<br>🇭🇰 **Hong Kong** (HKEX / Hang Seng `^HSI`)<br>🇨🇳 **Shanghai** (SSE / SSE Composite `000001.SS`)<br>🇸🇬 **Singapore** (SGX / Straits Times `^STI`)<br>🇰🇷 **Seoul** (KRX / KOSPI `^KS11`)<br>🇦🇺 **Sydney** (ASX / ASX 200 `^AXJO`) | `09:15 - 15:30 IST`<br>`09:00 - 15:00 JST`<br>`09:30 - 16:00 HKT`<br>`09:30 - 15:00 CST`<br>`09:00 - 17:00 SGT`<br>`09:00 - 15:30 KST`<br>`10:00 - 16:00 AEST` | Real-time IANA timezone parsing (`Asia/Kolkata`, `Asia/Tokyo`, etc.) |
+| **Europe** | 🇬🇧 **London** (LSE / FTSE 100 `^FTSE`)<br>🇩🇪 **Frankfurt** (FWB / DAX 40 `^GDAXI`)<br>🇫🇷 **Paris** (Euronext / CAC 40 `^FCHI`)<br>🇨🇭 **Zurich** (SIX / SMI `^SSMI`)<br>🇳🇱 **Amsterdam** (Euronext / AEX `^AEX`) | `08:00 - 16:30 GMT`<br>`09:00 - 17:30 CET`<br>`09:00 - 17:30 CET`<br>`09:00 - 17:30 CET`<br>`09:00 - 17:30 CET` | Auto daylight saving detection (`Europe/London`, `Europe/Berlin`) |
+| **Americas** | 🇺🇸 **New York** (NYSE & NASDAQ / Dow `^DJI`, S&P 500 `^GSPC`, NDQ `^IXIC`)<br>🇨🇦 **Toronto** (TSX / TSX Composite `^GSPTSE`)<br>🇧🇷 **São Paulo** (B3 / IBOVESPA `^BVSP`)<br>🇲🇽 **Mexico City** (BMV / IPC `^MXX`) | `09:30 - 16:00 EST`<br>`09:30 - 16:00 EST`<br>`10:00 - 17:00 BRT`<br>`08:30 - 15:00 CST` | High-frequency Wall Street tick feeds |
+| **Middle East & Africa** | 🇸🇦 **Riyadh** (Tadawul / TASI `^TASI.SR`)<br>🇦🇪 **Dubai** (DFM / DFM General `DFMGI.AE`)<br>🇿🇦 **Johannesburg** (JSE / Top 40 `^J203.JO`) | `10:00 - 15:00 AST (Sun-Thu)`<br>`10:00 - 15:00 GST (Mon-Fri)`<br>`09:00 - 17:00 SAST (Mon-Fri)` | Islamic trading calendar (Sunday–Thursday workweek for Riyadh) |
+
 </div>
 
-### 🔥 More Core Modules
-- 🌍 **Global Sentiment Map:** Track real-time bullish/bearish heatmaps across 50+ global exchanges.
-- 😱 **Fear & Greed Index:** A proprietary 7-factor gauge tracking momentum, volatility, and safe-haven demand.
-- 👔 **Insider Signals:** Track SEC Form 4 filings to see what CEOs and CFOs are doing with their capital.
-- 🚨 **Automated Alerts:** Instant Telegram and Email alerts when critical market shifts occur.
+- **Pulsing Radar Waves:** Active open markets radiate glowing emerald ripples on the map.
+- **Region Filter Tabs:** Filter instant nodes across `All`, `Asia-Pacific`, `Europe`, `Americas`, and `Middle East & Africa`.
+- **World Financial Clocks:** Real-time local clocks for Mumbai, New York, London, Tokyo, and Sydney.
 
 ---
 
-## 🏗️ The Neural Architecture — 14-Phase Complete Platform
+### 2. 📊 Real-World Functional Market Overview
+- **100% Genuine Intraday Charts:** Dynamic timeframe selectors (`1D`, `1W`, `1M`, `3M`, `1Y`, `All`) with actual timestamped candles from market open to close.
+- **Accurate Benchmark Pricing:** Calculates previous close accurately from historical session data.
+- **27 Worldwide Assets with Sparklines:** Complete table monitoring NIFTY, SENSEX, BANK NIFTY, NASDAQ, S&P 500, DOW, BITCOIN, ETHEREUM, GOLD, CRUDE OIL, and 17 international indices.
+- **Dynamic Greetings:** Changes automatically between `Good Morning, ☀️`, `Good Afternoon, 🌤️`, and `Good Evening, 🌙` based on client local time.
+- **Global Search (`Ctrl + /`):** Instant search modal querying Indian stocks (RELIANCE, TCS, INFY, HDFC), US tech giants (AAPL, MSFT, NVDA, TSLA), and crypto pairs with live prices.
+- **Notification Drawer:** Real-time bell drawer tracking volatility surges and whale alerts.
 
-Indra-MarketMind is 100% complete across all 14 phases, engineered for massive scale using asynchronous Python microservices, deployable via Docker Compose or Kubernetes.
+---
+
+### 3. 🧠 5-Model NLP Sentiment Ensemble
+The market is driven by human psychology and narrative momentum. MarketMind parses every article and tweet through 5 specialized AI models:
+
+```
+                  ┌─────────────────────────────────┐
+                  │    Raw Financial Text Stream    │
+                  └───────────────┬─────────────────┘
+                                  ▼
+        ┌──────────────────────────────────────────────────┐
+        │          5-Model Parallel NLP Inference          │
+        ├─────────────┬─────────────┬───────────┬──────────┤
+        │   FinBERT   │   RoBERTa   │  FinGPT   │  VADER   │
+        │ Transformer │ Deep Neural │ Generative│ Lexicon  │
+        └──────┬──────┴──────┬──────┴─────┬─────┴────┬─────┘
+               │             │            │          │
+               ▼             ▼            ▼          ▼
+        ┌──────────────────────────────────────────────────┐
+        │  Weighted Ensemble Consensus Algorithm (-1 to 1) │
+        └─────────────────────────┬────────────────────────┘
+                                  ▼
+                     [ +0.78 Bullish Sentiment ]
+```
+
+1. **FinBERT (HuggingFace):** Pretrained on financial 10-K, 10-Q filings, and earnings transcripts.
+2. **RoBERTa-Financial:** Deep bidirectional transformer tuned on news headlines and analyst reports.
+3. **FinGPT:** Instruction-tuned generative LLM providing reasoning behind market tone.
+4. **VADER:** Optimized rule-based lexicon for fast social sentiment analysis.
+5. **TextBlob:** Subjectivity vs. objectivity scoring.
+
+---
+
+### 4. 🔮 Hybrid Deep Learning Forecaster
+Combines the strength of statistical time-series decomposition and non-linear deep learning:
+- **Facebook Prophet:** Extracts macro trends, weekly seasonalities, and holiday effects.
+- **PyTorch Bidirectional LSTM:** Consumes Prophet residuals alongside the 5-model sentiment composite to forecast upcoming volatility swings and target price corridors.
+
+---
+
+### 5. ⚡ Automated Trading & Risk Manager
+- **Paper Trading Engine:** Full mock order execution (Market, Limit, Stop-Loss) with simulated slippage and commission tracking.
+- **Risk Management System:**
+  - Dynamic Position Sizing using the **Kelly Criterion**.
+  - Value at Risk (**VaR**) calculation (95% & 99% confidence intervals).
+  - Automated Max Drawdown kill-switch to protect capital.
+
+---
+
+### 6. 🎙️ Multimodal Audio Earnings Intelligence
+- **OpenAI Whisper Audio Pipeline:** Ingests live earnings conference call audio recordings and investor presentations.
+- Generates timestamped transcripts with speaker diarization and computes sentence-by-sentence executive sentiment polarity.
+
+---
+
+### 7. 🐋 Crypto On-Chain & Alt Data Scrapers
+- **Whale Transaction Alerting:** Tracks high-value transfers across major blockchain networks.
+- **Alternative Data Engine:** Correlates Google Search Trends, Reddit WallStreetBets discussion velocity, and Twitter/X viral metrics to detect retail sentiment shifts.
+
+---
+
+## 🏗️ Microservices System Architecture
+
+Indra-MarketMind is built on an enterprise asynchronous microservices mesh orchestrated via Docker and Kubernetes:
 
 ```mermaid
 graph TB
-    subgraph GATEWAY["🔀 API Gateway (8000)"]
-        GW["⚙️ Smart Reverse Proxy + Service Mesh"]
+    subgraph CLIENT["💻 Client Layer"]
+        UI["🌐 Next.js 16 Web Terminal (Port 3000)"]
+        LAB["🔬 Streamlit AI Quant Lab (Port 8501)"]
     end
 
-    subgraph CORE["⚙️ Core Services (Phases 1-8)"]
-        S1["📡 Data Ingestion (8001)"]
-        S2["🧠 Sentiment Engine (8002)"]
-        S3["📊 Analytics (8003)"]
-        S4["🔮 ML Forecast (8004)"]
-        S5["🚨 Alert System (8005)"]
+    subgraph INGRESS["🔀 API Gateway (Port 8000)"]
+        GW["Reverse Proxy, Rate Limiter & Service Router"]
     end
 
-    subgraph ADVANCED["🚀 Advanced AI Services (Phases 9-13)"]
-        S6["🤖 LLM RAG Chatbot (8006)"]
-        S7["⚡ Auto-Trading Engine (8007)"]
-        S8["🎙️ Multi-Modal Audio (8008)"]
-        S9["🐋 Crypto On-Chain (8009)"]
-        S10["🛰️ Alternative Data (8010)"]
+    subgraph CORE_SERVICES["⚙️ Core Services"]
+        S1["📡 Data Ingestion (Port 8001)"]
+        S2["🧠 Sentiment Ensemble (Port 8002)"]
+        S3["📊 Analytics & Signals (Port 8003)"]
+        S4["🔮 Hybrid Forecaster (Port 8004)"]
+        S5["🚨 Alerts & Notification (Port 8005)"]
     end
 
-    subgraph INFRA["🗄️ Infrastructure"]
-        DB[("🗃️ PostgreSQL 16 + pgvector")]
-        CACHE[("⚡ Redis 7")]
-        K8S["☸️ Kubernetes Orchestration"]
+    subgraph ADVANCED_SERVICES["🚀 Advanced Intelligence Services"]
+        S6["🤖 RAG Vector Chatbot (Port 8006)"]
+        S7["⚡ Auto-Trading & Risk (Port 8007)"]
+        S8["🎙️ Multimodal Audio (Port 8008)"]
+        S9["🐋 Crypto On-Chain (Port 8009)"]
+        S10["🛰️ Alternative Data (Port 8010)"]
     end
 
-    GW ==>|Route| CORE
-    GW ==>|Route| ADVANCED
-    CORE --> DB
-    CORE --> CACHE
-    ADVANCED --> DB
+    subgraph DATA_LAYER["🗄️ Persistence & Storage"]
+        PG[("🐘 PostgreSQL 16 + pgvector")]
+        REDIS[("⚡ Redis 7 In-Memory Cache")]
+    end
+
+    UI --> GW
+    LAB -.->|Embedded in /research| UI
+    GW --> S1
+    GW --> S2
+    GW --> S3
+    GW --> S4
+    GW --> S5
+    GW --> S6
+    GW --> S7
+    GW --> S8
+    GW --> S9
+    GW --> S10
+
+    S1 & S2 & S3 & S4 & S6 & S7 --> PG
+    S1 & S3 & S9 --> REDIS
 ```
 
 ---
 
-## ⚡ Quickstart Guide
+## 🔌 Microservices Registry & Port Mapping
 
-Getting your complete AI financial terminal online takes under 3 minutes.
+| Service Name | Port | Description & Responsibilities | Key Endpoints |
+|:---|:---:|:---|:---|
+| **API Gateway** | `8000` | Unified reverse proxy, routing mesh, and health monitor | `/api/system/status`, `/docs` |
+| **Data Ingestion** | `8001` | Live Yahoo market feeds, news, Reddit, and SEC Edgar | `/fetch/market/{ticker}/quote`, `/fetch/market/indices/overview` |
+| **Sentiment Engine**| `8002` | 5-Model NLP sentiment ensemble (FinBERT, RoBERTa, etc.) | `/analyze/sentiment`, `/analyze/ensemble` |
+| **Analytics Engine**| `8003` | Technical indicators, Fear & Greed index, correlation | `/analytics/technical/{ticker}`, `/analytics/fear-greed` |
+| **ML Forecaster** | `8004` | Prophet + PyTorch LSTM price forecasting engine | `/forecast/{ticker}`, `/forecast/hybrid` |
+| **Alerts System** | `8005` | Real-time email, webhook, and Telegram dispatcher | `/alerts/trigger`, `/alerts/active` |
+| **RAG Chatbot** | `8006` | LangChain financial assistant powered by pgvector | `/chat/query`, `/chat/context` |
+| **Auto-Trading** | `8007` | Paper broker, risk management, and order execution | `/trade/order`, `/trade/portfolio` |
+| **Multimodal Audio**| `8008` | Whisper speech-to-text earnings call analyzer | `/audio/transcribe`, `/audio/sentiment` |
+| **Crypto On-Chain** | `8009` | Blockchain whale tracker and on-chain intelligence | `/crypto/whales`, `/crypto/gas` |
+| **Alternative Data**| `8010` | Google Trends & social media volume scraper | `/altdata/trends`, `/altdata/volume` |
+| **Web Terminal** | `3000` | Next.js 16 Dark Sci-Fi UI, Global Radar, Live Overview | `http://localhost:3000` |
+| **AI Quant Lab** | `8501` | Streamlit quantitative lab (embedded inside `/research`) | `http://localhost:3000/research` |
 
-### Prerequisites
-- **Docker** & **Docker Compose** installed on your machine.
-- Git.
+---
 
-### 1. Clone the Brain
+## 🚀 Quickstart & Setup Guide
+
+Launch the entire ecosystem locally in under 3 minutes:
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/indrajitkumar23541-a11y/Indra-MarketMind.git
 cd Indra-MarketMind
 ```
 
-### 2. Configure the Environment
-Copy the example environment file. All API keys are **optional** — every service has built-in offline fallbacks.
+### 2. Configure Environment Variables
+All external API keys are optional. The platform includes offline fallbacks and free live feeds out of the box:
 ```bash
+# Windows
 copy .env.example .env
+
+# macOS / Linux
+cp .env.example .env
 ```
 
-### 3. Launch All 11 Microservices
+### 3. Launch via Docker Compose
 ```bash
 docker compose up --build
 ```
-This starts all services: Gateway (8000), Data (8001), Sentiment (8002), Analytics (8003), Forecast (8004), Alerts (8005), RAG Chatbot (8006), Auto-Trading (8007), Multi-Modal (8008), Crypto On-Chain (8009), Alternative Data (8010), and Dashboard (8501).
 
-### 4. Enter the Dashboard
-Once all services are healthy:
-👉 **[http://localhost:8501](http://localhost:8501)** — Streamlit AI Dashboard
+### 4. Access the Unified Web Terminal
+Once containers are healthy, open:
+👉 **[http://localhost:3000](http://localhost:3000)** — Next.js 16 Unified Financial Terminal  
+👉 **[http://localhost:3000/global-map](http://localhost:3000/global-map)** — 19 Global Exchanges Radar  
+👉 **[http://localhost:3000/research](http://localhost:3000/research)** — AI Quant Lab & NLP Ensemble  
+👉 **[http://localhost:8000/docs](http://localhost:8000/docs)** — Interactive Swagger API Gateway  
 
-👉 **[http://localhost:8000](http://localhost:8000)** — API Gateway
+---
 
-### 5. Kubernetes Deployment (Phase 14)
-For production-grade cloud deployment:
+## ☸️ Production Kubernetes Deployment
+
+For enterprise high-availability and autoscaling:
+
 ```bash
+# Apply complete Kubernetes manifests
 kubectl apply -f k8s/namespace.yaml
 kubectl apply -f k8s/configmap.yaml
 kubectl apply -f k8s/secrets.yaml
@@ -159,42 +279,58 @@ kubectl apply -f k8s/services-deployment.yaml
 kubectl apply -f k8s/ingress.yaml
 kubectl apply -f k8s/hpa.yaml
 ```
-See [`k8s/README.md`](k8s/README.md) for the full Kubernetes guide.
+
+Check cluster health:
+```bash
+kubectl get pods -n indra-marketmind
+kubectl get hpa -n indra-marketmind
+```
+
+For detailed cluster provisioning and ingress TLS setup, see [`k8s/README.md`](k8s/README.md).
 
 ---
 
-## 💻 Elite Tech Stack
+## 💻 Elite Technology Stack
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
-  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
-  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
-  <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
-  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" />
+  <img src="https://img.shields.io/badge/Python_3.10-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch" />
+  <img src="https://img.shields.io/badge/HuggingFace-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" alt="HuggingFace" />
+  <img src="https://img.shields.io/badge/PostgreSQL_16-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Redis_7-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
 </p>
 
 ---
 
-## 👑 About the Creator
+## 👑 Author & Visionary
 
 <div align="center">
   <a href="https://github.com/indrajitkumar23541-a11y">
-    <img src="https://github-readme-stats.vercel.app/api?username=indrajitkumar23541-a11y&show_icons=true&theme=radical&hide_border=true&bg_color=0D1117&title_color=00F0FF&text_color=FFFFFF" alt="Indrajit's GitHub Stats" />
+    <img src="https://github-readme-stats.vercel.app/api?username=indrajitkumar23541-a11y&show_icons=true&theme=radical&hide_border=true&bg_color=05070D&title_color=00F0FF&text_color=FFFFFF&icon_color=00F0FF" alt="Indrajit's GitHub Statistics" />
   </a>
 </div>
 
-This platform is a testament to the intersection of Artificial Intelligence and Finance. Built from the ground up by **Indrajit Kumar**.
+**Indra-MarketMind** is engineered and maintained with pride by **Indrajit Kumar**:
+- 🌐 GitHub: [@indrajitkumar23541-a11y](https://github.com/indrajitkumar23541-a11y)
+- 💼 Project Repository: [Indra-MarketMind](https://github.com/indrajitkumar23541-a11y/Indra-MarketMind)
+- 💡 Passion: High-Performance Distributed Systems, AI Quantitative Finance & Autonomous Agents
 
 ---
 
 ## 📝 License & Disclaimer
 
-Distributed under the MIT License. See `LICENSE` for more information.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-> **Disclaimer:** Indra-MarketMind is an intelligence tool, not a financial advisor. The AI predictions and sentiment scores are for educational and research purposes only. Always do your own due diligence before trading.
+> [!CAUTION]
+> **Financial & Investment Disclaimer:**  
+> Indra-MarketMind is an advanced research and quantitative intelligence tool. It does **not** constitute financial, investment, legal, or tax advice. Past market sentiment or algorithmic predictions do not guarantee future performance. Always conduct independent verification before deploying real capital.
 
 <div align="center">
   <br>
