@@ -319,7 +319,11 @@ For detailed cluster provisioning and ingress TLS setup, see [`k8s/README.md`](k
 
 <div align="center">
   <a href="https://github.com/indrajitkumar23541-a11y">
-    <img src="https://github-readme-stats.vercel.app/api?username=indrajitkumar23541-a11y&show_icons=true&theme=radical&hide_border=true&bg_color=05070D&title_color=00F0FF&text_color=FFFFFF&icon_color=00F0FF" alt="Indrajit's GitHub Statistics" />
+    <img src="./github_stats.svg" alt="Indrajit's GitHub Profile & Statistics" width="620" />
+  </a>
+  <br><br>
+  <a href="https://github.com/indrajitkumar23541-a11y">
+    <img src="https://streak-stats.demolab.com?user=indrajitkumar23541-a11y&theme=radical&background=05070D&ring=00F0FF&fire=00F0FF&currStreakNum=00F0FF&sideNums=FFFFFF&sideLabels=94A3B8&dates=64748B&border=00F0FF" alt="Indrajit's GitHub Contribution Streak" width="500" />
   </a>
 </div>
 

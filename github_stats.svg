@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 250" width="100%" height="250" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#05070D" />
+      <stop offset="50%" stop-color="#0B132B" />
+      <stop offset="100%" stop-color="#060913" />
+    </linearGradient>
+
+    <!-- Border Glow Gradient -->
+    <linearGradient id="neonBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F0FF" />
+      <stop offset="50%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Clip Path for Circular Avatar -->
+    <clipPath id="avatarClip">
+      <circle cx="65" cy="70" r="42" />
+    </clipPath>
+
+    <!-- Grid Pattern -->
+    <pattern id="cardGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(255, 255, 255, 0.03)" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Card Body -->
+  <rect x="2" y="2" width="616" height="246" rx="16" fill="url(#cardBg)" stroke="url(#neonBorder)" stroke-width="1.5" />
+  <rect x="2" y="2" width="616" height="246" rx="16" fill="url(#cardGrid)" />
+
+  <!-- Ambient Light Orbs -->
+  <circle cx="80" cy="80" r="70" fill="#00F0FF" opacity="0.08" filter="blur(30px)" />
+  <circle cx="520" cy="180" r="90" fill="#8B5CF6" opacity="0.08" filter="blur(40px)" />
+
+  <!-- Avatar Ring & Image -->
+  <circle cx="65" cy="70" r="46" fill="none" stroke="#00F0FF" stroke-width="2" filter="url(#cyanGlow)" />
+  <circle cx="65" cy="70" r="42" fill="#0D1322" />
+  <image href="https://avatars.githubusercontent.com/u/244794592?v=4" x="23" y="28" width="84" height="84" clip-path="url(#avatarClip)" preserveAspectRatio="xMidYMid slice" />
+  <circle cx="95" cy="98" r="8" fill="#10B981" stroke="#05070D" stroke-width="2" />
+
+  <!-- Profile Details -->
+  <!-- Name -->
+  <text x="130" y="52" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="800" letter-spacing="0.5">
+    Indrajit Kumar
+  </text>
+  
+  <!-- Username -->
+  <text x="130" y="74" fill="#00F0FF" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="13" font-weight="600">
+    @indrajitkumar23541-a11y
+  </text>
+
+  <!-- Title / Tagline -->
+  <text x="130" y="96" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="500">
+    Creator of Indra-MarketMind • Full-Stack &amp; AI Quant Systems Engineer
+  </text>
+
+  <!-- Verified Creator Badge (Top Right) -->
+  <g transform="translate(450, 32)">
+    <rect x="0" y="0" width="145" height="24" rx="12" fill="#00F0FF" fill-opacity="0.1" stroke="#00F0FF" stroke-opacity="0.3" stroke-width="1" />
+    <circle cx="14" cy="12" r="3.5" fill="#00F0FF" />
+    <text x="24" y="16" fill="#00F0FF" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="9.5" font-weight="700" letter-spacing="1">PROJECT AUTHOR</text>
+  </g>
+
+  <!-- Stats Grid (3 Boxes) -->
+  <!-- Box 1: Public Repos -->
+  <g transform="translate(24, 130)">
+    <rect x="0" y="0" width="176" height="52" rx="10" fill="#FFFFFF" fill-opacity="0.03" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+    <text x="16" y="24" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="10" font-weight="600" letter-spacing="1">PUBLIC REPOS</text>
+    <text x="16" y="44" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="18" font-weight="800">13+ Repos</text>
+  </g>
+
+  <!-- Box 2: Architecture -->
+  <g transform="translate(216, 130)">
+    <rect x="0" y="0" width="188" height="52" rx="10" fill="#FFFFFF" fill-opacity="0.03" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+    <text x="16" y="24" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="10" font-weight="600" letter-spacing="1">ARCHITECTURE</text>
+    <text x="16" y="44" fill="#00F0FF" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="18" font-weight="800">10 Microservices</text>
+  </g>
+
+  <!-- Box 3: Exchanges Radar -->
+  <g transform="translate(420, 130)">
+    <rect x="0" y="0" width="176" height="52" rx="10" fill="#FFFFFF" fill-opacity="0.03" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+    <text x="16" y="24" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="10" font-weight="600" letter-spacing="1">EXCHANGE RADAR</text>
+    <text x="16" y="44" fill="#10B981" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="18" font-weight="800">19 Global Hubs</text>
+  </g>
+
+  <!-- Skills / Tech Stack Pill Bar at Bottom -->
+  <g transform="translate(24, 204)">
+    <text x="0" y="16" fill="#64748B" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="9.5" font-weight="700" letter-spacing="1">SPECIALIZATION:</text>
+    
+    <!-- Badges -->
+    <g transform="translate(110, 2)">
+      <rect x="0" y="0" width="70" height="18" rx="4" fill="#3B82F6" fill-opacity="0.15" stroke="#3B82F6" stroke-opacity="0.3" stroke-width="1" />
+      <text x="35" y="13" text-anchor="middle" fill="#93C5FD" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="8.5" font-weight="600">Python</text>
+
+      <rect x="78" y="0" width="82" height="18" rx="4" fill="#00F0FF" fill-opacity="0.15" stroke="#00F0FF" stroke-opacity="0.3" stroke-width="1" />
+      <text x="119" y="13" text-anchor="middle" fill="#67E8F9" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="8.5" font-weight="600">TypeScript</text>
+
+      <rect x="168" y="0" width="68" height="18" rx="4" fill="#10B981" fill-opacity="0.15" stroke="#10B981" stroke-opacity="0.3" stroke-width="1" />
+      <text x="202" y="13" text-anchor="middle" fill="#6EE7B7" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="8.5" font-weight="600">FastAPI</text>
+
+      <rect x="244" y="0" width="74" height="18" rx="4" fill="#EF4444" fill-opacity="0.15" stroke="#EF4444" stroke-opacity="0.3" stroke-width="1" />
+      <text x="281" y="13" text-anchor="middle" fill="#FCA5A5" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="8.5" font-weight="600">PyTorch</text>
+
+      <rect x="326" y="0" width="76" height="18" rx="4" fill="#8B5CF6" fill-opacity="0.15" stroke="#8B5CF6" stroke-opacity="0.3" stroke-width="1" />
+      <text x="364" y="13" text-anchor="middle" fill="#C4B5FD" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="8.5" font-weight="600">Docker</text>
+
+      <rect x="410" y="0" width="60" height="18" rx="4" fill="#EC4899" fill-opacity="0.15" stroke="#EC4899" stroke-opacity="0.3" stroke-width="1" />
+      <text x="440" y="13" text-anchor="middle" fill="#F472B6" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', Consolas, monospace" font-size="8.5" font-weight="600">K8s</text>
+    </g>
+  </g>
+</svg>
