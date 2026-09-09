@@ -1,0 +1,665 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: marketmind
+  labels:
+    app: gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: indra-marketmind/gateway:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: marketmind
+spec:
+  selector:
+    app: gateway
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-collector
+  namespace: marketmind
+  labels:
+    app: news-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: news-collector
+  template:
+    metadata:
+      labels:
+        app: news-collector
+    spec:
+      containers:
+        - name: news-collector
+          image: indra-marketmind/news-collector:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: news-collector-service
+  namespace: marketmind
+spec:
+  selector:
+    app: news-collector
+  ports:
+    - port: 8001
+      targetPort: 8001
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentiment
+  namespace: marketmind
+  labels:
+    app: sentiment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sentiment
+  template:
+    metadata:
+      labels:
+        app: sentiment
+    spec:
+      containers:
+        - name: sentiment
+          image: indra-marketmind/sentiment:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8002
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8002
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1500m
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sentiment-service
+  namespace: marketmind
+spec:
+  selector:
+    app: sentiment
+  ports:
+    - port: 8002
+      targetPort: 8002
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics
+  namespace: marketmind
+  labels:
+    app: analytics
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: analytics
+  template:
+    metadata:
+      labels:
+        app: analytics
+    spec:
+      containers:
+        - name: analytics
+          image: indra-marketmind/analytics:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8003
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8003
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 150m
+              memory: 256Mi
+            limits:
+              cpu: 800m
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: analytics-service
+  namespace: marketmind
+spec:
+  selector:
+    app: analytics
+  ports:
+    - port: 8003
+      targetPort: 8003
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forecasting
+  namespace: marketmind
+  labels:
+    app: forecasting
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: forecasting
+  template:
+    metadata:
+      labels:
+        app: forecasting
+    spec:
+      containers:
+        - name: forecasting
+          image: indra-marketmind/forecasting:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8004
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8004
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 300m
+              memory: 512Mi
+            limits:
+              cpu: 1500m
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: forecasting-service
+  namespace: marketmind
+spec:
+  selector:
+    app: forecasting
+  ports:
+    - port: 8004
+      targetPort: 8004
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alerts
+  namespace: marketmind
+  labels:
+    app: alerts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alerts
+  template:
+    metadata:
+      labels:
+        app: alerts
+    spec:
+      containers:
+        - name: alerts
+          image: indra-marketmind/alerts:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8005
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8005
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alert-service
+  namespace: marketmind
+spec:
+  selector:
+    app: alerts
+  ports:
+    - port: 8005
+      targetPort: 8005
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-chatbot
+  namespace: marketmind
+  labels:
+    app: rag-chatbot
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rag-chatbot
+  template:
+    metadata:
+      labels:
+        app: rag-chatbot
+    spec:
+      containers:
+        - name: rag-chatbot
+          image: indra-marketmind/rag_chatbot:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8006
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8006
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1.5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rag-chatbot-service
+  namespace: marketmind
+spec:
+  selector:
+    app: rag-chatbot
+  ports:
+    - port: 8006
+      targetPort: 8006
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auto-trading
+  namespace: marketmind
+  labels:
+    app: auto-trading
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auto-trading
+  template:
+    metadata:
+      labels:
+        app: auto-trading
+    spec:
+      containers:
+        - name: auto-trading
+          image: indra-marketmind/auto_trading:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8007
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8007
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auto-trading-service
+  namespace: marketmind
+spec:
+  selector:
+    app: auto-trading
+  ports:
+    - port: 8007
+      targetPort: 8007
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multimodal
+  namespace: marketmind
+  labels:
+    app: multimodal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multimodal
+  template:
+    metadata:
+      labels:
+        app: multimodal
+    spec:
+      containers:
+        - name: multimodal
+          image: indra-marketmind/multimodal:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8008
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8008
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multimodal-service
+  namespace: marketmind
+spec:
+  selector:
+    app: multimodal
+  ports:
+    - port: 8008
+      targetPort: 8008
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crypto-onchain
+  namespace: marketmind
+  labels:
+    app: crypto-onchain
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crypto-onchain
+  template:
+    metadata:
+      labels:
+        app: crypto-onchain
+    spec:
+      containers:
+        - name: crypto-onchain
+          image: indra-marketmind/crypto_onchain:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8009
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8009
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crypto-onchain-service
+  namespace: marketmind
+spec:
+  selector:
+    app: crypto-onchain
+  ports:
+    - port: 8009
+      targetPort: 8009
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alternative-data
+  namespace: marketmind
+  labels:
+    app: alternative-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alternative-data
+  template:
+    metadata:
+      labels:
+        app: alternative-data
+    spec:
+      containers:
+        - name: alternative-data
+          image: indra-marketmind/alternative_data:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8010
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8010
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alternative-data-service
+  namespace: marketmind
+spec:
+  selector:
+    app: alternative-data
+  ports:
+    - port: 8010
+      targetPort: 8010
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: marketmind
+  labels:
+    app: dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    spec:
+      containers:
+        - name: dashboard
+          image: indra-marketmind/dashboard:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8501
+          envFrom:
+            - configMapRef:
+                name: marketmind-config
+            - secretRef:
+                name: marketmind-secrets
+          readinessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: 8501
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-service
+  namespace: marketmind
+spec:
+  selector:
+    app: dashboard
+  ports:
+    - port: 8501
+      targetPort: 8501
+  type: ClusterIP

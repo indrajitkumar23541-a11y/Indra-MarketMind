@@ -25,7 +25,24 @@ services:
     ports:
       - "6379:6379"
 
-  # ── Microservices ───────────────────────────────────
+  # ── Gateway ─────────────────────────────────────────
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    container_name: indra_gateway
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - ENVIRONMENT=production
+    depends_on:
+      - data-service
+      - sentiment-service
+      - analytics-service
+      - forecast-service
+
+  # ── Core Microservices ──────────────────────────────
   data-service:
     build:
       context: .
@@ -61,6 +78,21 @@ services:
       - postgres
       - redis
 
+  analytics-service:
+    build:
+      context: .
+      dockerfile: services/analytics/Dockerfile
+    container_name: indra_analytics
+    ports:
+      - "8003:8003"
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://indra:marketmind@postgres:5432/marketmind
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
   forecast-service:
     build:
       context: .
@@ -85,20 +117,6 @@ services:
     depends_on:
       - postgres
 
-  auto-trading:
-    build:
-      context: .
-      dockerfile: services/auto_trading/Dockerfile
-    container_name: indra_auto_trading
-    ports:
-      - "8007:8007"
-    env_file: .env
-    environment:
-      - MAX_RISK_PER_TRADE=${MAX_RISK_PER_TRADE}
-      - IBKR_ACCOUNT_ID=${IBKR_ACCOUNT_ID}
-    depends_on:
-      - alert-service
-
   rag-chatbot:
     build:
       context: .
@@ -113,6 +131,20 @@ services:
     depends_on:
       - postgres
 
+  auto-trading:
+    build:
+      context: .
+      dockerfile: services/auto_trading/Dockerfile
+    container_name: indra_auto_trading
+    ports:
+      - "8007:8007"
+    env_file: .env
+    environment:
+      - ACTIVE_BROKER=paper
+      - MAX_RISK_PER_TRADE=${MAX_RISK_PER_TRADE:-0.02}
+    depends_on:
+      - alert-service
+
   multimodal-service:
     build:
       context: .
@@ -121,9 +153,30 @@ services:
     ports:
       - "8008:8008"
     env_file: .env
+    environment:
+      - SENTIMENT_SERVICE_URL=http://sentiment-service:8002/analyze
     depends_on:
       - sentiment-service
 
+  crypto-onchain-service:
+    build:
+      context: .
+      dockerfile: services/crypto_onchain/Dockerfile
+    container_name: indra_crypto_onchain
+    ports:
+      - "8009:8009"
+    env_file: .env
+
+  alternative-data-service:
+    build:
+      context: .
+      dockerfile: services/alternative_data/Dockerfile
+    container_name: indra_alt_data
+    ports:
+      - "8010:8010"
+    env_file: .env
+
+  # ── Frontend Dashboard ──────────────────────────────
   dashboard:
     build:
       context: .
@@ -132,11 +185,12 @@ services:
     ports:
       - "8501:8501"
     environment:
-      - API_GATEWAY_URL=http://data-service:8001  # Mocking gateway pointing to internal service
+      - API_GATEWAY_URL=http://gateway:8000
     volumes:
       - ./dashboard:/app/dashboard
       - ./shared:/app/shared
     depends_on:
+      - gateway
       - data-service
       - sentiment-service
 

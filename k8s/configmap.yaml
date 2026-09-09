@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: marketmind-config
+  namespace: marketmind
+data:
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "INFO"
+  ACTIVE_BROKER: "paper"
+  AUTO_EXECUTE: "false"
+  MAX_RISK_PER_TRADE: "0.02"
+  MAX_DRAWDOWN_LIMIT: "0.15"
+  NEWS_SERVICE_URL: "http://news-collector-service:8001"
+  SENTIMENT_SERVICE_URL: "http://sentiment-service:8002"
+  ANALYTICS_SERVICE_URL: "http://analytics-service:8003"
+  FORECASTING_SERVICE_URL: "http://forecasting-service:8004"
+  ALERT_SERVICE_URL: "http://alert-service:8005"
+  RAG_CHATBOT_URL: "http://rag-chatbot-service:8006"
+  AUTO_TRADING_URL: "http://auto-trading-service:8007"
+  MULTIMODAL_URL: "http://multimodal-service:8008"
+  CRYPTO_ONCHAIN_URL: "http://crypto-onchain-service:8009"
+  ALTERNATIVE_DATA_URL: "http://alternative-data-service:8010"
+  REDIS_URL: "redis://redis:6379/0"

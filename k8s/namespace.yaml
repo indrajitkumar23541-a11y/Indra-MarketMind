@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: marketmind
+  labels:
+    app.kubernetes.io/name: marketmind
+    app.kubernetes.io/part-of: indra-marketmind
