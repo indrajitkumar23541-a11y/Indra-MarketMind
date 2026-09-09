@@ -10,13 +10,17 @@ def generate_content_hash(text: str) -> str:
     """Generate SHA256 hash for content to prevent duplicates."""
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
-def write_article_to_db(db: Session, raw_article: RawArticle):
-    """Write a RawArticle to the database if it doesn't already exist."""
+from sqlalchemy import select
+
+async def write_article_to_db(db, raw_article: RawArticle):
+    """Write a RawArticle to the database asynchronously if it doesn't already exist."""
     
     # 1. Deduplication Check
     # Check by external_id
     if raw_article.external_id:
-        existing = db.query(Article).filter(Article.external_id == raw_article.external_id).first()
+        stmt = select(Article).where(Article.external_id == raw_article.external_id)
+        result = await db.execute(stmt)
+        existing = result.scalars().first()
         if existing:
             logger.debug(f"Article with external_id {raw_article.external_id} already exists.")
             return existing
@@ -25,20 +29,19 @@ def write_article_to_db(db: Session, raw_article: RawArticle):
     content_to_hash = (raw_article.title + (raw_article.body or "")).strip()
     content_hash = generate_content_hash(content_to_hash)
     
-    existing = db.query(Article).filter(Article.content_hash == content_hash).first()
+    stmt = select(Article).where(Article.content_hash == content_hash)
+    result = await db.execute(stmt)
+    existing = result.scalars().first()
     if existing:
         logger.debug(f"Article with content hash {content_hash} already exists.")
         return existing
 
     # 2. Foreign Key Check
-    # Ensure ticker exists if provided
     if raw_article.ticker:
-        stock = db.query(Stock).filter(Stock.ticker == raw_article.ticker).first()
+        stmt = select(Stock).where(Stock.ticker == raw_article.ticker)
+        result = await db.execute(stmt)
+        stock = result.scalars().first()
         if not stock:
-            # For now, if the stock is missing, we might either reject or insert without it.
-            # We'll insert it with ticker, but it will fail FK constraint if ticker isn't in stocks table.
-            # So, to be safe, if the stock isn't in DB, we'll set ticker to None or create the stock (out of scope for this function).
-            logger.warning(f"Ticker {raw_article.ticker} not found in database. Setting ticker to None for article.")
             raw_article.ticker = None
 
     # 3. Insert new article
@@ -57,11 +60,11 @@ def write_article_to_db(db: Session, raw_article: RawArticle):
     db.add(new_article)
     
     try:
-        db.commit()
-        db.refresh(new_article)
+        await db.commit()
+        await db.refresh(new_article)
         logger.info(f"Inserted new article: {new_article.title[:50]}...")
         return new_article
     except Exception as e:
-        db.rollback()
+        await db.rollback()
         logger.error(f"Error inserting article: {e}")
         return None
