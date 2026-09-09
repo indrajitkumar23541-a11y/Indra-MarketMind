@@ -74,42 +74,50 @@ By utilizing a highly parallelized Microservices architecture, it ingests millio
 
 ---
 
-## 🏗️ The Neural Architecture
+## 🏗️ The Neural Architecture — 14-Phase Complete Platform
 
-Indra-MarketMind is engineered for massive scale and extreme low-latency using asynchronous Python microservices.
+Indra-MarketMind is 100% complete across all 14 phases, engineered for massive scale using asynchronous Python microservices, deployable via Docker Compose or Kubernetes.
 
 ```mermaid
 graph TB
-    subgraph GATEWAY["🔀 Gateway / Client"]
-        UI["🖥️ Premium Dashboard (Next.js - Port 3000)"]
+    subgraph GATEWAY["🔀 API Gateway (8000)"]
+        GW["⚙️ Smart Reverse Proxy + Service Mesh"]
     end
 
-    subgraph SERVICES["⚙️ Microservices (FastAPI)"]
-        direction LR
+    subgraph CORE["⚙️ Core Services (Phases 1-8)"]
         S1["📡 Data Ingestion (8001)"]
         S2["🧠 Sentiment Engine (8002)"]
-        S3["🔮 ML Forecast (8004)"]
-        S4["🚨 Alert System (8005)"]
+        S3["📊 Analytics (8003)"]
+        S4["🔮 ML Forecast (8004)"]
+        S5["🚨 Alert System (8005)"]
     end
 
-    subgraph INFRA["🗄️ Core Infrastructure"]
-        DB[("🗃️ PostgreSQL 16")]
-        CACHE[("⚡ Redis 7 Queue")]
+    subgraph ADVANCED["🚀 Advanced AI Services (Phases 9-13)"]
+        S6["🤖 LLM RAG Chatbot (8006)"]
+        S7["⚡ Auto-Trading Engine (8007)"]
+        S8["🎙️ Multi-Modal Audio (8008)"]
+        S9["🐋 Crypto On-Chain (8009)"]
+        S10["🛰️ Alternative Data (8010)"]
     end
 
-    UI ===>|REST API| SERVICES
-    S1 --->|"Raw Market Data"| CACHE
-    CACHE --->|"Async Triggers"| S2
-    S2 --->|"Processed Scores"| DB
-    S2 --->|"Anomaly Signals"| S4
-    S3 --->|"LSTM Predictions"| DB
+    subgraph INFRA["🗄️ Infrastructure"]
+        DB[("🗃️ PostgreSQL 16 + pgvector")]
+        CACHE[("⚡ Redis 7")]
+        K8S["☸️ Kubernetes Orchestration"]
+    end
+
+    GW ==>|Route| CORE
+    GW ==>|Route| ADVANCED
+    CORE --> DB
+    CORE --> CACHE
+    ADVANCED --> DB
 ```
 
 ---
 
 ## ⚡ Quickstart Guide
 
-Getting your personal AI financial terminal online takes less than 3 minutes.
+Getting your complete AI financial terminal online takes under 3 minutes.
 
 ### Prerequisites
 - **Docker** & **Docker Compose** installed on your machine.
@@ -121,29 +129,37 @@ git clone https://github.com/indrajitkumar23541-a11y/Indra-MarketMind.git
 cd Indra-MarketMind
 ```
 
-### 2. Configure the Synapses
-Copy the example environment file and insert your API keys (NewsAPI, Finnhub, etc.).
+### 2. Configure the Environment
+Copy the example environment file. All API keys are **optional** — every service has built-in offline fallbacks.
 ```bash
-cp .env.example .env
-```
-*(No API keys? No problem. The system will automatically use intelligent mock fallbacks so you can explore the UI immediately!)*
-
-### 3. Ignite the Backend Cluster
-```bash
-docker-compose up --build
+copy .env.example .env
 ```
 
-### 4. Start the Next.js Frontend
-Open a new terminal window:
+### 3. Launch All 11 Microservices
 ```bash
-cd frontend
-npm install
-npm run dev
+docker compose up --build
 ```
+This starts all services: Gateway (8000), Data (8001), Sentiment (8002), Analytics (8003), Forecast (8004), Alerts (8005), RAG Chatbot (8006), Auto-Trading (8007), Multi-Modal (8008), Crypto On-Chain (8009), Alternative Data (8010), and Dashboard (8501).
 
-### 5. Enter the Dashboard
-Once the microservices achieve harmony, open your browser and witness the magic:
-👉 **[http://localhost:3000](http://localhost:3000)**
+### 4. Enter the Dashboard
+Once all services are healthy:
+👉 **[http://localhost:8501](http://localhost:8501)** — Streamlit AI Dashboard
+
+👉 **[http://localhost:8000](http://localhost:8000)** — API Gateway
+
+### 5. Kubernetes Deployment (Phase 14)
+For production-grade cloud deployment:
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/secrets.yaml
+kubectl apply -f k8s/postgres.yaml
+kubectl apply -f k8s/redis.yaml
+kubectl apply -f k8s/services-deployment.yaml
+kubectl apply -f k8s/ingress.yaml
+kubectl apply -f k8s/hpa.yaml
+```
+See [`k8s/README.md`](k8s/README.md) for the full Kubernetes guide.
 
 ---
 
