@@ -247,12 +247,30 @@ copy .env.example .env
 cp .env.example .env
 ```
 
-### 3. Launch via Docker Compose
+### 3. ⚡ One-Click Master Launch (Recommended)
+Launch the complete stack (PostgreSQL + Redis containers, all core Python microservices, Streamlit AI Quant Lab, and Next.js 16 Web Terminal) with a single command and auto-open the terminal in your browser:
+
+```bash
+# Windows (PowerShell or Command Prompt)
+.\run.bat
+
+# Or directly in PowerShell:
+.\run.ps1
+
+# Or with Python:
+python launcher.py
+```
+> [!TIP]
+> **🚀 Zero Friction:** Double-clicking `run.bat` directly from Windows Explorer will also launch the full ecosystem and open `http://localhost:3000` automatically.  
+> **🛑 To Stop:** Simply press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal, or run `.\stop.bat`.
+
+### 4. 🐳 Alternative: Launch via Docker Compose
+For a fully containerized deployment across all microservices:
 ```bash
 docker compose up --build
 ```
 
-### 4. Access the Unified Web Terminal
+### 5. Access the Unified Web Terminal
 
 Once containers or local microservices are booted, launch the unified ecosystem via the mission-control consoles:
 
