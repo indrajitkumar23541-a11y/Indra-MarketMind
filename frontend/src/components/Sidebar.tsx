@@ -170,7 +170,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <div className="mt-auto p-5 sm:p-6 pb-20 lg:pb-6">
+      <div className="mt-auto p-5 sm:p-6 pb-6">
         <div className="bg-gradient-to-br from-indigo-500/10 to-cyan-400/10 border border-indigo-500/30 rounded-xl p-4 text-center">
           <div className="text-amber-400 font-bold mb-1 flex items-center justify-center gap-2">
             <span className="text-lg">👑</span> Upgrade to Pro
