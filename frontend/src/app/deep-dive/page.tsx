@@ -401,7 +401,7 @@ export default function DeepDivePage() {
   };
 
   return (
-    <div className="space-y-6 pb-20 max-w-7xl mx-auto px-2 sm:px-4 print:p-0 print:m-0 print:max-w-none">
+    <div className="space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto px-2 sm:px-4 print:p-0 print:m-0 print:max-w-none">
       
       {/* ─────────────────────────────────────────────────────────────
           1. TOP NAVIGATION BAR & UNIVERSAL SEARCH CONTROLS (FEATURE 1)

@@ -232,7 +232,7 @@ export default function Dashboard() {
   const isPositive = displayPercent >= 0;
 
   return (
-    <div className="space-y-4 sm:space-y-6 pb-12 max-w-7xl mx-auto">
+    <div className="space-y-4 sm:space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto">
       
       {/* Hero Section with Real Dynamic Greeting */}
       <div className="relative glass-panel overflow-hidden p-5 sm:p-7 md:p-8 flex items-center justify-between border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-blue-950/10 to-indigo-950/20 rounded-2xl">

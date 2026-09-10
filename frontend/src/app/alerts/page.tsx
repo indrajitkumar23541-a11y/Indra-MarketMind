@@ -4,7 +4,7 @@ import { Bell, BellOff } from "lucide-react";
 
 export default function Alerts() {
   return (
-    <div className="space-y-6 pb-12 max-w-7xl mx-auto">
+    <div className="space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto">
       <div className="glass-panel p-4 sm:p-6 md:p-8 relative overflow-hidden flex justify-between items-center">
         <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-orange-500/10 pointer-events-none"></div>
         <div className="relative z-10">

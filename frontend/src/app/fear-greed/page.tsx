@@ -154,7 +154,7 @@ export default function FearGreedPage() {
   const needleAngle = data ? -90 + (data.score / 100) * 180 : 0;
 
   return (
-    <div className="space-y-4 sm:space-y-6 pb-16 max-w-7xl mx-auto">
+    <div className="space-y-4 sm:space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto">
       
       {/* ─────────────────────────────────────────────────────────────
           1. HEADER & MARKET SWITCHER BAR

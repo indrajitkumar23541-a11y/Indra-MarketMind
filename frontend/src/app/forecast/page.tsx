@@ -442,7 +442,7 @@ export default function ForecastPage() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 pb-16 max-w-7xl mx-auto px-2 sm:px-4">
+    <div className="space-y-4 sm:space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto px-2 sm:px-4">
       
       {/* ─────────────────────────────────────────────────────────────
           1. HEADER BANNER WITH AI VOICE DISPATCH & BENCHMARK SELECTOR

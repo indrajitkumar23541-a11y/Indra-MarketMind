@@ -87,7 +87,7 @@ export default function ResearchLabPage() {
   };
 
   return (
-    <div className={cn("space-y-6 max-w-7xl mx-auto pb-12", isFullscreen && "fixed inset-0 z-50 bg-[#05070D] p-6 max-w-none overflow-y-auto")}>
+    <div className={cn("space-y-6 max-w-7xl mx-auto pb-2 sm:pb-6", isFullscreen && "fixed inset-0 z-50 bg-[#05070D] p-6 max-w-none overflow-y-auto")}>
       
       {/* Header */}
       <div className="relative glass-panel overflow-hidden p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-blue-950/10 to-indigo-950/20 rounded-2xl">

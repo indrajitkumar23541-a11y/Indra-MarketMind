@@ -15,7 +15,7 @@ const sectorData = [
 
 export default function SectorRotation() {
   return (
-    <div className="space-y-6 pb-12 max-w-7xl mx-auto">
+    <div className="space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto">
       
       {/* Header */}
       <div className="glass-panel p-4 sm:p-6 md:p-8 relative overflow-hidden flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
