@@ -38,7 +38,13 @@
   }
 }
 
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
+  overscroll-behavior-y: none;
 }

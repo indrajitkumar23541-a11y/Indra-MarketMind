@@ -154,26 +154,26 @@ export default function FearGreedPage() {
   const needleAngle = data ? -90 + (data.score / 100) * 180 : 0;
 
   return (
-    <div className="space-y-6 pb-16 max-w-7xl mx-auto">
+    <div className="space-y-4 sm:space-y-6 pb-16 max-w-7xl mx-auto">
       
       {/* ─────────────────────────────────────────────────────────────
           1. HEADER & MARKET SWITCHER BAR
       ───────────────────────────────────────────────────────────── */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800 shadow-2xl relative overflow-hidden flex flex-wrap justify-between items-center gap-4 bg-linear-to-r from-[#0a0f1d] via-[#0b1328] to-[#070b16]">
+      <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-2xl relative overflow-hidden flex flex-wrap justify-between items-center gap-3 sm:gap-4 bg-linear-to-r from-[#0a0f1d] via-[#0b1328] to-[#070b16]">
         <div className="absolute top-0 right-0 w-96 h-full bg-linear-to-l from-cyan-500/5 to-transparent pointer-events-none" />
         
-        <div className="flex items-center gap-4 relative z-10">
-          <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-xl border border-cyan-500/20 shadow-inner">
-            <Compass className="w-6 h-6 animate-pulse" />
+        <div className="flex items-center gap-3 sm:gap-4 relative z-10">
+          <div className="p-2.5 sm:p-3 bg-cyan-500/10 text-cyan-400 rounded-xl border border-cyan-500/20 shadow-inner shrink-0">
+            <Compass className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-manrope font-extrabold text-white tracking-tight">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-xl sm:text-2xl font-manrope font-extrabold text-white tracking-tight">
                 Global Fear & Greed Terminal
               </h1>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold flex items-center gap-1.5">
+              <span className="text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                100% REAL LIVE TELEMETRY
+                REAL LIVE TELEMETRY
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-1">
@@ -182,28 +182,28 @@ export default function FearGreedPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 relative z-10">
+        <div className="flex items-center gap-2 sm:gap-3 relative z-10 w-full sm:w-auto justify-between sm:justify-end">
           {/* Market Switcher Toggle */}
-          <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 shadow-inner flex items-center gap-1 text-xs">
+          <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 shadow-inner flex items-center gap-1 text-xs overflow-x-auto max-w-full">
             <button
               onClick={() => handleMarketChange("global")}
-              className={`px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3 sm:px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap text-[11px] sm:text-xs ${
                 selectedMarket === "global"
                   ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
                   : "text-slate-400 hover:text-white"
               }`}
             >
-              <span>🇺🇸 Wall Street (S&P 500)</span>
+              <span>🇺🇸 Wall St (S&P 500)</span>
             </button>
             <button
               onClick={() => handleMarketChange("india")}
-              className={`px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3 sm:px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap text-[11px] sm:text-xs ${
                 selectedMarket === "india"
                   ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
                   : "text-slate-400 hover:text-white"
               }`}
             >
-              <span>🇮🇳 Dalal Street (Nifty 50)</span>
+              <span>🇮🇳 Dalal St (Nifty 50)</span>
             </button>
           </div>
 
@@ -211,7 +211,7 @@ export default function FearGreedPage() {
           <button
             onClick={() => fetchFearGreed(selectedMarket, true)}
             disabled={refreshing}
-            className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer"
+            className="p-2 sm:p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-cyan-400 transition-colors cursor-pointer shrink-0"
             title="Refresh Real-Time Market Emotion"
           >
             <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin text-cyan-400" : ""}`} />
@@ -229,21 +229,21 @@ export default function FearGreedPage() {
       {/* ─────────────────────────────────────────────────────────────
           2. CORE SPEEDOMETER GAUGE & 1-YEAR HISTORICAL EMOTION CHART
       ───────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
         {/* Speedometer Gauge Card (5 Cols) */}
-        <div className="lg:col-span-5 glass-panel p-6 rounded-2xl border border-slate-800 shadow-2xl flex flex-col justify-between items-center text-center relative bg-linear-to-b from-[#0c1224] to-[#070b14]">
+        <div className="lg:col-span-5 glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-2xl flex flex-col justify-between items-center text-center relative bg-linear-to-b from-[#0c1224] to-[#070b14]">
           <div className="w-full flex justify-between items-center text-xs text-slate-400 mb-2">
-            <span className="font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-cyan-400" /> Current Market Emotion
+            <span className="font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 text-[11px] sm:text-xs">
+              <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400" /> Current Emotion
             </span>
-            <span className="font-mono text-[11px] text-slate-500">
+            <span className="font-mono text-[10px] sm:text-[11px] text-slate-500">
               {data?.generated_at || "Live"}
             </span>
           </div>
 
           {/* Institutional SVG Gauge */}
-          <div className="relative w-72 h-44 my-2 flex items-center justify-center">
+          <div className="relative w-60 sm:w-72 h-38 sm:h-44 max-w-full my-1 sm:my-2 flex items-center justify-center">
             <svg viewBox="0 0 200 115" className="w-full h-full drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
               <defs>
                 {/* Arc Color Gradient */}
@@ -348,28 +348,28 @@ export default function FearGreedPage() {
         </div>
 
         {/* 1-Year Historical Emotion Area Chart (7 Cols) */}
-        <div className="lg:col-span-7 glass-panel p-6 rounded-2xl border border-slate-800 shadow-2xl flex flex-col justify-between bg-linear-to-b from-[#0c1224] to-[#070b14]">
-          <div className="flex justify-between items-center mb-3">
+        <div className="lg:col-span-7 glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-2xl flex flex-col justify-between bg-linear-to-b from-[#0c1224] to-[#070b14]">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
             <div>
               <h3 className="font-manrope font-bold text-sm text-white flex items-center gap-2">
-                <Activity className="w-4 h-4 text-cyan-400" /> Historical Emotion Trend (1 Year)
+                <Activity className="w-4 h-4 text-cyan-400" /> Historical Trend (1 Year)
               </h3>
               <p className="text-[11px] text-slate-400 mt-0.5">
-                Weekly historical sentiment cycles derived from live market candles and moving average deviations.
+                Weekly historical sentiment cycles derived from live market candles.
               </p>
             </div>
-            <div className="flex items-center gap-3 text-[10px] font-mono">
+            <div className="flex items-center gap-2.5 text-[10px] font-mono">
               <span className="flex items-center gap-1 text-cyan-400">
-                <span className="w-2 h-2 rounded-full bg-cyan-400" /> &gt;75 Extreme Greed
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" /> &gt;75 Greed
               </span>
               <span className="flex items-center gap-1 text-rose-400">
-                <span className="w-2 h-2 rounded-full bg-rose-400" /> &lt;25 Extreme Fear
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-400" /> &lt;25 Fear
               </span>
             </div>
           </div>
 
           {/* Recharts Area Chart */}
-          <div className="w-full h-56 my-2">
+          <div className="w-full h-48 sm:h-56 my-1 sm:my-2">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data?.timeline || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
@@ -498,23 +498,23 @@ export default function FearGreedPage() {
       {/* ─────────────────────────────────────────────────────────────
           3. 7-FACTOR QUANTITATIVE DEEP-DIVE MATRIX
       ───────────────────────────────────────────────────────────── */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800 shadow-2xl bg-linear-to-br from-[#0c1220] via-[#080d18] to-[#060912]">
-        <div className="flex flex-wrap justify-between items-center gap-2 mb-6 pb-3 border-b border-slate-800">
+      <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-2xl bg-linear-to-br from-[#0c1220] via-[#080d18] to-[#060912]">
+        <div className="flex flex-wrap justify-between items-center gap-2 mb-4 sm:mb-6 pb-3 border-b border-slate-800">
           <div>
-            <h3 className="font-manrope font-bold text-lg text-white flex items-center gap-2">
-              <Layers className="w-5 h-5 text-cyan-400" />
+            <h3 className="font-manrope font-bold text-base sm:text-lg text-white flex items-center gap-2">
+              <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
               Institutional 7-Factor Deep Dive Matrix
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
               Individual mathematical components driving the composite index with live raw market telemetry disclosures.
             </p>
           </div>
-          <span className="text-[11px] font-mono bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30 font-bold">
-            Weight Distribution: 100% Normalized
+          <span className="text-[10px] sm:text-[11px] font-mono bg-indigo-500/20 text-indigo-300 px-2.5 sm:px-3 py-1 rounded-full border border-indigo-500/30 font-bold">
+            Weight: 100% Normalized
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
           {data?.factors?.map((f, idx) => (
             <div 
               key={f.name}

@@ -232,20 +232,20 @@ export default function Dashboard() {
   const isPositive = displayPercent >= 0;
 
   return (
-    <div className="space-y-6 pb-12 max-w-7xl mx-auto">
+    <div className="space-y-4 sm:space-y-6 pb-12 max-w-7xl mx-auto">
       
       {/* Hero Section with Real Dynamic Greeting */}
-      <div className="relative glass-panel overflow-hidden p-8 flex items-center justify-between border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-blue-950/10 to-indigo-950/20 rounded-2xl">
+      <div className="relative glass-panel overflow-hidden p-5 sm:p-7 md:p-8 flex items-center justify-between border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-blue-950/10 to-indigo-950/20 rounded-2xl">
         <div className="absolute inset-0 bg-linear-to-r from-indigo-500/10 to-cyan-500/10 pointer-events-none"></div>
         <div className="relative z-10 max-w-2xl">
-          <div className="text-sm font-bold text-amber-400 mb-2 flex items-center gap-2">
+          <div className="text-xs sm:text-sm font-bold text-amber-400 mb-1.5 sm:mb-2 flex items-center gap-2">
             <span>{greeting.text},</span>
-            <span className="text-lg">{greeting.emoji}</span>
+            <span className="text-base sm:text-lg">{greeting.emoji}</span>
           </div>
-          <h1 className="text-3xl font-manrope font-bold mb-2 text-white">
+          <h1 className="text-2xl sm:text-3xl font-manrope font-bold mb-1.5 sm:mb-2 text-white">
             Welcome to <span className="text-[#00F0FF] neon-text-cyan">Indra-MarketMind</span>
           </h1>
-          <p className="text-slate-400 text-sm">
+          <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
             AI-Powered Financial Intelligence & Real-Time Market Sentiment Terminal
           </p>
         </div>
@@ -260,30 +260,30 @@ export default function Dashboard() {
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
         
         {/* 1. Global Fear & Greed */}
-        <div className="glass-panel p-5 flex flex-col justify-between border border-white/10 hover:border-cyan-500/30 transition-all rounded-2xl">
-          <div className="text-[11px] font-bold tracking-widest text-slate-400 uppercase mb-4 flex items-center justify-between">
+        <div className="glass-panel p-4 sm:p-5 flex flex-col justify-between border border-white/10 hover:border-cyan-500/30 transition-all rounded-2xl">
+          <div className="text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase mb-3 sm:mb-4 flex items-center justify-between">
             <span>GLOBAL FEAR & GREED</span>
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-4xl font-manrope font-extrabold text-white mb-2">{fearGreed.score}</div>
-              <div className={cn("flex items-center gap-2 text-sm font-semibold", 
+              <div className="text-3xl sm:text-4xl font-manrope font-extrabold text-white mb-1 sm:mb-2">{fearGreed.score}</div>
+              <div className={cn("flex items-center gap-2 text-xs sm:text-sm font-semibold", 
                 fearGreed.score > 55 ? "text-[#10B981]" : fearGreed.score < 45 ? "text-[#EF4444]" : "text-[#F59E0B]"
               )}>
                 {fearGreed.label.replace(/_/g, " ")}
               </div>
-              <div className="text-xs text-slate-500 mt-2">7 Technical Factors</div>
+              <div className="text-[11px] sm:text-xs text-slate-500 mt-1 sm:mt-2">7 Technical Factors</div>
             </div>
-            <div className="relative w-16 h-16">
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0">
               <div className={cn(
                 "w-full h-full rounded-full border-4 border-slate-800 transform rotate-45",
                 fearGreed.score > 55 ? "border-t-[#10B981] border-r-[#10B981]" : fearGreed.score < 45 ? "border-t-[#EF4444] border-r-[#EF4444]" : "border-t-[#F59E0B] border-r-[#F59E0B]"
               )}></div>
-              <div className="absolute inset-0 flex items-center justify-center text-xl">
+              <div className="absolute inset-0 flex items-center justify-center text-lg sm:text-xl">
                 {fearGreed.score > 55 ? "😄" : fearGreed.score < 45 ? "😨" : "😐"}
               </div>
             </div>
@@ -291,18 +291,18 @@ export default function Dashboard() {
         </div>
 
         {/* 2. NIFTY 50 (Real-Time Live) */}
-        <div className="glass-panel p-5 flex flex-col justify-between border border-t-[#00F0FF]/40 border-white/10 rounded-2xl">
-          <div className="flex justify-between items-start mb-4">
-            <div className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">NIFTY 50</div>
+        <div className="glass-panel p-4 sm:p-5 flex flex-col justify-between border border-t-[#00F0FF]/40 border-white/10 rounded-2xl">
+          <div className="flex justify-between items-start mb-3 sm:mb-4">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase">NIFTY 50</div>
             <div className="bg-[#00F0FF]/10 text-[#00F0FF] p-1.5 rounded-lg border border-[#00F0FF]/20">
               <Activity className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-3xl font-manrope font-bold text-white mb-1 font-mono">
+            <div className="text-2xl sm:text-3xl font-manrope font-bold text-white mb-1 font-mono">
               {displayPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className={cn("flex items-center gap-1 text-sm font-semibold mb-2 font-mono", isPositive ? "text-[#10B981]" : "text-[#EF4444]")}>
+            <div className={cn("flex items-center gap-1 text-xs sm:text-sm font-semibold mb-2 font-mono", isPositive ? "text-[#10B981]" : "text-[#EF4444]")}>
               {isPositive ? "+" : ""}{displayChange.toFixed(2)} ({isPositive ? "+" : ""}{displayPercent.toFixed(2)}%)
               {isPositive ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             </div>
@@ -310,7 +310,7 @@ export default function Dashboard() {
               <div className="flex items-center gap-1.5 text-xs text-[#10B981] font-medium">
                 <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981] animate-pulse"></span> Live NSE
               </div>
-              <div className="text-[11px] text-slate-500 font-mono">
+              <div className="text-[10px] sm:text-[11px] text-slate-500 font-mono">
                 Day: {displayLow.toFixed(0)} - {displayHigh.toFixed(0)}
               </div>
             </div>
@@ -318,15 +318,15 @@ export default function Dashboard() {
         </div>
 
         {/* 3. Articles Scanned (24H) */}
-        <div className="glass-panel p-5 flex flex-col justify-between border border-white/10 rounded-2xl">
-          <div className="flex justify-between items-start mb-4">
-            <div className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">ARTICLES SCANNED (24H)</div>
+        <div className="glass-panel p-4 sm:p-5 flex flex-col justify-between border border-white/10 rounded-2xl">
+          <div className="flex justify-between items-start mb-3 sm:mb-4">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase">ARTICLES SCANNED (24H)</div>
             <div className="bg-indigo-500/10 text-indigo-400 p-1.5 rounded-lg border border-indigo-500/20">
               <Search className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-3xl font-manrope font-bold text-white mb-2 font-mono">
+            <div className="text-2xl sm:text-3xl font-manrope font-bold text-white mb-1 sm:mb-2 font-mono">
               {newsCount.toLocaleString()}
             </div>
             <div className="text-xs text-emerald-400 mb-2 flex items-center gap-1.5">
@@ -341,11 +341,11 @@ export default function Dashboard() {
         {/* 4. Active AI Models (Clickable modal) */}
         <div 
           onClick={() => setShowAIModelsModal(true)}
-          className="glass-panel p-5 flex flex-col justify-between border border-white/10 hover:border-amber-500/40 cursor-pointer transition-all rounded-2xl group"
+          className="glass-panel p-4 sm:p-5 flex flex-col justify-between border border-white/10 hover:border-amber-500/40 cursor-pointer transition-all rounded-2xl group"
           title="Click to view AI Model Health"
         >
-          <div className="flex justify-between items-start mb-4">
-            <div className="text-[11px] font-bold tracking-widest text-slate-400 uppercase group-hover:text-amber-400 transition">
+          <div className="flex justify-between items-start mb-3 sm:mb-4">
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase group-hover:text-amber-400 transition">
               ACTIVE AI MODELS
             </div>
             <div className="bg-amber-500/10 text-amber-500 p-1.5 rounded-lg border border-amber-500/20 group-hover:bg-amber-500/20 transition">
@@ -353,8 +353,8 @@ export default function Dashboard() {
             </div>
           </div>
           <div>
-            <div className="text-3xl font-manrope font-bold text-white mb-2">5 / 5</div>
-            <div className="flex items-center gap-1.5 text-sm font-semibold text-[#10B981]">
+            <div className="text-2xl sm:text-3xl font-manrope font-bold text-white mb-1 sm:mb-2">5 / 5</div>
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#10B981]">
               All Healthy <CheckCircle2 className="w-4 h-4" />
             </div>
             <div className="text-[11px] text-cyan-400 mt-2 flex items-center gap-1 group-hover:underline">
@@ -366,30 +366,30 @@ export default function Dashboard() {
       </div>
 
       {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         
         {/* Left Column (Market Overview Chart + Sentiment Breakdown) - 8 cols */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-8 space-y-4 sm:space-y-6">
           
           {/* Market Overview Real Chart */}
-          <div className="glass-panel p-6 border border-white/10 rounded-2xl">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <div className="glass-panel p-4 sm:p-6 border border-white/10 rounded-2xl">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div>
-                <h2 className="font-manrope font-bold text-lg text-white flex items-center gap-2">
+                <h2 className="font-manrope font-bold text-base sm:text-lg text-white flex items-center gap-2">
                   <span>Market Overview</span>
-                  <span className="text-xs px-2 py-0.5 rounded bg-cyan-950/40 text-cyan-400 border border-cyan-500/30">NIFTY 50</span>
+                  <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded bg-cyan-950/40 text-cyan-400 border border-cyan-500/30">NIFTY 50</span>
                 </h2>
-                <div className="text-xs text-slate-400 mt-0.5">Real-world live pricing directly from National Stock Exchange</div>
+                <div className="text-[11px] sm:text-xs text-slate-400 mt-0.5">Real-world live pricing directly from National Stock Exchange</div>
               </div>
 
               {/* Timeframe Selectors */}
-              <div className="flex items-center gap-1 bg-[#0A0E1A] rounded-xl p-1 border border-white/10">
+              <div className="flex items-center gap-1 bg-[#0A0E1A] rounded-xl p-1 border border-white/10 overflow-x-auto max-w-full">
                 {(["1D", "1W", "1M", "3M", "1Y", "All"] as const).map((tf) => (
                   <button
                     key={tf}
                     onClick={() => handleTimeframeChange(tf)}
                     className={cn(
-                      "px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer",
+                      "px-2.5 sm:px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer whitespace-nowrap",
                       activeTimeframe === tf
                         ? "bg-cyan-500 text-black font-bold shadow-[0_0_12px_rgba(0,240,255,0.4)]"
                         : "text-slate-400 hover:text-white"
@@ -402,7 +402,7 @@ export default function Dashboard() {
             </div>
 
             {/* Real Area Chart */}
-            <div className="h-80 w-full mb-6 relative">
+            <div className="h-64 sm:h-80 w-full mb-4 sm:mb-6 relative">
               {chartLoading && (
                 <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#05070D]/70 backdrop-blur-xs">
                   <div className="flex items-center gap-2 text-xs text-cyan-400">
@@ -413,7 +413,7 @@ export default function Dashboard() {
               )}
 
               {/* Target Price Bubble */}
-              <div className="absolute right-4 top-4 bg-[#10B981] text-black text-xs font-bold px-3 py-1 rounded-lg shadow-lg z-10 font-mono">
+              <div className="absolute right-2 sm:right-4 top-2 sm:top-4 bg-[#10B981] text-black text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-lg shadow-lg z-10 font-mono">
                 ₹{displayPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
               </div>
               
@@ -429,16 +429,16 @@ export default function Dashboard() {
                     dataKey="time" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#64748B', fontSize: 11 }} 
+                    tick={{ fill: '#64748B', fontSize: 10 }} 
                     dy={8} 
                   />
                   <YAxis 
                     domain={['dataMin - 50', 'dataMax + 50']} 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#64748B', fontSize: 11 }}
+                    tick={{ fill: '#64748B', fontSize: 10 }}
                     tickFormatter={(val) => Number(val).toFixed(0)}
-                    width={50}
+                    width={45}
                   />
                   <Tooltip 
                     contentStyle={{ 
@@ -462,32 +462,32 @@ export default function Dashboard() {
             </div>
 
             {/* Bottom Real Stats */}
-            <div className="flex flex-wrap items-center justify-between border-t border-white/5 pt-5 gap-4">
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-6 text-left">
+            <div className="flex flex-wrap items-center justify-between border-t border-white/5 pt-4 sm:pt-5 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-6 text-left w-full sm:w-auto">
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase">Open</div>
-                  <div className="font-semibold text-sm font-mono text-white">₹{displayOpen.toLocaleString('en-IN')}</div>
+                  <div className="text-[9px] sm:text-[10px] text-slate-500 font-bold mb-0.5 uppercase">Open</div>
+                  <div className="font-semibold text-xs sm:text-sm font-mono text-white">₹{displayOpen.toLocaleString('en-IN')}</div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase">High</div>
-                  <div className="font-semibold text-sm font-mono text-[#10B981]">₹{displayHigh.toLocaleString('en-IN')}</div>
+                  <div className="text-[9px] sm:text-[10px] text-slate-500 font-bold mb-0.5 uppercase">High</div>
+                  <div className="font-semibold text-xs sm:text-sm font-mono text-[#10B981]">₹{displayHigh.toLocaleString('en-IN')}</div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase">Low</div>
-                  <div className="font-semibold text-sm font-mono text-[#EF4444]">₹{displayLow.toLocaleString('en-IN')}</div>
+                  <div className="text-[9px] sm:text-[10px] text-slate-500 font-bold mb-0.5 uppercase">Low</div>
+                  <div className="font-semibold text-xs sm:text-sm font-mono text-[#EF4444]">₹{displayLow.toLocaleString('en-IN')}</div>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase">Prev. Close</div>
-                  <div className="font-semibold text-sm font-mono text-white">₹{displayPrevClose.toLocaleString('en-IN')}</div>
+                  <div className="text-[9px] sm:text-[10px] text-slate-500 font-bold mb-0.5 uppercase">Prev. Close</div>
+                  <div className="font-semibold text-xs sm:text-sm font-mono text-white">₹{displayPrevClose.toLocaleString('en-IN')}</div>
                 </div>
-                <div>
-                  <div className="text-[10px] text-slate-500 font-bold mb-1 uppercase">Exchange</div>
-                  <div className="font-semibold text-sm text-cyan-400">NSE India</div>
+                <div className="col-span-2 sm:col-span-1">
+                  <div className="text-[9px] sm:text-[10px] text-slate-500 font-bold mb-0.5 uppercase">Exchange</div>
+                  <div className="font-semibold text-xs sm:text-sm text-cyan-400">NSE India</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-slate-400">Timeframe:</span>
+                <span className="text-[10px] sm:text-[11px] text-slate-400">Timeframe:</span>
                 <span className="text-xs font-bold text-cyan-300 font-mono bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-500/20">
                   {activeTimeframe} Interval
                 </span>
@@ -496,14 +496,14 @@ export default function Dashboard() {
           </div>
 
           {/* Sentiment Section Split */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             
             {/* Overall Sentiment Half Donut */}
-            <div className="glass-panel p-6 flex flex-col items-center relative overflow-hidden rounded-2xl border border-white/10">
-              <h3 className="w-full font-manrope font-bold text-sm mb-6 text-left text-white">
+            <div className="glass-panel p-4 sm:p-6 flex flex-col items-center relative overflow-hidden rounded-2xl border border-white/10">
+              <h3 className="w-full font-manrope font-bold text-sm mb-4 sm:mb-6 text-left text-white">
                 Overall Market Sentiment
               </h3>
-              <div className="relative w-48 h-24 overflow-hidden mb-2">
+              <div className="relative w-44 sm:w-48 h-22 sm:h-24 overflow-hidden mb-2">
                 <svg viewBox="0 0 100 50" className="w-full h-full overflow-visible">
                   <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="12" strokeLinecap="round" />
                   <path d="M 10 50 A 40 40 0 0 1 75 15" fill="none" stroke="#10B981" strokeWidth="12" strokeLinecap="round" className="drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
@@ -512,27 +512,27 @@ export default function Dashboard() {
                 <div className="absolute bottom-0 right-0 text-[10px] text-slate-500 font-bold">100</div>
                 
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                  <div className="text-sm font-bold text-[#10B981] mb-1">Bullish Bias</div>
-                  <div className="text-3xl font-manrope font-extrabold text-white">
-                    68<span className="text-sm text-slate-500 font-medium"> / 100</span>
+                  <div className="text-xs sm:text-sm font-bold text-[#10B981] mb-0.5 sm:mb-1">Bullish Bias</div>
+                  <div className="text-2xl sm:text-3xl font-manrope font-extrabold text-white">
+                    68<span className="text-xs sm:text-sm text-slate-500 font-medium"> / 100</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Sentiment Distribution Pie & Alert */}
-            <div className="glass-panel p-6 flex flex-col justify-between rounded-2xl border border-white/10">
-              <h3 className="font-manrope font-bold text-sm mb-4 text-white">Sentiment Distribution</h3>
-              <div className="flex items-center gap-6 mb-4">
-                <div className="w-24 h-24">
+            <div className="glass-panel p-4 sm:p-6 flex flex-col justify-between rounded-2xl border border-white/10">
+              <h3 className="font-manrope font-bold text-sm mb-3 sm:mb-4 text-white">Sentiment Distribution</h3>
+              <div className="flex items-center gap-4 sm:gap-6 mb-3 sm:mb-4">
+                <div className="w-20 sm:w-24 h-20 sm:h-24 shrink-0">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={sentimentData}
                         cx="50%"
                         cy="50%"
-                        innerRadius={25}
-                        outerRadius={40}
+                        innerRadius={22}
+                        outerRadius={36}
                         stroke="none"
                         paddingAngle={5}
                         dataKey="value"
@@ -544,11 +544,11 @@ export default function Dashboard() {
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-                <div className="space-y-3 flex-1">
+                <div className="space-y-2 sm:space-y-3 flex-1">
                   {sentimentData.map((d) => (
                     <div key={d.name} className="flex justify-between items-center text-xs">
                       <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-sm" style={{ backgroundColor: d.color }}></span>
+                        <span className="w-2 h-2 rounded-xs" style={{ backgroundColor: d.color }}></span>
                         <span className="text-slate-300">{d.name}</span>
                       </div>
                       <span className="font-semibold text-white">{d.value}%</span>
@@ -558,7 +558,7 @@ export default function Dashboard() {
               </div>
 
               {/* Mini Alert Box */}
-              <div className="bg-[#10B981]/10 border border-[#10B981]/20 rounded-xl p-3 flex items-start gap-3">
+              <div className="bg-[#10B981]/10 border border-[#10B981]/20 rounded-xl p-2.5 sm:p-3 flex items-start gap-2.5 sm:gap-3">
                 <div className="p-1 bg-[#10B981]/20 text-[#10B981] rounded mt-0.5">
                   <ArrowUpRight className="w-3 h-3" />
                 </div>
@@ -574,10 +574,10 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column (Major Indices + Live News) - 4 cols */}
-        <div className="lg:col-span-4 space-y-6 flex flex-col">
+        <div className="lg:col-span-4 space-y-4 sm:space-y-6 flex flex-col">
           
           {/* Major Indices (100% Real Live Market Quotes) */}
-          <div className="glass-panel p-5 flex-1 rounded-2xl border border-white/10">
+          <div className="glass-panel p-4 sm:p-5 flex-1 rounded-2xl border border-white/10">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
                 <h3 className="font-manrope font-bold text-sm text-white">Major Indices</h3>

@@ -442,21 +442,21 @@ export default function ForecastPage() {
   };
 
   return (
-    <div className="space-y-6 pb-16 max-w-7xl mx-auto px-2 sm:px-4">
+    <div className="space-y-4 sm:space-y-6 pb-16 max-w-7xl mx-auto px-2 sm:px-4">
       
       {/* ─────────────────────────────────────────────────────────────
           1. HEADER BANNER WITH AI VOICE DISPATCH & BENCHMARK SELECTOR
       ───────────────────────────────────────────────────────────── */}
-      <div className="glass-panel p-5 sm:p-7 relative overflow-hidden rounded-2xl border border-slate-800/90 shadow-2xl bg-gradient-to-br from-[#0c1222] via-[#090d1a] to-[#060912]">
+      <div className="glass-panel p-4 sm:p-6 md:p-7 relative overflow-hidden rounded-2xl border border-slate-800/90 shadow-2xl bg-gradient-to-br from-[#0c1222] via-[#090d1a] to-[#060912]">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-cyan-500/5 to-emerald-500/10 pointer-events-none"></div>
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-5">
           <div>
-            <div className="flex items-center gap-3 mb-1.5 flex-wrap">
-              <div className="p-2.5 bg-indigo-500/15 text-cyan-400 rounded-xl border border-cyan-500/30 shadow-inner">
-                <ChartIcon className="w-5 h-5" />
+            <div className="flex items-center gap-2 sm:gap-3 mb-1.5 flex-wrap">
+              <div className="p-2 sm:p-2.5 bg-indigo-500/15 text-cyan-400 rounded-xl border border-cyan-500/30 shadow-inner">
+                <ChartIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-manrope font-extrabold tracking-tight text-white flex items-center gap-2">
-                AI Forecast Model <span className="text-xs bg-indigo-500/20 text-cyan-300 border border-cyan-500/30 px-2.5 py-0.5 rounded-full font-semibold">v4.2 Ultra Suite</span>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-manrope font-extrabold tracking-tight text-white flex items-center gap-2">
+                AI Forecast Model <span className="text-[10px] sm:text-xs bg-indigo-500/20 text-cyan-300 border border-cyan-500/30 px-2 sm:px-2.5 py-0.5 rounded-full font-semibold">v4.2 Suite</span>
               </h1>
             </div>
             <p className="text-slate-400 text-xs sm:text-sm max-w-2xl leading-relaxed">
@@ -465,7 +465,7 @@ export default function ForecastPage() {
           </div>
 
           {/* Controls: Audio Briefing + Benchmark Selector + Refresh */}
-          <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             
             {/* Feature 6: 45s AI Audio Executive Briefing Widget */}
             <div className="bg-slate-900/90 p-1.5 px-3 rounded-xl border border-indigo-500/30 flex items-center gap-3 shadow-lg">
@@ -528,12 +528,12 @@ export default function ForecastPage() {
             </div>
 
             {/* Benchmark Index Selector */}
-            <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 flex items-center gap-1 shadow-inner">
+            <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 flex items-center gap-1 shadow-inner overflow-x-auto max-w-full">
               {SUPPORTED_INDICES.map((idx) => (
                 <button
                   key={idx.ticker}
                   onClick={() => setSelectedTicker(idx.ticker)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                     selectedTicker === idx.ticker
                       ? "bg-gradient-to-r from-indigo-600 to-cyan-600 text-white shadow-md shadow-cyan-500/20"
                       : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
@@ -578,72 +578,72 @@ export default function ForecastPage() {
       {/* ─────────────────────────────────────────────────────────────
           2. FEATURE 1: AI VERIFIABLE TRACK RECORD SCORECARD BAR
       ───────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-        <div className="glass-panel p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-950/10 flex items-center justify-between">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+        <div className="glass-panel p-3 sm:p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-950/10 flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold text-emerald-400/90 block">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold text-emerald-400/90 block">
               30D Win Rate
             </span>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-xl font-bold font-mono text-emerald-400">
+              <span className="text-lg sm:text-xl font-bold font-mono text-emerald-400">
                 {data?.accuracy_scorecard?.win_rate_pct ?? 81.4}%
               </span>
-              <span className="text-[10px] text-emerald-500 font-semibold">Directional</span>
+              <span className="text-[9px] text-emerald-500 font-semibold">Direction</span>
             </div>
           </div>
-          <CheckCircle2 className="w-5 h-5 text-emerald-400/70" />
+          <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400/70 shrink-0" />
         </div>
 
-        <div className="glass-panel p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="glass-panel p-3 sm:p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">
               Mean Abs Error (MAE)
             </span>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-xl font-bold font-mono text-cyan-300">
+              <span className="text-lg sm:text-xl font-bold font-mono text-cyan-300">
                 ±{data?.accuracy_scorecard?.mae_pts ?? 52.4}
               </span>
-              <span className="text-[10px] text-slate-400 font-semibold">pts</span>
+              <span className="text-[9px] text-slate-400 font-semibold">pts</span>
             </div>
           </div>
-          <Target className="w-5 h-5 text-cyan-400/70" />
+          <Target className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400/70 shrink-0" />
         </div>
 
-        <div className="glass-panel p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="glass-panel p-3 sm:p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">
               Sharpe Ratio
             </span>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-xl font-bold font-mono text-indigo-300">
+              <span className="text-lg sm:text-xl font-bold font-mono text-indigo-300">
                 {data?.accuracy_scorecard?.sharpe_ratio ?? 2.24}
               </span>
-              <span className="text-[10px] text-slate-400 font-semibold">Annualized</span>
+              <span className="text-[9px] text-slate-400 font-semibold">Annual</span>
             </div>
           </div>
-          <Zap className="w-5 h-5 text-indigo-400/70" />
+          <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400/70 shrink-0" />
         </div>
 
-        <div className="glass-panel p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="glass-panel p-3 sm:p-3.5 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center justify-between">
           <div>
-            <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold text-slate-400 block">
               Profit Factor
             </span>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-xl font-bold font-mono text-amber-300">
+              <span className="text-lg sm:text-xl font-bold font-mono text-amber-300">
                 {data?.accuracy_scorecard?.profit_factor ?? 2.91}
               </span>
-              <span className="text-[10px] text-slate-400 font-semibold">Gross Gain/Loss</span>
+              <span className="text-[9px] text-slate-400 font-semibold">Gross Gain</span>
             </div>
           </div>
-          <Activity className="w-5 h-5 text-amber-400/70" />
+          <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400/70 shrink-0" />
         </div>
 
         {/* Feature 4 & Feature 1 Chart Controls */}
-        <div className="glass-panel p-2.5 rounded-xl border border-slate-800 bg-slate-900/80 col-span-2 flex items-center justify-around gap-2">
+        <div className="glass-panel p-2 sm:p-2.5 rounded-xl border border-slate-800 bg-slate-900/80 col-span-2 flex flex-col xs:flex-row items-center justify-around gap-1.5 sm:gap-2">
           <button
             onClick={() => setShowFanCone(!showFanCone)}
-            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            className={`w-full py-1.5 sm:py-2 px-2 sm:px-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               showFanCone 
                 ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm" 
                 : "text-slate-400 hover:text-slate-200 bg-slate-800/40"
@@ -655,7 +655,7 @@ export default function ForecastPage() {
 
           <button
             onClick={() => setShowPastOverlay(!showPastOverlay)}
-            className={`flex-1 py-2 px-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            className={`w-full py-1.5 sm:py-2 px-2 sm:px-2.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               showPastOverlay 
                 ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm" 
                 : "text-slate-400 hover:text-slate-200 bg-slate-800/40"
@@ -746,7 +746,7 @@ export default function ForecastPage() {
             </div>
 
             {/* Chart Area */}
-            <div className="h-96 w-full relative">
+            <div className="h-72 sm:h-96 w-full relative">
               {loading ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-xs rounded-xl z-20">
                   <div className="w-10 h-10 border-2 border-indigo-500 border-t-cyan-400 rounded-full animate-spin mb-3"></div>

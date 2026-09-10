@@ -174,7 +174,7 @@ export default function NewsDetailModal({ article, onClose }: NewsDetailModalPro
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -190,7 +190,7 @@ export default function NewsDetailModal({ article, onClose }: NewsDetailModalPro
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 15 }}
           transition={{ type: "spring", duration: 0.35, bounce: 0.1 }}
-          className="relative w-full max-w-3xl bg-[#090D16] border border-white/10 rounded-2xl shadow-2xl shadow-[#00F0FF]/10 overflow-hidden z-10 my-6 max-h-[92vh] flex flex-col"
+          className="relative w-full max-w-3xl bg-[#090D16] border border-white/10 rounded-2xl shadow-2xl shadow-[#00F0FF]/10 overflow-hidden z-10 my-auto max-h-[95vh] flex flex-col"
         >
           {/* Neon Top Border Accent */}
           <div className={`h-1.5 w-full ${
@@ -202,51 +202,51 @@ export default function NewsDetailModal({ article, onClose }: NewsDetailModalPro
           }`} />
 
           {/* Header */}
-          <div className="p-5 sm:p-6 border-b border-white/10 flex items-start justify-between gap-4 bg-white/[0.02]">
-            <div className="space-y-2.5">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/20 flex items-center gap-1.5 font-mono">
+          <div className="p-4 sm:p-6 border-b border-white/10 flex items-start justify-between gap-3 sm:gap-4 bg-white/[0.02]">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-bold bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/20 flex items-center gap-1.5 font-mono">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00F0FF] animate-pulse" />
                   {article.source}
                 </span>
 
                 {article.category && (
-                  <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-white/5 text-slate-300 border border-white/10">
+                  <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-semibold bg-white/5 text-slate-300 border border-white/10">
                     #{article.category}
                   </span>
                 )}
 
-                <span className="flex items-center gap-1 text-xs text-slate-400 font-mono">
-                  <Clock className="w-3.5 h-3.5" />
+                <span className="flex items-center gap-1 text-[11px] sm:text-xs text-slate-400 font-mono">
+                  <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   {article.time_ago || "Just now"}
                 </span>
 
-                <span className="flex items-center gap-1 text-xs text-slate-400 font-mono">
-                  <BookOpen className="w-3.5 h-3.5 text-slate-500" />
+                <span className="hidden xs:flex items-center gap-1 text-[11px] sm:text-xs text-slate-400 font-mono">
+                  <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-500" />
                   {readTimeMins}m read
                 </span>
 
                 {/* Sentiment Badge */}
-                <span className={`px-2.5 py-1 rounded-md text-xs font-bold flex items-center gap-1 shrink-0 ${
+                <span className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] sm:text-xs font-bold flex items-center gap-1 shrink-0 ${
                   isBullish ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
                   isBearish ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' :
                   'bg-amber-500/10 text-amber-400 border border-amber-500/20'
                 }`}>
-                  {isBullish && <ArrowUpRight className="w-3.5 h-3.5" />}
-                  {isBearish && <ArrowDownRight className="w-3.5 h-3.5" />}
+                  {isBullish && <ArrowUpRight className="w-3 h-3" />}
+                  {isBearish && <ArrowDownRight className="w-3 h-3" />}
                   <span>{article.sentiment}</span>
                   <span className="font-mono">({article.score})</span>
                 </span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-bold font-manrope text-white tracking-tight leading-snug">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold font-manrope text-white tracking-tight leading-snug">
                 {article.title}
               </h2>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/5 transition-colors shrink-0 cursor-pointer"
+              className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/5 transition-colors shrink-0 cursor-pointer"
               title="Close modal"
             >
               <X className="w-5 h-5" />
@@ -254,7 +254,7 @@ export default function NewsDetailModal({ article, onClose }: NewsDetailModalPro
           </div>
 
           {/* Modal Scrollable Body */}
-          <div className="p-5 sm:p-6 overflow-y-auto space-y-6 custom-scrollbar">
+          <div className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6 custom-scrollbar">
             
             {/* 📰 Institutional Reader View: Article Overview & Context */}
             <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4 sm:p-5 space-y-3">

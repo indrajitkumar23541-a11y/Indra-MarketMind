@@ -18,26 +18,26 @@ export default function SectorRotation() {
     <div className="space-y-6 pb-12 max-w-7xl mx-auto">
       
       {/* Header */}
-      <div className="glass-panel p-8 relative overflow-hidden flex justify-between items-center">
-        <div className="absolute inset-0 bg-linear-to-r from-purple-500/10 to-pink-500/10 pointer-events-none"></div>
+      <div className="glass-panel p-4 sm:p-6 md:p-8 relative overflow-hidden flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 pointer-events-none"></div>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20">
+            <div className="p-2 sm:p-2.5 bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20 shrink-0">
               <RefreshCcw className="w-5 h-5" />
             </div>
-            <h1 className="text-2xl font-manrope font-bold">Sector Rotation</h1>
+            <h1 className="text-xl sm:text-2xl font-manrope font-bold text-white">Sector Rotation</h1>
           </div>
-          <p className="text-slate-400 text-sm">Track institutional money flow across market sectors</p>
+          <p className="text-slate-400 text-xs sm:text-sm">Track institutional money flow across market sectors</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Rotation Chart */}
-        <div className="lg:col-span-8 glass-panel p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="font-manrope font-bold text-lg">Relative Rotation Graph (RRG)</h2>
-            <div className="flex gap-2">
+        <div className="lg:col-span-8 glass-panel p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+            <h2 className="font-manrope font-bold text-base sm:text-lg text-white">Relative Rotation Graph (RRG)</h2>
+            <div className="flex flex-wrap gap-2 text-slate-300">
               <span className="text-[10px] flex items-center gap-1"><div className="w-2 h-2 bg-[#10B981] rounded-full"></div> Leading</span>
               <span className="text-[10px] flex items-center gap-1"><div className="w-2 h-2 bg-[#F59E0B] rounded-full"></div> Weakening</span>
               <span className="text-[10px] flex items-center gap-1"><div className="w-2 h-2 bg-[#EF4444] rounded-full"></div> Lagging</span>
@@ -45,7 +45,7 @@ export default function SectorRotation() {
             </div>
           </div>
           
-          <div className="h-100 w-full relative">
+          <div className="h-72 sm:h-96 md:h-100 w-full relative">
             {/* Quadrant Backgrounds */}
             <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 opacity-5 pointer-events-none">
               <div className="border-r border-b border-white bg-red-500"></div>
@@ -55,9 +55,9 @@ export default function SectorRotation() {
             </div>
 
             <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                <XAxis type="number" dataKey="strength" name="Relative Strength" domain={[0, 100]} tick={{ fill: '#64748B' }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} />
-                <YAxis type="number" dataKey="momentum" name="Relative Momentum" domain={[0, 100]} tick={{ fill: '#64748B' }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} />
+              <ScatterChart margin={{ top: 10, right: 10, bottom: 10, left: 0 }}>
+                <XAxis type="number" dataKey="strength" name="Relative Strength" domain={[0, 100]} tick={{ fill: '#64748B', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} />
+                <YAxis type="number" dataKey="momentum" name="Relative Momentum" domain={[0, 100]} tick={{ fill: '#64748B', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} />
                 <ZAxis type="number" dataKey="size" range={[100, 1000]} name="Market Cap" />
                 <Tooltip 
                   cursor={{ strokeDasharray: '3 3' }} 

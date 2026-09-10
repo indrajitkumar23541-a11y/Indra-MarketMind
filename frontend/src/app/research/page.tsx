@@ -90,32 +90,32 @@ export default function ResearchLabPage() {
     <div className={cn("space-y-6 max-w-7xl mx-auto pb-12", isFullscreen && "fixed inset-0 z-50 bg-[#05070D] p-6 max-w-none overflow-y-auto")}>
       
       {/* Header */}
-      <div className="relative glass-panel overflow-hidden p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-blue-950/10 to-indigo-950/20 rounded-2xl">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-[#00F0FF] shadow-[0_0_15px_rgba(0,240,255,0.25)]">
-            <FlaskConical className="w-6 h-6" />
+      <div className="relative glass-panel overflow-hidden p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-blue-950/10 to-indigo-950/20 rounded-2xl">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-[#00F0FF] shadow-[0_0_15px_rgba(0,240,255,0.25)] shrink-0">
+            <FlaskConical className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-space text-2xl font-bold tracking-tight text-white">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="font-space text-lg sm:text-2xl font-bold tracking-tight text-white">
                 AI Research & Quant Lab
               </h1>
               <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 animate-pulse">
                 ALL ENGINES LIVE
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-400 mt-0.5 line-clamp-2 sm:line-clamp-none">
               Unified Research Suite • 5 NLP Ensemble Models • Streamlit Prototyping • 10 Microservices Service Mesh
             </p>
           </div>
         </div>
 
         {/* View Switcher Tabs */}
-        <div className="flex items-center gap-2 bg-[#090D1A] p-1 rounded-xl border border-white/10">
+        <div className="flex items-center gap-1.5 sm:gap-2 bg-[#090D1A] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full w-full md:w-auto">
           <button
             onClick={() => setActiveTab("streamlit")}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
               activeTab === "streamlit"
                 ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
                 : "text-slate-400 hover:text-white"
@@ -128,7 +128,7 @@ export default function ResearchLabPage() {
           <button
             onClick={() => setActiveTab("tester")}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
               activeTab === "tester"
                 ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
                 : "text-slate-400 hover:text-white"
@@ -141,7 +141,7 @@ export default function ResearchLabPage() {
           <button
             onClick={() => setActiveTab("mesh")}
             className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
               activeTab === "mesh"
                 ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
                 : "text-slate-400 hover:text-white"
@@ -156,15 +156,15 @@ export default function ResearchLabPage() {
       {/* TAB 1: Streamlit Embedded Prototyper */}
       {activeTab === "streamlit" && (
         <div className="space-y-3">
-          <div className="flex items-center justify-between px-1">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-1">
             <div className="flex items-center gap-2 text-xs text-slate-400">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981]"></span>
-              Embedded Streamlit AI Engine (Port 8501) • Synchronized with Microservices Mesh
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981] shrink-0"></span>
+              <span className="truncate">Embedded Streamlit AI Engine (Port 8501)</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setIframeKey((prev) => prev + 1)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
                 title="Reload Streamlit Frame"
               >
                 <RefreshCw className="w-3 h-3" />
@@ -172,16 +172,16 @@ export default function ResearchLabPage() {
               </button>
               <button
                 onClick={() => setIsFullscreen(!isFullscreen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
               >
                 <Maximize2 className="w-3 h-3" />
-                {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                {isFullscreen ? "Exit" : "Fullscreen"}
               </button>
               <a
                 href="http://localhost:8501"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-cyan-400 bg-cyan-950/30 hover:bg-cyan-950/50 border border-cyan-500/30 transition"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-cyan-400 bg-cyan-950/30 hover:bg-cyan-950/50 border border-cyan-500/30 transition"
               >
                 <ExternalLink className="w-3 h-3" />
                 Open In Tab
@@ -193,7 +193,7 @@ export default function ResearchLabPage() {
             <iframe
               key={iframeKey}
               src="http://localhost:8501/?embed=true"
-              className={cn("w-full border-0 transition-all", isFullscreen ? "h-[calc(100vh-160px)]" : "h-[750px]")}
+              className={cn("w-full border-0 transition-all", isFullscreen ? "h-[calc(100vh-160px)]" : "h-[500px] sm:h-[650px] md:h-[750px]")}
               title="Streamlit Quant Dashboard"
             />
           </div>

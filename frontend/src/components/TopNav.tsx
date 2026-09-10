@@ -15,10 +15,12 @@ import {
   LogIn, 
   ExternalLink,
   ShieldCheck,
-  AlertTriangle
+  AlertTriangle,
+  Menu
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useNav } from "@/lib/NavContext";
 
 interface SearchResult {
   symbol: string;
@@ -40,6 +42,7 @@ interface NotificationItem {
 }
 
 export default function TopNav() {
+  const { toggleMobileNav } = useNav();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -136,29 +139,52 @@ export default function TopNav() {
 
   return (
     <>
-      <header className="h-18 flex items-center justify-between px-6 sticky top-0 z-40 bg-[#0B1020]/90 backdrop-blur-md border-b border-white/5 flex-shrink-0">
+      <header className="h-16 sm:h-18 flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40 bg-[#0B1020]/95 backdrop-blur-md border-b border-white/5 flex-shrink-0">
         
-        {/* Search Trigger */}
-        <div className="flex-1 max-w-xl">
+        {/* Left: Mobile Drawer Trigger + Brand / Search */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-1 max-w-xl">
+          {/* Mobile Drawer Hamburger Button */}
+          <button
+            onClick={toggleMobileNav}
+            aria-label="Open Navigation Drawer"
+            className="lg:hidden p-2 text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors cursor-pointer shrink-0"
+          >
+            <Menu className="w-5 h-5 text-cyan-400" />
+          </button>
+
+          {/* Mobile Logo Brand */}
+          <Link href="/" className="lg:hidden flex items-center gap-1.5 shrink-0 group mr-1">
+            <img 
+              src="/logo.png" 
+              alt="Logo" 
+              className="w-7 h-7 rounded-lg object-cover border border-[#00F0FF]/40" 
+            />
+            <span className="font-space font-bold text-xs sm:text-sm text-white hidden xs:inline">
+              Indra-<span className="text-[#00F0FF]">MM</span>
+            </span>
+          </Link>
+
+          {/* Search Trigger */}
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex items-center w-80 bg-[#0F172A] hover:bg-[#131D35] border border-white/10 hover:border-cyan-500/30 rounded-xl py-2 px-3 text-sm text-slate-400 transition-all cursor-pointer group shadow-inner"
+            className="flex items-center w-full max-w-[130px] xs:max-w-[200px] sm:w-64 md:w-80 bg-[#0F172A] hover:bg-[#131D35] border border-white/10 hover:border-cyan-500/30 rounded-xl py-1.5 sm:py-2 px-2.5 sm:px-3 text-sm text-slate-400 transition-all cursor-pointer group shadow-inner"
           >
-            <Search className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 mr-2.5 transition-colors" />
-            <span className="flex-1 text-left text-xs text-slate-400 group-hover:text-slate-300">
-              Search stocks, news, indices...
+            <Search className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 mr-1.5 sm:mr-2.5 transition-colors shrink-0" />
+            <span className="flex-1 text-left text-xs text-slate-400 group-hover:text-slate-300 truncate">
+              <span className="sm:hidden">Search...</span>
+              <span className="hidden sm:inline">Search stocks, news, indices...</span>
             </span>
-            <span className="px-1.5 py-0.5 rounded border border-white/10 bg-slate-800/80 text-[10px] text-slate-400 font-mono">
+            <span className="hidden md:inline px-1.5 py-0.5 rounded border border-white/10 bg-slate-800/80 text-[10px] text-slate-400 font-mono shrink-0 ml-1">
               Ctrl /
             </span>
           </button>
         </div>
 
         {/* Right Action Icons & Status */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-5">
           
-          {/* Live Market Pulse Indicator */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+          {/* Live Market Pulse Indicator (Hidden on small mobile) */}
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold shrink-0">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -181,9 +207,9 @@ export default function TopNav() {
               )}
             </button>
 
-            {/* Notification Popover */}
+            {/* Responsive Notification Popover */}
             {notifOpen && (
-              <div className="absolute right-0 mt-3 w-84 sm:w-96 rounded-2xl bg-[#0F172A] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.7)] p-4 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute right-0 mt-3 w-[calc(100vw-2rem)] sm:w-96 max-w-sm rounded-2xl bg-[#0F172A] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-3.5 sm:p-4 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
                   <div className="flex items-center gap-2">
                     <span className="font-space font-bold text-sm text-white">Live Market Alerts</span>
@@ -203,19 +229,19 @@ export default function TopNav() {
                   )}
                 </div>
 
-                <div className="space-y-2.5 max-h-72 overflow-y-auto custom-scrollbar pr-1">
+                <div className="space-y-2 max-h-64 sm:max-h-72 overflow-y-auto custom-scrollbar pr-1">
                   {notifications.map((n) => (
                     <div
                       key={n.id}
                       className={cn(
-                        "p-3 rounded-xl border text-xs transition-all",
+                        "p-2.5 sm:p-3 rounded-xl border text-xs transition-all",
                         n.read ? "bg-white/[0.02] border-white/5 opacity-75" : "bg-white/[0.06] border-white/10",
                         n.type === "bearish" ? "border-l-4 border-l-rose-500" : n.type === "bullish" ? "border-l-4 border-l-emerald-500" : "border-l-4 border-l-amber-500"
                       )}
                     >
                       <div className="flex items-center justify-between font-semibold text-slate-200 mb-1">
-                        <span>{n.title}</span>
-                        <span className="text-[10px] text-slate-500 font-normal">{n.time}</span>
+                        <span className="truncate pr-2">{n.title}</span>
+                        <span className="text-[10px] text-slate-500 font-normal shrink-0">{n.time}</span>
                       </div>
                       <p className="text-slate-400 text-[11px] leading-relaxed">{n.message}</p>
                     </div>
@@ -223,28 +249,28 @@ export default function TopNav() {
                 </div>
 
                 <div className="pt-3 mt-3 border-t border-white/10 flex justify-between items-center text-xs">
-                  <span className="text-slate-500 text-[11px]">System Status: Connected</span>
+                  <span className="text-slate-500 text-[10px] sm:text-[11px]">System: Online</span>
                   <Link
                     href="/alerts"
                     onClick={() => setNotifOpen(false)}
                     className="text-cyan-400 hover:underline font-semibold flex items-center gap-1 text-[11px]"
                   >
-                    View All in Alerts Center <ArrowUpRight className="w-3 h-3" />
+                    Alerts Center <ArrowUpRight className="w-3 h-3" />
                   </Link>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="h-6 w-px bg-white/10"></div>
+          <div className="h-5 sm:h-6 w-px bg-white/10"></div>
 
-          {/* Clean Sign In Button (Profile placeholder until auth is implemented) */}
+          {/* Clean Sign In Button */}
           <button 
             onClick={() => alert("Authentication system will be enabled soon! You are currently browsing as Guest with full live terminal access.")}
-            className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer"
+            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
           >
             <LogIn className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Sign In</span>
+            <span className="hidden xs:inline">Sign In</span>
           </button>
 
         </div>

@@ -185,25 +185,25 @@ export default function LiveFeed() {
   });
 
   return (
-    <div className="space-y-6 pb-12 max-w-7xl mx-auto px-4 sm:px-6">
+    <div className="space-y-4 sm:space-y-6 pb-12 max-w-7xl mx-auto px-1 sm:px-4 md:px-6">
       
       {/* Header Panel */}
-      <div className="glass-panel p-6 sm:p-8 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="glass-panel p-4 sm:p-6 md:p-8 relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="absolute inset-0 bg-gradient-to-r from-[#00F0FF]/10 via-indigo-500/10 to-transparent pointer-events-none" />
         
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2.5 bg-[#00F0FF]/10 text-[#00F0FF] rounded-xl border border-[#00F0FF]/20 shadow-lg shadow-[#00F0FF]/10">
+            <div className="p-2 sm:p-2.5 bg-[#00F0FF]/10 text-[#00F0FF] rounded-xl border border-[#00F0FF]/20 shadow-lg shadow-[#00F0FF]/10 shrink-0">
               <Rss className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-manrope font-bold text-white tracking-tight flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-manrope font-bold text-white tracking-tight flex items-center gap-2 flex-wrap">
                 Live AI News Feed
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-semibold">
                   REAL-TIME
                 </span>
               </h1>
-              <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
+              <p className="text-slate-400 text-xs sm:text-sm mt-0.5 leading-relaxed">
                 Institutional market headlines parsed by Dual FinBERT & RoBERTa NLP with instant Market Impact Matrices
               </p>
             </div>
@@ -211,22 +211,22 @@ export default function LiveFeed() {
         </div>
 
         {/* Live Controls & Refresh */}
-        <div className="relative z-10 flex items-center gap-4 self-end md:self-auto">
+        <div className="relative z-10 flex items-center gap-3 sm:gap-4 self-stretch sm:self-end md:self-auto justify-between sm:justify-end">
           <button
             onClick={() => fetchLiveNews(true)}
             disabled={refreshing}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-semibold transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-semibold transition-all active:scale-95 cursor-pointer disabled:opacity-50 shrink-0"
           >
             <RefreshCw className={`w-3.5 h-3.5 text-[#00F0FF] ${refreshing ? "animate-spin" : ""}`} />
-            <span>{refreshing ? "Fetching Updates..." : "Refresh Feed"}</span>
+            <span>{refreshing ? "Fetching..." : "Refresh Feed"}</span>
           </button>
 
           <div className="text-right">
-            <div className="flex items-center justify-end gap-2 text-xs font-bold text-[#00F0FF]">
+            <div className="flex items-center justify-end gap-1.5 sm:gap-2 text-xs font-bold text-[#00F0FF]">
               <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-ping" />
               INGESTING LIVE DATA
             </div>
-            <div className="text-[11px] text-slate-500 font-mono mt-0.5">
+            <div className="text-[10px] sm:text-[11px] text-slate-500 font-mono mt-0.5">
               {totalScanned.toLocaleString()} articles scanned (24H)
             </div>
           </div>
@@ -234,9 +234,9 @@ export default function LiveFeed() {
       </div>
 
       {/* Search & Category Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+      <div className="flex flex-col md:flex-row gap-3 sm:gap-4 justify-between items-stretch md:items-center">
         {/* Category Tabs */}
-        <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-1">
+        <div className="flex gap-1.5 sm:gap-2 overflow-x-auto custom-scrollbar pb-1 max-w-full">
           {CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat;
             return (
@@ -246,7 +246,7 @@ export default function LiveFeed() {
                   setActiveCategory(cat);
                   setSelectedTopic(null);
                 }}
-                className={`whitespace-nowrap px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                className={`whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer shrink-0 ${
                   isActive
                     ? "bg-[#00F0FF] text-black font-bold shadow-lg shadow-[#00F0FF]/25 border border-[#00F0FF]"
                     : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5"
@@ -259,14 +259,14 @@ export default function LiveFeed() {
         </div>
 
         {/* Quick Search */}
-        <div className="relative min-w-[260px]">
+        <div className="relative w-full md:w-72 shrink-0">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search headline, ticker, source..."
-            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#00F0FF]/50 focus:ring-1 focus:ring-[#00F0FF]/50 transition-all"
+            className="w-full pl-10 pr-8 py-2 bg-white/5 border border-white/10 rounded-xl text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#00F0FF]/50 focus:ring-1 focus:ring-[#00F0FF]/50 transition-all"
           />
           {searchQuery && (
             <button 
@@ -354,7 +354,7 @@ export default function LiveFeed() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: Math.min(index * 0.04, 0.3) }}
                   onClick={() => setSelectedArticle(item)}
-                  className="glass-panel p-6 relative overflow-hidden group hover:border-[#00F0FF]/40 transition-all cursor-pointer hover:shadow-xl hover:shadow-[#00F0FF]/5"
+                  className="glass-panel p-4 sm:p-6 relative overflow-hidden group hover:border-[#00F0FF]/40 transition-all cursor-pointer hover:shadow-xl hover:shadow-[#00F0FF]/5"
                 >
                   {/* Neon Indicator Sidebar Bar */}
                   <div className={`absolute left-0 top-0 bottom-0 w-1 ${

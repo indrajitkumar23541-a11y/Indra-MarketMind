@@ -492,30 +492,30 @@ export default function GlobalMap() {
     <div className="space-y-6 pb-12 max-w-7xl mx-auto">
       
       {/* Header */}
-      <div className="glass-panel p-6 sm:p-8 relative overflow-hidden flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="glass-panel p-4 sm:p-6 md:p-8 relative overflow-hidden flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-purple-500/10 pointer-events-none" />
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2.5 bg-cyan-500/10 text-cyan-400 rounded-xl border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-              <Globe2 className="w-6 h-6" />
+            <div className="p-2 sm:p-2.5 bg-cyan-500/10 text-cyan-400 rounded-xl border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.15)] shrink-0">
+              <Globe2 className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-space font-bold tracking-tight text-white flex items-center gap-3 flex-wrap">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-space font-bold tracking-tight text-white flex items-center gap-2 sm:gap-3 flex-wrap">
                 Global Exchange Radar
-                <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                <span className="text-[10px] sm:text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  19 WORLD EXCHANGES
+                  19 EXCHANGES
                 </span>
               </h1>
-              <p className="text-slate-400 text-xs sm:text-sm mt-0.5">
+              <p className="text-slate-400 text-xs sm:text-sm mt-0.5 line-clamp-2 sm:line-clamp-none">
                 Real-time operational status, live index valuations, and official trading session hours worldwide
               </p>
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 flex items-center gap-3 self-stretch sm:self-auto justify-between sm:justify-end">
-          <div className="text-right hidden sm:block">
+        <div className="relative z-10 flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end pt-2 sm:pt-0 border-t border-white/5 sm:border-0">
+          <div className="text-left sm:text-right">
             <div className="text-[10px] text-slate-500 font-mono">LIVE FEED SYNC</div>
             <div suppressHydrationWarning className="text-xs font-mono text-slate-300">
               {mounted && lastUpdated ? (
@@ -528,7 +528,7 @@ export default function GlobalMap() {
           <button
             onClick={() => fetchQuotes()}
             disabled={loadingQuotes}
-            className="px-3.5 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold flex items-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.1)]"
+            className="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold flex items-center gap-2 transition active:scale-95 disabled:opacity-50 cursor-pointer shadow-[0_0_15px_rgba(6,182,212,0.1)]"
           >
             <RefreshCw className={cn("w-3.5 h-3.5", loadingQuotes && "animate-spin")} />
             <span>Refresh Feeds</span>
@@ -537,48 +537,48 @@ export default function GlobalMap() {
       </div>
 
       {/* Global Health Metric Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="glass-panel p-4 flex items-center gap-3 border border-white/5">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-            <Building2 className="w-5 h-5" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        <div className="glass-panel p-3 sm:p-4 flex items-center gap-2.5 sm:gap-3 border border-white/5">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+            <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <div className="text-[10px] font-mono uppercase text-slate-400">Global Hubs</div>
-            <div className="text-lg font-bold font-space text-white">19 Stock Exchanges</div>
+          <div className="min-w-0">
+            <div className="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 truncate">Global Hubs</div>
+            <div className="text-sm sm:text-lg font-bold font-space text-white truncate">19 Exchanges</div>
           </div>
         </div>
 
-        <div className="glass-panel p-4 flex items-center gap-3 border border-emerald-500/20 bg-emerald-950/10">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-            <CheckCircle2 className="w-5 h-5" />
+        <div className="glass-panel p-3 sm:p-4 flex items-center gap-2.5 sm:gap-3 border border-emerald-500/20 bg-emerald-950/10">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+            <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <div className="text-[10px] font-mono uppercase text-slate-400">Sessions Open Now</div>
-            <div suppressHydrationWarning className="text-lg font-bold font-mono text-emerald-400 flex items-center gap-1.5">
-              {mounted ? openCount : "--"} Active Markets
+          <div className="min-w-0">
+            <div className="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 truncate">Open Now</div>
+            <div suppressHydrationWarning className="text-sm sm:text-lg font-bold font-mono text-emerald-400 flex items-center gap-1.5 truncate">
+              {mounted ? openCount : "--"} Active
             </div>
           </div>
         </div>
 
-        <div className="glass-panel p-4 flex items-center gap-3 border border-white/5">
-          <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
-            <Moon className="w-5 h-5" />
+        <div className="glass-panel p-3 sm:p-4 flex items-center gap-2.5 sm:gap-3 border border-white/5">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 shrink-0">
+            <Moon className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <div className="text-[10px] font-mono uppercase text-slate-400">Sessions Closed</div>
-            <div suppressHydrationWarning className="text-lg font-bold font-mono text-slate-300">
-              {mounted ? closedCount : "--"} Markets Off-Hours
+          <div className="min-w-0">
+            <div className="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 truncate">Sessions Closed</div>
+            <div suppressHydrationWarning className="text-sm sm:text-lg font-bold font-mono text-slate-300 truncate">
+              {mounted ? closedCount : "--"} Off-Hours
             </div>
           </div>
         </div>
 
-        <div className="glass-panel p-4 flex items-center gap-3 border border-purple-500/20 bg-purple-950/10">
-          <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
-            <Radio className="w-5 h-5 animate-pulse" />
+        <div className="glass-panel p-3 sm:p-4 flex items-center gap-2.5 sm:gap-3 border border-purple-500/20 bg-purple-950/10">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 shrink-0">
+            <Radio className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
           </div>
-          <div>
-            <div className="text-[10px] font-mono uppercase text-slate-400">Data Stream</div>
-            <div className="text-lg font-bold font-mono text-purple-300">Direct Yahoo Feed</div>
+          <div className="min-w-0">
+            <div className="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 truncate">Data Stream</div>
+            <div className="text-sm sm:text-lg font-bold font-mono text-purple-300 truncate">Direct Feed</div>
           </div>
         </div>
       </div>
@@ -610,7 +610,7 @@ export default function GlobalMap() {
             </div>
 
             {/* Map Area — Hydration mismatch safely avoided */}
-            <div className="w-full h-110 sm:h-135 relative z-10 flex items-center justify-center rounded-xl bg-[#070A12]/80 border border-white/5 overflow-hidden">
+            <div className="w-full h-72 sm:h-110 md:h-135 relative z-10 flex items-center justify-center rounded-xl bg-[#070A12]/80 border border-white/5 overflow-hidden">
               {!mounted ? (
                 <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
                   <div className="relative flex items-center justify-center">
@@ -744,7 +744,7 @@ export default function GlobalMap() {
           </div>
 
           {/* Active Hub Deep-Dive Card */}
-          <div className="glass-panel p-6 relative overflow-hidden border border-cyan-500/20">
+          <div className="glass-panel p-4 sm:p-6 relative overflow-hidden border border-cyan-500/20">
             <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/5">
@@ -758,12 +758,12 @@ export default function GlobalMap() {
                   <span className="text-slate-400 text-xs">•</span>
                   <span className="text-slate-400 text-xs">{activeMarket.region}</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-space font-bold text-white mt-1">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-space font-bold text-white mt-1">
                   {activeMarket.name} ({activeMarket.city})
                 </h2>
               </div>
 
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap w-full sm:w-auto justify-between sm:justify-end">
                 {isMarketOpen(activeMarket) ? (
                   <div suppressHydrationWarning className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-bold font-mono">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -786,18 +786,18 @@ export default function GlobalMap() {
             </div>
 
             {/* Metrics Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-5">
-              <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
-                <div className="text-[10px] uppercase font-mono text-slate-400">Benchmark Index</div>
-                <div className="text-sm sm:text-base font-bold text-white mt-0.5 truncate">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mt-4 sm:mt-5">
+              <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
+                <div className="text-[9px] sm:text-[10px] uppercase font-mono text-slate-400 truncate">Benchmark Index</div>
+                <div className="text-xs sm:text-base font-bold text-white mt-0.5 truncate">
                   {activeQuote?.name || activeMarket.symbol}
                 </div>
-                <div className="text-[11px] font-mono text-slate-500">{activeMarket.symbol}</div>
+                <div className="text-[10px] sm:text-[11px] font-mono text-slate-500 truncate">{activeMarket.symbol}</div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
-                <div className="text-[10px] uppercase font-mono text-slate-400">Live Valuation</div>
-                <div className="text-base sm:text-lg font-bold font-mono text-white mt-0.5">
+              <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
+                <div className="text-[9px] sm:text-[10px] uppercase font-mono text-slate-400 truncate">Live Valuation</div>
+                <div className="text-sm sm:text-lg font-bold font-mono text-white mt-0.5 truncate">
                   {activeQuote?.c ? (
                     activeMarket.country === "India" 
                       ? `₹${activeQuote.c.toLocaleString("en-IN", { maximumFractionDigits: 2 })}`
@@ -805,7 +805,7 @@ export default function GlobalMap() {
                   ) : "Syncing..."}
                 </div>
                 <div className={cn(
-                  "text-xs font-bold font-mono flex items-center gap-1 mt-0.5",
+                  "text-[11px] sm:text-xs font-bold font-mono flex items-center gap-1 mt-0.5",
                   (activeQuote?.dp ?? 0) >= 0 ? "text-emerald-400" : "text-rose-400"
                 )}>
                   {(activeQuote?.dp ?? 0) >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
@@ -813,24 +813,24 @@ export default function GlobalMap() {
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
-                <div className="text-[10px] uppercase font-mono text-slate-400">Day's Range</div>
-                <div className="text-xs sm:text-sm font-mono text-slate-200 mt-1">
+              <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
+                <div className="text-[9px] sm:text-[10px] uppercase font-mono text-slate-400 truncate">Day's Range</div>
+                <div className="text-[11px] sm:text-sm font-mono text-slate-200 mt-1 truncate">
                   H: <span className="text-emerald-400">{activeQuote?.h ? activeQuote.h.toLocaleString() : "-"}</span>
                 </div>
-                <div className="text-xs sm:text-sm font-mono text-slate-200">
+                <div className="text-[11px] sm:text-sm font-mono text-slate-200 truncate">
                   L: <span className="text-rose-400">{activeQuote?.l ? activeQuote.l.toLocaleString() : "-"}</span>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
-                <div className="text-[10px] uppercase font-mono text-slate-400">Official Trading Hours</div>
-                <div className="text-xs font-mono text-cyan-300 font-semibold mt-1 flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-cyan-400" />
-                  {activeMarket.localTradingHours}
+              <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.03] border border-white/5">
+                <div className="text-[9px] sm:text-[10px] uppercase font-mono text-slate-400 truncate">Official Hours</div>
+                <div className="text-[11px] sm:text-xs font-mono text-cyan-300 font-semibold mt-1 flex items-center gap-1 truncate">
+                  <Clock className="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span className="truncate">{activeMarket.localTradingHours}</span>
                 </div>
-                <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                  Local Timezone: {activeMarket.timezone}
+                <div className="text-[9px] sm:text-[10px] text-slate-500 font-mono mt-0.5 truncate">
+                  {activeMarket.timezone}
                 </div>
               </div>
             </div>

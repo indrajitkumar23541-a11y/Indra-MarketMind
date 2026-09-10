@@ -465,12 +465,12 @@ export default function DeepDivePage() {
         </div>
 
         {/* Quick Ticker Switcher Chips */}
-        <div className="flex items-center gap-1.5 flex-wrap justify-center">
+        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1 scrollbar-none justify-start sm:justify-center">
           {POPULAR_STOCKS.map((s) => (
             <button
               key={s.symbol}
               onClick={() => handleSelectSymbol(s.symbol)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 selectedTicker === s.symbol
                   ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/30 ring-1 ring-cyan-400"
                   : "bg-slate-900/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800"
@@ -484,7 +484,7 @@ export default function DeepDivePage() {
           <button
             onClick={handleExportReport}
             title="Download Institutional Research Tear-Sheet (PDF / Print)"
-            className="p-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-cyan-400 hover:text-cyan-300 transition-colors ml-1 cursor-pointer flex items-center gap-1 text-xs font-semibold"
+            className="p-1.5 sm:p-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-cyan-400 hover:text-cyan-300 transition-colors ml-1 cursor-pointer flex items-center gap-1 text-xs font-semibold shrink-0"
           >
             <Download className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Export PDF</span>
@@ -494,7 +494,7 @@ export default function DeepDivePage() {
             onClick={() => fetchDeepDive(selectedTicker, true)}
             disabled={refreshing}
             title="Refresh Live Data"
-            className="p-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-slate-300 hover:text-cyan-400 transition-colors disabled:opacity-50 cursor-pointer"
+            className="p-1.5 sm:p-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-slate-300 hover:text-cyan-400 transition-colors disabled:opacity-50 cursor-pointer shrink-0"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? "animate-spin text-cyan-400" : ""}`} />
           </button>
@@ -504,30 +504,30 @@ export default function DeepDivePage() {
       {/* ─────────────────────────────────────────────────────────────
           2. HERO QUOTE BANNER (100% REAL MARKET SPOT & PROFILE)
       ───────────────────────────────────────────────────────────── */}
-      <div className="glass-panel p-6 sm:p-7 relative overflow-hidden rounded-2xl border border-slate-800/90 shadow-2xl bg-gradient-to-br from-[#0c1222] via-[#090d1a] to-[#060912]">
+      <div className="glass-panel p-4 sm:p-6 md:p-7 relative overflow-hidden rounded-2xl border border-slate-800/90 shadow-2xl bg-gradient-to-br from-[#0c1222] via-[#090d1a] to-[#060912]">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-indigo-500/5 to-emerald-500/10 pointer-events-none"></div>
-        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-2xl flex items-center justify-center text-2xl font-black text-white shadow-lg shadow-cyan-500/20">
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-white shadow-lg shadow-cyan-500/20 shrink-0">
               {data?.symbol ? data.symbol.slice(0, 1) : "S"}
             </div>
             <div>
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-manrope font-extrabold text-white tracking-tight">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-manrope font-extrabold text-white tracking-tight">
                   {data?.symbol || selectedTicker}
                 </h1>
-                <span className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-[10px] font-bold text-slate-300 uppercase">
+                <span className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-[9px] sm:text-[10px] font-bold text-slate-300 uppercase">
                   {data?.exchange || "NSE"}
                 </span>
-                <span className="px-2.5 py-0.5 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-[10px] font-semibold text-cyan-300">
+                <span className="px-2 sm:px-2.5 py-0.5 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-[9px] sm:text-[10px] font-semibold text-cyan-300">
                   {data?.sector || "Market Leader"}
                 </span>
-                <span className="text-[11px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded flex items-center gap-1 font-medium">
+                <span className="text-[10px] sm:text-[11px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded flex items-center gap-1 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   LIVE QUOTE
                 </span>
               </div>
-              <p className="text-slate-400 text-xs sm:text-sm mt-1 font-medium">
+              <p className="text-slate-400 text-xs sm:text-sm mt-0.5 sm:mt-1 font-medium">
                 {data?.name || "Institutional Stock Intelligence"}
               </p>
             </div>
@@ -589,7 +589,7 @@ export default function DeepDivePage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Interactive Multi-Timeframe Chart (8 Cols) */}
-        <div className="lg:col-span-8 glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-8 glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex flex-wrap justify-between items-center gap-3 mb-4 pb-3 border-b border-slate-800/80">
               <div className="flex items-center gap-2">
@@ -600,7 +600,7 @@ export default function DeepDivePage() {
               </div>
 
               {/* Controls: Timeframe + Overlays */}
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-1">
                 {/* Timeframes */}
                 <div className="bg-slate-900 p-1 rounded-xl border border-slate-800 flex items-center text-[10px] font-bold">
                   {(["1W", "1M", "3M", "6M", "1Y"] as const).map((tf) => (
@@ -806,7 +806,7 @@ export default function DeepDivePage() {
         </div>
 
         {/* 6-Factor Radar Card (4 Cols) (FEATURE 3) */}
-        <div className="lg:col-span-4 glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between">
+        <div className="lg:col-span-4 glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-manrope font-bold text-sm text-cyan-400 flex items-center gap-2">
@@ -859,7 +859,7 @@ export default function DeepDivePage() {
       {/* ─────────────────────────────────────────────────────────────
           4. KEY FUNDAMENTALS STRIP
       ───────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3">
         <div className="glass-panel p-3.5 rounded-xl border border-slate-800 bg-slate-900/60">
           <span className="text-[10px] text-slate-500 font-bold uppercase block">Market Cap</span>
           <span className="font-bold text-base text-white font-mono mt-0.5 block">{data?.market_cap || "17.2T"}</span>
@@ -1139,15 +1139,15 @@ export default function DeepDivePage() {
       {/* ─────────────────────────────────────────────────────────────
           6. DEDICATED TECHNICAL INDICATOR COCKPIT (FEATURE 8)
       ───────────────────────────────────────────────────────────── */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl bg-gradient-to-br from-[#0c1220] via-[#080d18] to-[#060912]">
-        <div className="flex flex-wrap justify-between items-center gap-3 mb-5 pb-3 border-b border-slate-800">
+      <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-xl bg-gradient-to-br from-[#0c1220] via-[#080d18] to-[#060912]">
+        <div className="flex flex-wrap justify-between items-center gap-2 sm:gap-3 mb-4 sm:mb-5 pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <Gauge className="w-5 h-5 text-cyan-400" />
-            <h3 className="font-manrope font-bold text-base text-white">
+            <h3 className="font-manrope font-bold text-sm sm:text-base text-white">
               Institutional Technical Indicator Cockpit & Confluence Board
             </h3>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs text-slate-400">Signals:</span>
             <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold font-mono">
               {data?.technicals?.bullish_signals ?? 7} Bullish
@@ -1163,10 +1163,10 @@ export default function DeepDivePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           
           {/* RSI-14 Oscillator Card */}
-          <div className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
+          <div className="p-3.5 sm:p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-1">
                 <span className="text-slate-400 text-xs font-semibold">14-Day RSI</span>
@@ -1180,7 +1180,7 @@ export default function DeepDivePage() {
                   {(data?.technicals?.rsi_14 ?? 50) >= 70 ? "OVERBOUGHT" : (data?.technicals?.rsi_14 ?? 50) <= 30 ? "OVERSOLD" : "BALANCED"}
                 </span>
               </div>
-              <div className="text-2xl font-mono font-bold text-white mb-2">
+              <div className="text-xl sm:text-2xl font-mono font-bold text-white mb-2">
                 {data?.technicals?.rsi_14?.toFixed(1) ?? "52.4"}
               </div>
               <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden relative">
@@ -1204,7 +1204,7 @@ export default function DeepDivePage() {
           </div>
 
           {/* MACD Card */}
-          <div className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
+          <div className="p-3.5 sm:p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-1">
                 <span className="text-slate-400 text-xs font-semibold">MACD (12, 26, 9)</span>
@@ -1212,7 +1212,7 @@ export default function DeepDivePage() {
                   {((data?.technicals?.macd_line ?? 0) > (data?.technicals?.macd_signal ?? 0)) ? "BULLISH CROSS" : "BEARISH CROSS"}
                 </span>
               </div>
-              <div className="text-2xl font-mono font-bold text-cyan-400 mb-1">
+              <div className="text-xl sm:text-2xl font-mono font-bold text-cyan-400 mb-1">
                 {data?.technicals?.macd_line ? `${data.technicals.macd_line > 0 ? "+" : ""}${data.technicals.macd_line.toFixed(2)}` : "+4.82"}
               </div>
               <div className="space-y-1 text-[11px] font-mono text-slate-300 mt-2">
@@ -1234,7 +1234,7 @@ export default function DeepDivePage() {
           </div>
 
           {/* Bollinger Bands Card */}
-          <div className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
+          <div className="p-3.5 sm:p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-1">
                 <span className="text-slate-400 text-xs font-semibold">Bollinger Bands (20, 2)</span>
@@ -1263,7 +1263,7 @@ export default function DeepDivePage() {
           </div>
 
           {/* Moving Average Confluence */}
-          <div className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
+          <div className="p-3.5 sm:p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-1">
                 <span className="text-slate-400 text-xs font-semibold">Moving Average Distances</span>
@@ -1303,11 +1303,11 @@ export default function DeepDivePage() {
       {/* ─────────────────────────────────────────────────────────────
           7. FINANCIAL STATEMENT EXPLORER & CASH FLOW REALITY CHECK (FEATURE 4)
       ───────────────────────────────────────────────────────────── */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-xl">
         <div className="flex flex-wrap justify-between items-center gap-4 mb-4 pb-3 border-b border-slate-800/80">
           <div className="flex items-center gap-2">
             <Layers className="w-4 h-4 text-cyan-400" />
-            <h3 className="font-manrope font-bold text-base text-white">
+            <h3 className="font-manrope font-bold text-sm sm:text-base text-white">
               Quarterly Financial Statements & Cash Flow Reality Check
             </h3>
           </div>
@@ -1335,8 +1335,8 @@ export default function DeepDivePage() {
         </div>
 
         {financialTab === "pnl" ? (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono">
+          <div className="overflow-x-auto custom-scrollbar">
+            <table className="w-full text-left text-xs font-mono min-w-[500px]">
               <thead>
                 <tr className="border-b border-slate-800 text-slate-400 font-sans">
                   <th className="py-2.5 px-3">Metric</th>
@@ -1416,18 +1416,18 @@ export default function DeepDivePage() {
       {/* ─────────────────────────────────────────────────────────────
           8. PEER COMPARISON MATRIX (FEATURE 9)
       ───────────────────────────────────────────────────────────── */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-xl">
         <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <Award className="w-4 h-4 text-cyan-400" />
-            <h3 className="font-manrope font-bold text-base text-white">
+            <h3 className="font-manrope font-bold text-sm sm:text-base text-white">
               Sector Competitor Benchmarking Matrix ({data?.sector || "Conglomerate"})
             </h3>
           </div>
-          <span className="text-[10px] text-slate-400">Click any peer to switch analysis</span>
+          <span className="text-[10px] text-slate-400">Click any peer to switch</span>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full text-left text-xs font-mono">
             <thead>
               <tr className="border-b border-slate-800 text-slate-400 font-sans">
