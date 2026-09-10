@@ -79,12 +79,12 @@ def main():
 
     # 2. Start Core Python Microservices
     print("\n[Step 2/4] Starting Microservices Mesh...")
-    start_process("API Gateway (Port 8000)", [PYTHON_EXE, "-m", "uvicorn", "services.gateway.main:app", "--port", "8000", "--host", "127.0.0.1"])
+    start_process("API Gateway (Port 8000)", [PYTHON_EXE, "-m", "uvicorn", "services.gateway.main:app", "--port", "8000", "--host", "127.0.0.1", "--reload"])
     time.sleep(1)
-    start_process("Data Ingestion (Port 8001)", [PYTHON_EXE, "-m", "uvicorn", "services.data_ingestion.main:app", "--port", "8001", "--host", "127.0.0.1"])
-    start_process("Sentiment Engine (Port 8002)", [PYTHON_EXE, "-m", "uvicorn", "services.sentiment.main:app", "--port", "8002", "--host", "127.0.0.1"])
-    start_process("Analytics Engine (Port 8003)", [PYTHON_EXE, "-m", "uvicorn", "services.analytics.main:app", "--port", "8003", "--host", "127.0.0.1"])
-    start_process("ML Forecaster (Port 8004)", [PYTHON_EXE, "-m", "uvicorn", "services.forecasting.main:app", "--port", "8004", "--host", "127.0.0.1"])
+    start_process("Data Ingestion (Port 8001)", [PYTHON_EXE, "-m", "uvicorn", "services.data_ingestion.main:app", "--port", "8001", "--host", "127.0.0.1", "--reload"])
+    start_process("Sentiment Engine (Port 8002)", [PYTHON_EXE, "-m", "uvicorn", "services.sentiment.main:app", "--port", "8002", "--host", "127.0.0.1", "--reload"])
+    start_process("Analytics Engine (Port 8003)", [PYTHON_EXE, "-m", "uvicorn", "services.analytics.main:app", "--port", "8003", "--host", "127.0.0.1", "--reload"])
+    start_process("ML Forecaster (Port 8004)", [PYTHON_EXE, "-m", "uvicorn", "services.forecasting.main:app", "--port", "8004", "--host", "127.0.0.1", "--reload"])
 
     # 3. Start Streamlit AI Quant Lab
     print("\n[Step 3/4] Starting AI Quant Lab (Streamlit)...")

@@ -98,6 +98,42 @@ async def forecast_hybrid(request: ForecastRequest):
         generated_at=datetime.utcnow().isoformat()
     )
 
+@app.get("/forecast/nifty50")
+async def get_nifty_quant_forecast(
+    ticker: str = "^NSEI", 
+    days: int = 7,
+    crude_oil_pct: float = 0.0,
+    dxy_pct: float = 0.0,
+    rbi_bps: float = 0.0
+):
+    """Institutional quant forecast with real market data and capital preservation safeguards."""
+    from services.forecasting.nifty_forecast_engine import generate_quant_forecast
+    return generate_quant_forecast(
+        ticker=ticker, 
+        forecast_days=days,
+        crude_oil_pct=crude_oil_pct,
+        dxy_pct=dxy_pct,
+        rbi_bps=rbi_bps
+    )
+
+@app.get("/forecast/{ticker}")
+async def get_ticker_quant_forecast(
+    ticker: str, 
+    days: int = 7,
+    crude_oil_pct: float = 0.0,
+    dxy_pct: float = 0.0,
+    rbi_bps: float = 0.0
+):
+    """Institutional quant forecast for any ticker with real market data."""
+    from services.forecasting.nifty_forecast_engine import generate_quant_forecast
+    return generate_quant_forecast(
+        ticker=ticker, 
+        forecast_days=days,
+        crude_oil_pct=crude_oil_pct,
+        dxy_pct=dxy_pct,
+        rbi_bps=rbi_bps
+    )
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("services.forecasting.main:app", host="0.0.0.0", port=8004, reload=True)

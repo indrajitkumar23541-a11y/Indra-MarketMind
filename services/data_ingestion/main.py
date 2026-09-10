@@ -109,18 +109,31 @@ async def fetch_news_sec(ticker: str, db: Session = Depends(get_db)):
             
     return {"ticker": ticker, "fetched": len(articles), "saved": saved_count}
 
+from services.data_ingestion.news.live_news_service import get_live_news
+
+@app.get("/news/live-feed")
+async def get_live_news_feed(category: str = "All", limit: int = 40):
+    """Fetch real-time live multi-source financial news with sentiment and market impact."""
+    return get_live_news(category=category, limit=limit)
+
 @app.get("/news/recent")
-async def get_recent_news(limit: int = 15, db: Session = Depends(get_db)):
-    from shared.models import Article
-    articles = db.query(Article).order_by(Article.published_at.desc()).limit(limit).all()
-    return [{
-        "id": a.id,
-        "title": a.title,
-        "source": a.source,
-        "published_at": a.published_at,
-        "sentiment_score": a.sentiment_score,
-        "sentiment_label": a.sentiment_label
-    } for a in articles]
+async def get_recent_news(limit: int = 15, category: str = "All"):
+    """Fetch recent live news articles with fallback."""
+    feed_data = get_live_news(category=category, limit=limit)
+    return feed_data.get("articles", [])
+
+@app.get("/news/trending-topics")
+async def get_trending_topics():
+    """Fetch real-time dynamic trending financial topics."""
+    feed_data = get_live_news(category="All", limit=30)
+    return {"trending_topics": feed_data.get("trending_topics", [])}
+
+@app.get("/news/nlp-diagnostics")
+async def get_nlp_diagnostics():
+    """Fetch real-time NLP diagnostics and sentiment distribution."""
+    feed_data = get_live_news(category="All", limit=30)
+    return feed_data.get("diagnostics", {})
+
 
 @app.get("/news/count")
 async def get_news_count(hours_back: int = 24, db = Depends(get_db)):
@@ -409,6 +422,37 @@ async def fetch_market_historical(ticker: str, period: str = "1mo"):
     fetcher = YFinanceFetcher()
     data = fetcher.fetch_historical(ticker=ticker, period=period)
     return {"ticker": ticker, "records_fetched": len(data), "data": data}
+
+@app.get("/fetch/forecast/nifty50")
+async def fetch_nifty_quant_forecast(
+    ticker: str = "^NSEI", 
+    days: int = 7,
+    crude_oil_pct: float = 0.0,
+    dxy_pct: float = 0.0,
+    rbi_bps: float = 0.0
+):
+    """Institutional quant forecast with real market data and capital preservation safeguards."""
+    from services.forecasting.nifty_forecast_engine import generate_quant_forecast
+    return generate_quant_forecast(
+        ticker=ticker, 
+        forecast_days=days,
+        crude_oil_pct=crude_oil_pct,
+        dxy_pct=dxy_pct,
+        rbi_bps=rbi_bps
+    )
+
+@app.get("/fetch/market/{ticker}/deep-dive")
+async def fetch_stock_deep_dive(ticker: str):
+    """Institutional-grade stock deep dive with 100% real quantitative and fundamental data."""
+    from services.analytics.deep_dive_engine import get_stock_deep_dive
+    return get_stock_deep_dive(ticker=ticker)
+
+@app.get("/fetch/signals/fear-greed")
+@app.get("/signals/fear-greed")
+async def fetch_fear_greed(market: str = "global"):
+    """Institutional 7-factor Fear & Greed Index with live telemetry."""
+    from services.analytics.fear_greed_engine import get_fear_greed_index
+    return get_fear_greed_index(market=market)
 
 @app.get("/health")
 async def health_check():

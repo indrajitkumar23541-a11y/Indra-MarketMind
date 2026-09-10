@@ -1,0 +1,20 @@
+[project]
+name = "indra-marketmind"
+version = "1.0.0"
+description = "AI Financial Intelligence & Quantitative Trading Platform"
+requires-python = ">=3.10"
+
+[tool.pyrefly]
+python-interpreter-path = "e:/Indra-MarketMind/venv/Scripts/python.exe"
+search-paths = [
+    "e:/Indra-MarketMind/venv/Lib/site-packages",
+    "e:/Indra-MarketMind"
+]
+
+[tool.pyright]
+venvPath = "."
+venv = "venv"
+extraPaths = [
+    "venv/Lib/site-packages",
+    "."
+]

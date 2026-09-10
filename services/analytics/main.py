@@ -104,53 +104,15 @@ async def get_granger_causality(ticker: str, lag_days: int = 1):
         timestamp=datetime.utcnow()
     )
 
-@app.get("/signals/fear-greed", response_model=FearGreedResponse)
-async def get_fear_greed_index():
-    # Calculate a real-time Fear & Greed score using VIX from yfinance
-    try:
-        vix = yf.Ticker("^VIX").history(period="1d")
-        if not vix.empty:
-            vix_close = float(vix['Close'].iloc[-1])
-            # Normalize VIX: High VIX (e.g. 35) = Fear (score ~20). Low VIX (e.g. 12) = Greed (score ~80)
-            volatility_score = max(0, min(100, 100 - ((vix_close - 10) / 30) * 100))
-        else:
-            volatility_score = 50.0
-    except Exception:
-        volatility_score = 50.0
-
-    try:
-        spy = yf.Ticker("SPY").history(period="125d")
-        if not spy.empty and len(spy) > 10:
-            current_spy = spy['Close'].iloc[-1]
-            ma_125_spy = spy['Close'].mean()
-            # Momentum > 1 means Greed, < 1 means Fear
-            momentum_ratio = current_spy / ma_125_spy
-            momentum = max(0, min(100, (momentum_ratio - 0.9) * 500)) # roughly 0 to 100
-        else:
-            momentum = 50.0
-    except Exception:
-        momentum = 50.0
-
-    sentiment = 50.0 # Default to neutral if we don't have aggregated text sentiment
-    
-    score = (volatility_score * 0.4) + (momentum * 0.3) + (sentiment * 0.3)
-    
-    if score <= 25: label = "EXTREME_FEAR"
-    elif score <= 45: label = "FEAR"
-    elif score <= 55: label = "NEUTRAL"
-    elif score <= 75: label = "GREED"
-    else: label = "EXTREME_GREED"
-    
-    return FearGreedResponse(
-        score=round(score, 1),
-        label=label,
-        timestamp=datetime.utcnow(),
-        factors={
-            "market_momentum": round(momentum, 1),
-            "sentiment_score": round(sentiment, 1),
-            "volatility": round(volatility_score, 1)
-        }
-    )
+@app.get("/signals/fear-greed")
+async def get_fear_greed_endpoint(market: str = "global"):
+    """
+    World-Class 7-Factor Institutional Fear & Greed Index
+    Returns real-time market emotion, time-deltas, 7 quantitative dimensions, and 1Y historical timeline.
+    Supports ?market=global (Wall Street) and ?market=india (Dalal Street).
+    """
+    from services.analytics.fear_greed_engine import get_fear_greed_index
+    return get_fear_greed_index(market=market)
 
 @app.get("/signals/sector-rotation")
 async def get_sector_rotation():
@@ -215,6 +177,13 @@ async def get_insider_signals(limit: int = 10):
     # Sort by date descending and limit
     signals = sorted(signals, key=lambda x: x["Date"], reverse=True)[:limit]
     return {"signals": signals, "timestamp": datetime.utcnow().isoformat()}
+
+@app.get("/fetch/market/{ticker}/deep-dive")
+@app.get("/market/{ticker}/deep-dive")
+async def fetch_stock_deep_dive(ticker: str):
+    """Institutional-grade stock deep dive with 100% real quantitative and fundamental data."""
+    from services.analytics.deep_dive_engine import get_stock_deep_dive
+    return get_stock_deep_dive(ticker=ticker)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8003, reload=True)
