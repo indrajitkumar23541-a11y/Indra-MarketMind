@@ -200,7 +200,9 @@ def get_yahoo_chart_data(ticker: str, time_range: str = "1d", interval: str | No
         "1w": ("5d", "30m", "%d %b %H:%M"),
         "1m": ("1mo", "1d", "%d %b"),
         "3m": ("3mo", "1d", "%d %b"),
-        "1y": ("1y", "1wk", "%b %y"),
+        "6m": ("6mo", "1d", "%d %b"),
+        "1y": ("1y", "1d", "%d %b %y"),
+        "3y": ("3y", "1d", "%b %y"),
         "all": ("max", "1mo", "%b %Y")
     }
 
@@ -245,6 +247,7 @@ def get_yahoo_chart_data(ticker: str, time_range: str = "1d", interval: str | No
             dt = datetime.fromtimestamp(t)
             points.append({
                 "time": dt.strftime(date_format),
+                "date": dt.strftime("%Y-%m-%d"),
                 "value": round(float(val), 2),
                 "high": round(float(highs[idx]), 2) if idx < len(highs) and highs[idx] is not None else round(float(val), 2),
                 "low": round(float(lows[idx]), 2) if idx < len(lows) and lows[idx] is not None else round(float(val), 2),

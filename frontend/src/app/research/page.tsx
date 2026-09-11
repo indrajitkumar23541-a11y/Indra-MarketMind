@@ -13,16 +13,28 @@ import {
   Layers, 
   Send, 
   Zap, 
-  Maximize2 
+  Maximize2,
+  TrendingUp,
+  BrainCircuit,
+  GitCommit,
+  Dice5,
+  ShieldCheck,
+  ChevronDown,
+  Terminal
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { StrategyBacktestView } from "@/components/quant/StrategyBacktestView";
+import { ModelArenaView } from "@/components/quant/ModelArenaView";
+import { GrangerCausalityView } from "@/components/quant/GrangerCausalityView";
+import { MonteCarloRiskView } from "@/components/quant/MonteCarloRiskView";
 
 export default function ResearchLabPage() {
-  const [activeTab, setActiveTab] = useState<"streamlit" | "tester" | "mesh">("streamlit");
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"strategy" | "arena" | "causality" | "risk" | "nlp" | "mesh">("strategy");
+  const [selectedTicker, setSelectedTicker] = useState("NVDA");
+  const [showStreamlitDrawer, setShowStreamlitDrawer] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
 
-  // Live tester state
+  // Live NLP tester state
   const [testText, setTestText] = useState("Apple announces record quarterly profit driven by AI silicon chips, exceeding Wall Street expectations.");
   const [analyzing, setAnalyzing] = useState(false);
   const [ensembleResult, setEnsembleResult] = useState<any>(null);
@@ -48,7 +60,7 @@ export default function ResearchLabPage() {
 
   useEffect(() => {
     fetchSystemMesh();
-    const interval = setInterval(fetchSystemMesh, 15000);
+    const interval = setInterval(fetchSystemMesh, 20000);
     return () => clearInterval(interval);
   }, []);
 
@@ -87,121 +99,204 @@ export default function ResearchLabPage() {
   };
 
   return (
-    <div className={cn("space-y-6 max-w-7xl mx-auto pb-2 sm:pb-6", isFullscreen && "fixed inset-0 z-50 bg-[#05070D] p-6 max-w-none overflow-y-auto")}>
-      
-      {/* Header */}
-      <div className="relative glass-panel overflow-hidden p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-blue-950/10 to-indigo-950/20 rounded-2xl">
+    <div className="space-y-6 w-full max-w-7xl mx-auto px-2 sm:px-4 pb-8 overflow-hidden">
+      {/* Header Panel */}
+      <div className="relative glass-panel overflow-hidden p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-cyan-500/20 bg-gradient-to-r from-cyan-950/20 via-[#0A0E1A] to-purple-950/20 rounded-2xl">
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-[#00F0FF] shadow-[0_0_15px_rgba(0,240,255,0.25)] shrink-0">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-[#00F0FF] shadow-[0_0_20px_rgba(0,240,255,0.3)] shrink-0">
             <FlaskConical className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="font-space text-lg sm:text-2xl font-bold tracking-tight text-white">
-                AI Research & Quant Lab
+                AI Quant &amp; Alpha Research Lab
               </h1>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 animate-pulse">
+              <span className="px-2 sm:px-2.5 py-0.5 text-[10px] font-mono font-bold rounded-full bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.2)]">
+                PRO TERMINAL
+              </span>
+              <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 ALL ENGINES LIVE
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5 line-clamp-2 sm:line-clamp-none">
-              Unified Research Suite • 5 NLP Ensemble Models • Streamlit Prototyping • 10 Microservices Service Mesh
+            <p className="text-xs text-slate-400 mt-0.5">
+              Vectorized Strategy Backtesting • Multi-Model Forecast Arena • Granger Causality • Monte Carlo Tail Risk
             </p>
           </div>
         </div>
 
-        {/* View Switcher Tabs */}
-        <div className="flex items-center gap-1.5 sm:gap-2 bg-[#090D1A] p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full w-full md:w-auto">
+        {/* Action Buttons Right */}
+        <div className="flex items-center gap-2 flex-wrap self-end md:self-auto">
           <button
-            onClick={() => setActiveTab("streamlit")}
-            className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
-              activeTab === "streamlit"
-                ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
-                : "text-slate-400 hover:text-white"
-            )}
+            onClick={() => setShowStreamlitDrawer(!showStreamlitDrawer)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
           >
-            <Sliders className="w-3.5 h-3.5" />
-            Quant Terminal
+            <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+            Streamlit Bridge (8501)
+            <ChevronDown className={cn("w-3 h-3 transition-transform", showStreamlitDrawer && "rotate-180")} />
           </button>
 
-          <button
-            onClick={() => setActiveTab("tester")}
-            className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
-              activeTab === "tester"
-                ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
-                : "text-slate-400 hover:text-white"
-            )}
+          <a
+            href="http://localhost:8501"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium text-cyan-400 bg-cyan-950/30 hover:bg-cyan-950/50 border border-cyan-500/30 transition"
+            title="Open Streamlit in new tab"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            5-NLP Model Tester
-          </button>
-
-          <button
-            onClick={() => setActiveTab("mesh")}
-            className={cn(
-              "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
-              activeTab === "mesh"
-                ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
-                : "text-slate-400 hover:text-white"
-            )}
-          >
-            <Server className="w-3.5 h-3.5" />
-            Microservices Mesh
-          </button>
+            <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
 
-      {/* TAB 1: Streamlit Embedded Prototyper */}
-      {activeTab === "streamlit" && (
-        <div className="space-y-3">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-1">
+      {/* Main Terminal View Navigation Tabs */}
+      <div className="flex items-center gap-1.5 bg-[#090D1A] p-1.5 rounded-2xl border border-white/10 overflow-x-auto custom-scrollbar w-full">
+        <button
+          onClick={() => setActiveTab("strategy")}
+          className={cn(
+            "flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap",
+            activeTab === "strategy"
+              ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/40 shadow-[0_0_15px_rgba(0,240,255,0.25)] font-bold"
+              : "text-slate-400 hover:text-white"
+          )}
+        >
+          <TrendingUp className="w-3.5 h-3.5 text-cyan-400" />
+          Alpha Strategy &amp; Backtest
+        </button>
+
+        <button
+          onClick={() => setActiveTab("arena")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap",
+            activeTab === "arena"
+              ? "bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.25)] font-bold"
+              : "text-slate-400 hover:text-white"
+          )}
+        >
+          <BrainCircuit className="w-3.5 h-3.5 text-purple-400" />
+          AI Multi-Model Arena
+        </button>
+
+        <button
+          onClick={() => setActiveTab("causality")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap",
+            activeTab === "causality"
+              ? "bg-cyan-500/20 text-[#00F0FF] border border-cyan-500/40 shadow-[0_0_15px_rgba(0,240,255,0.25)] font-bold"
+              : "text-slate-400 hover:text-white"
+          )}
+        >
+          <GitCommit className="w-3.5 h-3.5 text-cyan-400" />
+          Granger Causality Lab
+        </button>
+
+        <button
+          onClick={() => setActiveTab("risk")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap",
+            activeTab === "risk"
+              ? "bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.25)] font-bold"
+              : "text-slate-400 hover:text-white"
+          )}
+        >
+          <Dice5 className="w-3.5 h-3.5 text-amber-400" />
+          Monte Carlo &amp; Risk
+        </button>
+
+        <button
+          onClick={() => setActiveTab("nlp")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap",
+            activeTab === "nlp"
+              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.25)] font-bold"
+              : "text-slate-400 hover:text-white"
+          )}
+        >
+          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+          5-NLP Model Tester
+        </button>
+
+        <button
+          onClick={() => setActiveTab("mesh")}
+          className={cn(
+            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ml-auto",
+            activeTab === "mesh"
+              ? "bg-white/10 text-white border border-white/20 font-bold"
+              : "text-slate-500 hover:text-slate-300"
+          )}
+        >
+          <Server className="w-3.5 h-3.5" />
+          Service Mesh ({systemMesh?.services ? Object.keys(systemMesh.services).length : 10})
+        </button>
+      </div>
+
+      {/* Collapsible Legacy Streamlit Drawer (If user wants to view port 8501 without cluttering) */}
+      {showStreamlitDrawer && (
+        <div className="glass-panel p-4 rounded-2xl border border-white/10 bg-[#0A0E1A] space-y-3 animate-fadeIn">
+          <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2 text-xs text-slate-400">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981] shrink-0"></span>
-              <span className="truncate">Embedded Streamlit AI Engine (Port 8501)</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981]" />
+              <span>Embedded Streamlit Engine (Port 8501) • Secondary Prototyper</span>
             </div>
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setIframeKey((prev) => prev + 1)}
-                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
-                title="Reload Streamlit Frame"
+                className="flex items-center gap-1 px-2 py-1 rounded text-xs text-slate-400 hover:text-white bg-white/5"
               >
-                <RefreshCw className="w-3 h-3" />
-                Reload
+                <RefreshCw className="w-3 h-3" /> Reload
               </button>
               <button
-                onClick={() => setIsFullscreen(!isFullscreen)}
-                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 transition"
+                onClick={() => setShowStreamlitDrawer(false)}
+                className="px-2 py-1 rounded text-xs text-slate-400 hover:text-white bg-white/5"
               >
-                <Maximize2 className="w-3 h-3" />
-                {isFullscreen ? "Exit" : "Fullscreen"}
+                Hide Sandbox
               </button>
-              <a
-                href="http://localhost:8501"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-cyan-400 bg-cyan-950/30 hover:bg-cyan-950/50 border border-cyan-500/30 transition"
-              >
-                <ExternalLink className="w-3 h-3" />
-                Open In Tab
-              </a>
             </div>
           </div>
-
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0A0E1A] shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+          <div className="relative rounded-xl overflow-hidden border border-white/10 bg-[#05070D]">
             <iframe
               key={iframeKey}
               src="http://localhost:8501/?embed=true"
-              className={cn("w-full border-0 transition-all", isFullscreen ? "h-[calc(100vh-160px)]" : "h-[500px] sm:h-[650px] md:h-[750px]")}
+              className="w-full h-[500px] border-0"
               title="Streamlit Quant Dashboard"
             />
           </div>
         </div>
       )}
 
-      {/* TAB 2: Direct 5-NLP Ensemble Tester */}
-      {activeTab === "tester" && (
+      {/* TAB 1: Alpha Strategy & Vectorized Backtest View */}
+      {activeTab === "strategy" && (
+        <StrategyBacktestView
+          selectedTicker={selectedTicker}
+          onSelectTicker={setSelectedTicker}
+        />
+      )}
+
+      {/* TAB 2: AI Multi-Model Arena */}
+      {activeTab === "arena" && (
+        <ModelArenaView
+          selectedTicker={selectedTicker}
+          onSelectTicker={setSelectedTicker}
+        />
+      )}
+
+      {/* TAB 3: Granger Causality Statistical Lab */}
+      {activeTab === "causality" && (
+        <GrangerCausalityView
+          selectedTicker={selectedTicker}
+          onSelectTicker={setSelectedTicker}
+        />
+      )}
+
+      {/* TAB 4: Monte Carlo Simulation & Risk Stress-Testing */}
+      {activeTab === "risk" && (
+        <MonteCarloRiskView
+          selectedTicker={selectedTicker}
+          onSelectTicker={setSelectedTicker}
+        />
+      )}
+
+      {/* TAB 5: Live 5-NLP Ensemble Tester */}
+      {activeTab === "nlp" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-4">
             <div className="glass-panel p-6 rounded-2xl border border-white/10 bg-[#0A0E1A]">
@@ -210,7 +305,7 @@ export default function ResearchLabPage() {
                   <Sparkles className="w-5 h-5 text-cyan-400" />
                   <h3 className="font-space font-bold text-lg text-white">Live NLP Ensemble Tester</h3>
                 </div>
-                <span className="text-xs text-slate-400">Powered by Port 8002</span>
+                <span className="text-xs text-slate-400 font-mono">Microservice Port 8002</span>
               </div>
               <p className="text-xs text-slate-400 mb-4">
                 Input any market headline, tweet, or earnings transcript snippet to benchmark sentiment across FinBERT, RoBERTa, FinGPT, VADER, and TextBlob in real-time.
@@ -352,7 +447,7 @@ export default function ResearchLabPage() {
         </div>
       )}
 
-      {/* TAB 3: Microservices Mesh Status */}
+      {/* TAB 6: Microservices Mesh Status */}
       {activeTab === "mesh" && (
         <div className="space-y-6">
           <div className="glass-panel p-6 rounded-2xl border border-white/10 bg-[#0A0E1A]">
