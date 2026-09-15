@@ -494,7 +494,7 @@ print(portfolio.stats())
   return (
     <div className="space-y-6 w-full max-w-full overflow-hidden">
       {/* 1. Live Market Quote & Google Finance Match Verification Header */}
-      <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-[#0A0E1A] via-emerald-950/10 to-[#0A0E1A] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+      <div className="glass-panel p-4 sm:p-5 rounded-2xl border border-emerald-500/20 bg-linear-to-r from-[#0A0E1A] via-emerald-950/10 to-[#0A0E1A] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -647,8 +647,8 @@ print(portfolio.stats())
                 className={cn(
                   "p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative overflow-hidden",
                   isSelected
-                    ? "bg-gradient-to-b from-cyan-950/30 to-[#0A0E1A] border-cyan-500/40 shadow-[0_0_20px_rgba(0,240,255,0.15)]"
-                    : "bg-[#0A0E1A] border-white/10 hover:border-white/20 hover:bg-white/[0.02]"
+                    ? "bg-linear-to-b from-cyan-950/30 to-[#0A0E1A] border-cyan-500/40 shadow-[0_0_20px_rgba(0,240,255,0.15)]"
+                    : "bg-[#0A0E1A] border-white/10 hover:border-white/20 hover:bg-white/2"
                 )}
               >
                 {isSelected && (
@@ -750,7 +750,7 @@ print(portfolio.stats())
           <button
             onClick={handleRunSimulation}
             disabled={isRecalculating || loadingData}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black shadow-[0_0_20px_rgba(0,240,255,0.35)] transition-all cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-xs font-bold bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black shadow-[0_0_20px_rgba(0,240,255,0.35)] transition-all cursor-pointer disabled:opacity-50"
           >
             {isRecalculating || loadingData ? (
               <RotateCcw className="w-3.5 h-3.5 animate-spin text-black" />
@@ -822,7 +822,7 @@ print(portfolio.stats())
               </div>
             </div>
 
-            <div className="h-[240px] sm:h-[280px] md:h-[320px] w-full pt-2">
+            <div className="h-60 sm:h-70 md:h-80 w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <defs>
@@ -893,7 +893,7 @@ print(portfolio.stats())
               </span>
             </div>
 
-            <div className="h-[90px] sm:h-[110px] w-full">
+            <div className="h-22.5 sm:h-27.5 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <defs>
@@ -1000,7 +1000,7 @@ print(portfolio.stats())
 
             <div className="space-y-3 overflow-x-auto">
               {monthlyMatrix.map((item) => (
-                <div key={item.year} className="space-y-1 min-w-[260px]">
+                <div key={item.year} className="space-y-1 min-w-65">
                   <div className="text-[11px] font-mono font-bold text-slate-300">
                     {item.year}
                   </div>
@@ -1058,7 +1058,7 @@ print(portfolio.stats())
             </p>
 
             <div className="relative">
-              <pre className="p-4 rounded-xl bg-[#090D1A] border border-white/10 text-xs font-mono text-cyan-300 overflow-x-auto max-h-[300px]">
+              <pre className="p-4 rounded-xl bg-[#090D1A] border border-white/10 text-xs font-mono text-cyan-300 overflow-x-auto max-h-75">
 {`# ─── INDRA-MARKETMIND REAL QUANT EXPORT ────────────────────
 import vectorbt as vbt
 import yfinance as yf

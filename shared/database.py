@@ -10,12 +10,18 @@ Base = declarative_base()
 
 # ── Async Engine ──────────────────────────────────────────
 # We use asyncpg for high performance asynchronous DB access
+connect_args = {}
+if "supabase.com" in settings.async_database_url or "pooler.supabase.com" in settings.async_database_url:
+    connect_args["ssl"] = "require"
+    connect_args["statement_cache_size"] = 0
+
 engine = create_async_engine(
     settings.async_database_url,
     echo=False,           # Set to True for SQL query logging
     future=True,
     pool_size=20,         # Adjust based on expected concurrency
-    max_overflow=10
+    max_overflow=10,
+    connect_args=connect_args
 )
 
 # ── Async Session Maker ───────────────────────────────────

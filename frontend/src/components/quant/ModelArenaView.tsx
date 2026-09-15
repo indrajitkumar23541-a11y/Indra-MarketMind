@@ -2,16 +2,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { 
-  Sparkles, 
   BrainCircuit, 
-  Cpu, 
-  Layers, 
-  TrendingUp, 
-  CheckCircle2, 
-  AlertCircle,
   RefreshCw,
-  Zap,
-  Target,
   Loader2,
   ExternalLink
 } from "lucide-react";
@@ -22,14 +14,13 @@ import {
   Area, 
   XAxis, 
   YAxis, 
-  Tooltip, 
-  ReferenceLine 
+  Tooltip 
 } from "recharts";
 import { cn } from "@/lib/utils";
 
 interface ModelArenaViewProps {
   selectedTicker: string;
-  onSelectTicker: (ticker: string) => void;
+  onSelectTicker?: (ticker: string) => void;
 }
 
 interface RawCandlePoint {
@@ -48,7 +39,7 @@ interface ArenaChartPoint {
   isFuture: boolean;
 }
 
-export function ModelArenaView({ selectedTicker, onSelectTicker }: ModelArenaViewProps) {
+export function ModelArenaView({ selectedTicker }: ModelArenaViewProps) {
   const [horizonDays, setHorizonDays] = useState<7 | 14 | 30 | 60>(30);
   const [activeModel, setActiveModel] = useState<"all" | "hybrid" | "lstm" | "prophet">("all");
   const [isRetraining, setIsRetraining] = useState(false);
@@ -306,7 +297,7 @@ export function ModelArenaView({ selectedTicker, onSelectTicker }: ModelArenaVie
           className={cn(
             "glass-panel p-4 rounded-2xl border transition-all cursor-pointer",
             activeModel === "prophet" || activeModel === "all"
-              ? "border-purple-500/40 bg-gradient-to-b from-purple-950/20 to-[#0A0E1A]"
+              ? "border-purple-500/40 bg-linear-to-b from-purple-950/20 to-[#0A0E1A]"
               : "border-white/5 opacity-50 bg-[#0A0E1A]"
           )}
         >
@@ -344,7 +335,7 @@ export function ModelArenaView({ selectedTicker, onSelectTicker }: ModelArenaVie
           className={cn(
             "glass-panel p-4 rounded-2xl border transition-all cursor-pointer",
             activeModel === "lstm" || activeModel === "all"
-              ? "border-cyan-500/40 bg-gradient-to-b from-cyan-950/20 to-[#0A0E1A]"
+              ? "border-cyan-500/40 bg-linear-to-b from-cyan-950/20 to-[#0A0E1A]"
               : "border-white/5 opacity-50 bg-[#0A0E1A]"
           )}
         >
@@ -382,7 +373,7 @@ export function ModelArenaView({ selectedTicker, onSelectTicker }: ModelArenaVie
           className={cn(
             "glass-panel p-4 rounded-2xl border transition-all cursor-pointer relative overflow-hidden",
             activeModel === "hybrid" || activeModel === "all"
-              ? "border-emerald-500/40 bg-gradient-to-b from-emerald-950/25 to-[#0A0E1A] shadow-[0_0_20px_rgba(16,185,129,0.15)]"
+              ? "border-emerald-500/40 bg-linear-to-b from-emerald-950/25 to-[#0A0E1A] shadow-[0_0_20px_rgba(16,185,129,0.15)]"
               : "border-white/5 opacity-50 bg-[#0A0E1A]"
           )}
         >
@@ -459,7 +450,7 @@ export function ModelArenaView({ selectedTicker, onSelectTicker }: ModelArenaVie
           </div>
         </div>
 
-        <div className="h-[260px] sm:h-[320px] md:h-[360px] w-full pt-2">
+        <div className="h-65 sm:h-80 md:h-90 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData}>
               <defs>
@@ -490,9 +481,9 @@ export function ModelArenaView({ selectedTicker, onSelectTicker }: ModelArenaVie
                   boxShadow: "0 0 20px rgba(0,0,0,0.8)"
                 }}
                 labelStyle={{ color: "#94A3B8", fontSize: "11px" }}
-                formatter={(value: any, name: any) => [
+                formatter={(value: unknown, name: unknown) => [
                   value ? `${currencySymbol}${value}` : "N/A",
-                  name === "actualPrice" ? "Real Price" : name === "hybrid" ? "Hybrid AI" : name === "lstm" ? "LSTM Net" : name === "prophet" ? "Prophet" : name
+                  name === "actualPrice" ? "Real Price" : name === "hybrid" ? "Hybrid AI" : name === "lstm" ? "LSTM Net" : name === "prophet" ? "Prophet" : String(name)
                 ]}
               />
 
@@ -568,7 +559,7 @@ export function ModelArenaView({ selectedTicker, onSelectTicker }: ModelArenaVie
               <div key={item.factor} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs">
                 <span className="w-full sm:w-56 text-slate-300 truncate">{item.factor}</span>
                 <div className="flex-1 bg-slate-800/60 rounded-full h-2 overflow-hidden">
-                  <div className={cn("h-full rounded-full bg-gradient-to-r", item.color)} style={{ width: item.impact }} />
+                  <div className={cn("h-full rounded-full bg-linear-to-r", item.color)} style={{ width: item.impact }} />
                 </div>
                 <span className="font-mono font-bold text-white w-10 text-right">{item.impact}</span>
               </div>

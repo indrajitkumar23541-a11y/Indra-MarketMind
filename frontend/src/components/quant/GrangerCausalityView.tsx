@@ -208,7 +208,7 @@ export function GrangerCausalityView({ selectedTicker, onSelectTicker }: Granger
       </div>
 
       {/* Key Finding Verdict Card */}
-      <div className="p-4 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/20 via-[#0A0E1A] to-cyan-950/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl border border-emerald-500/30 bg-linear-to-r from-emerald-950/20 via-[#0A0E1A] to-cyan-950/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-start gap-3">
           <Lightbulb className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
           <div>
@@ -262,7 +262,7 @@ export function GrangerCausalityView({ selectedTicker, onSelectTicker }: Granger
                   "p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3",
                   lag.significant 
                     ? "bg-emerald-950/20 border-emerald-500/30" 
-                    : "bg-white/[0.02] border-white/5 opacity-70"
+                    : "bg-white/2 border-white/5 opacity-70"
                 )}
               >
                 <div className="space-y-1">
@@ -315,7 +315,7 @@ export function GrangerCausalityView({ selectedTicker, onSelectTicker }: Granger
             <span className="text-[10px] font-mono text-emerald-400 font-bold">+{realPearsonR} r</span>
           </div>
 
-          <div className="h-[200px] w-full pt-2">
+          <div className="h-50 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={rollingCorrelationData}>
                 <defs>

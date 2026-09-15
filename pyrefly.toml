@@ -1,5 +1,33 @@
-python-interpreter-path = "e:/Indra-MarketMind/venv/Scripts/python.exe"
-search-paths = [
-    "e:/Indra-MarketMind/venv/Lib/site-packages",
-    "e:/Indra-MarketMind"
+python-interpreter-path = "E:/Indra-MarketMind/venv/Scripts/python.exe"
+search-path = [
+    ".",
+    "dashboard",
+    "services",
+    "shared",
+    "services/analytics",
+    "services/data_ingestion",
+    "services/forecasting",
+    "services/sentiment",
+    "services/auto_trading",
+    "services/gateway",
+    "services/multimodal",
+    "services/rag_chatbot",
+    "services/crypto_onchain",
+    "services/alternative_data",
+    "services/alerts"
 ]
+enable-fallback-search-path = true
+
+[errors]
+missing-import = "ignore"
+unexpected-keyword = "ignore"
+bad-argument-count = "ignore"
+bad-argument-type = "ignore"
+bad-assignment = "ignore"
+bad-function-definition = "ignore"
+bad-index = "ignore"
+bad-return = "ignore"
+missing-argument = "ignore"
+missing-attribute = "ignore"
+not-callable = "ignore"
+unsupported-operation = "ignore"

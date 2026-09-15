@@ -102,11 +102,33 @@ async def _forward_request(method: str, service_url: str, path: str, request: Re
         except httpx.RequestError as e:
             raise HTTPException(status_code=503, detail=f"Service unavailable: {str(e)}")
 
+# Forwarding routes for all microservices
+@app.api_route("/api/data/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
+async def route_data(path: str, request: Request):
+    return await _forward_request(request.method, settings.DATA_SERVICE_URL, f"/{path}", request)
+
+@app.api_route("/api/sentiment/{path:path}", methods=["GET", "POST"])
+async def route_sentiment(path: str, request: Request):
+    return await _forward_request(request.method, settings.SENTIMENT_SERVICE_URL, f"/{path}", request)
+
+@app.api_route("/api/analytics/{path:path}", methods=["GET", "POST"])
+async def route_analytics(path: str, request: Request):
+    return await _forward_request(request.method, settings.ANALYTICS_SERVICE_URL, f"/{path}", request)
+
+@app.api_route("/api/forecast/{path:path}", methods=["GET", "POST"])
+async def route_forecast(path: str, request: Request):
+    return await _forward_request(request.method, settings.FORECAST_SERVICE_URL, f"/{path}", request)
+
+@app.api_route("/api/alerts/{path:path}", methods=["GET", "POST"])
+async def route_alerts(path: str, request: Request):
+    return await _forward_request(request.method, settings.ALERT_SERVICE_URL, f"/{path}", request)
+
 @app.api_route("/api/rag/{path:path}", methods=["GET", "POST"])
 async def route_rag(path: str, request: Request):
     return await _forward_request(request.method, settings.RAG_CHATBOT_URL, f"/{path}", request)
 
 @app.api_route("/api/trading/{path:path}", methods=["GET", "POST"])
+@app.api_route("/api/autotrading/{path:path}", methods=["GET", "POST"])
 async def route_trading(path: str, request: Request):
     return await _forward_request(request.method, settings.AUTO_TRADING_URL, f"/{path}", request)
 
@@ -119,6 +141,7 @@ async def route_crypto(path: str, request: Request):
     return await _forward_request(request.method, settings.CRYPTO_ONCHAIN_URL, f"/{path}", request)
 
 @app.api_route("/api/alt-data/{path:path}", methods=["GET", "POST"])
+@app.api_route("/api/altdata/{path:path}", methods=["GET", "POST"])
 async def route_alt_data(path: str, request: Request):
     return await _forward_request(request.method, settings.ALTERNATIVE_DATA_URL, f"/{path}", request)
 

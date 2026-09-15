@@ -4,14 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { 
   Dice5, 
   ShieldAlert, 
-  TrendingDown, 
-  TrendingUp, 
   RefreshCw, 
-  Sliders, 
-  CheckCircle2, 
-  AlertOctagon,
-  Flame,
-  Activity,
   Loader2,
   ExternalLink
 } from "lucide-react";
@@ -21,16 +14,13 @@ import {
   Area, 
   XAxis, 
   YAxis, 
-  Tooltip, 
-  LineChart,
-  Line,
-  ReferenceLine 
+  Tooltip 
 } from "recharts";
 import { cn } from "@/lib/utils";
 
 interface MonteCarloRiskViewProps {
   selectedTicker: string;
-  onSelectTicker: (ticker: string) => void;
+  onSelectTicker?: (ticker: string) => void;
 }
 
 interface RawCandlePoint {
@@ -38,7 +28,7 @@ interface RawCandlePoint {
   value: number;
 }
 
-export function MonteCarloRiskView({ selectedTicker, onSelectTicker }: MonteCarloRiskViewProps) {
+export function MonteCarloRiskView({ selectedTicker }: MonteCarloRiskViewProps) {
   const [forecastDays, setForecastDays] = useState<30 | 60 | 90>(30);
   const [isSimulating, setIsSimulating] = useState(false);
 
@@ -120,7 +110,16 @@ export function MonteCarloRiskView({ selectedTicker, onSelectTicker }: MonteCarl
     const dailyVol = Math.sqrt(variance);
     const annualVol = (dailyVol * Math.sqrt(252) * 100).toFixed(1);
 
-    const stepPercentiles: any[] = [];
+    interface StepPercentilePoint {
+      day: string;
+      date: string;
+      p95: number;
+      p75: number;
+      p50: number;
+      p25: number;
+      p5: number;
+    }
+    const stepPercentiles: StepPercentilePoint[] = [];
     const baseDate = new Date();
 
     for (let day = 0; day <= forecastDays; day++) {
@@ -326,7 +325,7 @@ export function MonteCarloRiskView({ selectedTicker, onSelectTicker }: MonteCarl
           </div>
         </div>
 
-        <div className="h-[260px] sm:h-[300px] md:h-[340px] w-full pt-2">
+        <div className="h-65 sm:h-75 md:h-85 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={simulationCone}>
               <defs>
@@ -360,7 +359,7 @@ export function MonteCarloRiskView({ selectedTicker, onSelectTicker }: MonteCarl
                   boxShadow: "0 0 15px rgba(0,0,0,0.8)"
                 }}
                 labelStyle={{ color: "#94A3B8", fontSize: "11px" }}
-                formatter={(val: any, name: any) => [
+                formatter={(val: unknown, name: unknown) => [
                   `${currencySymbol}${val}`,
                   name === "p95" ? "95th Percentile" : name === "p75" ? "75th Percentile" : name === "p50" ? "Expected Median" : name === "p25" ? "25th Percentile" : "5th % Worst Case"
                 ]}
@@ -437,7 +436,7 @@ export function MonteCarloRiskView({ selectedTicker, onSelectTicker }: MonteCarl
             {stressScenarios.map((scen) => (
               <div
                 key={scen.name}
-                className="p-3.5 sm:p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition space-y-2"
+                className="p-3.5 sm:p-4 rounded-xl border border-white/5 bg-white/2 hover:bg-white/4 transition space-y-2"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">

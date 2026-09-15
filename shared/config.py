@@ -63,6 +63,7 @@ class Settings(BaseSettings):
     ALTERNATIVE_DATA_URL: str = "http://localhost:8010"
 
     # Database URLs
+    DATABASE_URL: str | None = None
     POSTGRES_USER: str = "indra"
     POSTGRES_PASSWORD: str = "marketmind"
     POSTGRES_DB: str = "marketmind"
@@ -71,10 +72,20 @@ class Settings(BaseSettings):
 
     @property
     def sync_database_url(self) -> str:
+        if self.DATABASE_URL and self.DATABASE_URL.strip().startswith(("postgres://", "postgresql://", "postgresql+")):
+            url = self.DATABASE_URL.strip().replace("postgres://", "postgresql://")
+            if "+asyncpg" in url:
+                url = url.replace("+asyncpg", "")
+            return url
         return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
     @property
     def async_database_url(self) -> str:
+        if self.DATABASE_URL and self.DATABASE_URL.strip().startswith(("postgres://", "postgresql://", "postgresql+")):
+            url = self.DATABASE_URL.strip().replace("postgres://", "postgresql://")
+            if "+asyncpg" not in url:
+                url = url.replace("postgresql://", "postgresql+asyncpg://")
+            return url
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
     # Cache & Vector
