@@ -300,41 +300,42 @@ Combines the strength of statistical time-series decomposition and non-linear de
 Indra-MarketMind is built on an enterprise asynchronous microservices mesh orchestrated via Docker and Kubernetes:
 
 ```mermaid
-graph TB
-    subgraph CLIENT["💻 Client Layer"]
-        UI["🌐 Next.js 16 Web Terminal (Port 3000 / Vercel Edge)"]
-        QUANT["🔬 Native AI Quant Terminal (/research)"]
-        STREAMLIT["📊 Streamlit Secondary Sandbox (Port 8501)"]
+flowchart TD
+    subgraph CLIENT [Client Layer]
+        UI["Next.js 16 Web Terminal (Port 3000 / Vercel Edge)"]
+        QUANT["Native AI Quant Terminal (/research)"]
+        STREAMLIT["Streamlit Secondary Sandbox (Port 8501)"]
     end
 
-    subgraph INGRESS["🔀 API Gateway (Port 8000)"]
-        GW["Reverse Proxy, Rate Limiter & Service Router"]
+    subgraph INGRESS [API Gateway (Port 8000)]
+        GW["Reverse Proxy, Rate Limiter and Service Router"]
     end
 
-    subgraph CORE_SERVICES["⚙️ Core Services"]
-        S1["📡 Data Ingestion (Port 8001)"]
-        S2["🧠 Sentiment Ensemble (Port 8002)"]
-        S3["📊 Analytics & Signals (Port 8003)"]
-        S4["🔮 Hybrid Forecaster (Port 8004)"]
-        S5["🚨 Alerts & Notification (Port 8005)"]
+    subgraph CORE_SERVICES [Core Microservices]
+        S1["Data Ingestion (Port 8001)"]
+        S2["Sentiment Ensemble (Port 8002)"]
+        S3["Analytics and Signals (Port 8003)"]
+        S4["Hybrid Forecaster (Port 8004)"]
+        S5["Alerts and Notification (Port 8005)"]
     end
 
-    subgraph ADVANCED_SERVICES["🚀 Advanced Intelligence Services"]
-        S6["🤖 RAG Vector Chatbot (Port 8006)"]
-        S7["⚡ Auto-Trading & Risk (Port 8007)"]
-        S8["🎙️ Multimodal Audio (Port 8008)"]
-        S9["🐋 Crypto On-Chain (Port 8009)"]
-        S10["🛰️ Alternative Data (Port 8010)"]
+    subgraph ADVANCED_SERVICES [Advanced Intelligence Services]
+        S6["RAG Vector Chatbot (Port 8006)"]
+        S7["Auto-Trading and Risk Manager (Port 8007)"]
+        S8["Multimodal Audio (Port 8008)"]
+        S9["Crypto On-Chain (Port 8009)"]
+        S10["Alternative Data (Port 8010)"]
     end
 
-    subgraph DATA_LAYER["🗄️ Persistence & Storage"]
-        PG[("🐘 PostgreSQL 16 + pgvector")]
-        REDIS[("⚡ Redis 7 In-Memory Cache")]
+    subgraph DATA_LAYER [Persistence and Storage]
+        PG[("PostgreSQL 16 + pgvector")]
+        REDIS[("Redis 7 In-Memory Cache")]
     end
 
     UI --> GW
     QUANT --> GW
-    STREAMLIT -.->|Optional Sandbox Drawer| QUANT
+    STREAMLIT --> GW
+
     GW --> S1
     GW --> S2
     GW --> S3
@@ -346,8 +347,16 @@ graph TB
     GW --> S9
     GW --> S10
 
-    S1 & S2 & S3 & S4 & S6 & S7 --> PG
-    S1 & S3 & S9 --> REDIS
+    S1 --> PG
+    S2 --> PG
+    S3 --> PG
+    S4 --> PG
+    S6 --> PG
+    S7 --> PG
+
+    S1 --> REDIS
+    S3 --> REDIS
+    S9 --> REDIS
 ```
 
 ---
