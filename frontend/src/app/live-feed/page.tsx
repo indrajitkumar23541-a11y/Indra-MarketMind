@@ -20,6 +20,7 @@ import {
   Zap
 } from "lucide-react";
 import NewsDetailModal, { NewsArticleItem } from "@/components/NewsDetailModal";
+import QuantumLoader from "@/components/QuantumLoader";
 
 const CATEGORIES = ["All Sources", "Equities", "Forex", "Crypto", "Macro", "Earnings"];
 
@@ -312,15 +313,12 @@ export default function LiveFeed() {
         {/* Main Feed Column */}
         <div className="lg:col-span-8 space-y-4">
           {loading ? (
-            // Skeleton Loader
-            <div className="space-y-4">
-              {[1, 2, 3, 4].map((n) => (
-                <div key={n} className="glass-panel p-6 animate-pulse space-y-3">
-                  <div className="h-4 bg-white/10 rounded w-1/4" />
-                  <div className="h-6 bg-white/10 rounded w-3/4" />
-                  <div className="h-4 bg-white/10 rounded w-full" />
-                </div>
-              ))}
+            <div className="glass-panel p-12 flex flex-col items-center justify-center min-h-[380px] rounded-2xl border border-cyan-500/20 bg-slate-950/60 shadow-xl">
+              <QuantumLoader 
+                size="md" 
+                title="NEURAL NEWS DISPATCH" 
+                subtitle="Synthesizing multi-source feeds & FinBERT sentiment..." 
+              />
             </div>
           ) : filteredArticles.length === 0 ? (
             // Empty State

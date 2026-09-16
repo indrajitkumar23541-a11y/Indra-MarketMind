@@ -36,7 +36,57 @@
   .glass-panel {
     @apply bg-slate-900/60 backdrop-blur-xl border border-white/5 rounded-2xl;
   }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
 }
+
+@keyframes gyro-ring-1 {
+  0% { transform: rotateX(68deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(68deg) rotateY(0deg) rotateZ(360deg); }
+}
+
+@keyframes gyro-ring-2 {
+  0% { transform: rotateY(68deg) rotateX(0deg) rotateZ(360deg); }
+  100% { transform: rotateY(68deg) rotateX(0deg) rotateZ(0deg); }
+}
+
+@keyframes gyro-ring-3 {
+  0% { transform: rotateX(52deg) rotateY(45deg) rotateZ(0deg); }
+  100% { transform: rotateX(52deg) rotateY(45deg) rotateZ(360deg); }
+}
+
+@keyframes core-pulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.85; filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.7)); }
+  50% { transform: scale(1.12); opacity: 1; filter: drop-shadow(0 0 28px rgba(0, 240, 255, 1)); }
+}
+
+@keyframes scanline-glow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.animate-gyro-1 {
+  animation: gyro-ring-1 7s linear infinite;
+}
+
+.animate-gyro-2 {
+  animation: gyro-ring-2 5s linear infinite;
+}
+
+.animate-gyro-3 {
+  animation: gyro-ring-3 3.8s linear infinite;
+}
+
+.animate-core-pulse {
+  animation: core-pulse 2.4s ease-in-out infinite;
+}
+
+.animate-scanline {
+  animation: scanline-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 
 html {
   -webkit-tap-highlight-color: transparent;

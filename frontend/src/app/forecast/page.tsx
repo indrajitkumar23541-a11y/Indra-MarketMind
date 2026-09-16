@@ -40,6 +40,7 @@ import {
   ReferenceLine 
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
+import QuantumLoader from "@/components/QuantumLoader";
 
 interface PastOverlay {
   date: string;
@@ -748,9 +749,12 @@ export default function ForecastPage() {
             {/* Chart Area */}
             <div className="h-72 sm:h-96 w-full relative">
               {loading ? (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-xs rounded-xl z-20">
-                  <div className="w-10 h-10 border-2 border-indigo-500 border-t-cyan-400 rounded-full animate-spin mb-3"></div>
-                  <p className="text-xs text-slate-400 font-medium tracking-wide">Computing Monte Carlo diffusion & telemetry...</p>
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-sm rounded-xl z-20">
+                  <QuantumLoader 
+                    size="md" 
+                    title="MONTE CARLO SIMULATOR" 
+                    subtitle="Computing stochastic paths & fan cone corridors..." 
+                  />
                 </div>
               ) : null}
 

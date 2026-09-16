@@ -50,6 +50,7 @@ import {
   Tooltip 
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
+import QuantumLoader from "@/components/QuantumLoader";
 
 interface FactorRadarItem {
   subject: string;
@@ -400,6 +401,20 @@ export default function DeepDivePage() {
     }
   };
 
+  if (loading && !data) {
+    return (
+      <div className="w-full min-h-[65vh] flex items-center justify-center p-4">
+        <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-cyan-500/20 bg-slate-950/60 shadow-2xl shadow-cyan-500/10 flex flex-col items-center">
+          <QuantumLoader 
+            size="lg" 
+            title="INSTITUTIONAL DEEP DIVE ENGINE" 
+            subtitle="Synthesizing multi-factor models, DCF matrices & candle telemetry..." 
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto px-2 sm:px-4 print:p-0 print:m-0 print:max-w-none">
       
@@ -657,9 +672,12 @@ export default function DeepDivePage() {
             {/* Dual-Axis ComposedChart Container */}
             <div className="h-80 w-full relative">
               {loading && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/70 backdrop-blur-xs rounded-xl z-20">
-                  <div className="w-8 h-8 border-2 border-indigo-500 border-t-cyan-400 rounded-full animate-spin mb-2"></div>
-                  <p className="text-xs text-slate-400">Loading historical candles...</p>
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-sm rounded-xl z-20">
+                  <QuantumLoader 
+                    size="sm" 
+                    title="CANDLE STREAM" 
+                    subtitle="Calibrating dual-axis OHLCV..." 
+                  />
                 </div>
               )}
 

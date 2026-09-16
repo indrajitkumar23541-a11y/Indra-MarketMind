@@ -39,6 +39,7 @@ import {
   ReferenceLine 
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
+import QuantumLoader from "@/components/QuantumLoader";
 
 interface FactorItem {
   name: string;
@@ -152,6 +153,20 @@ export default function FearGreedPage() {
 
   // Convert 0-100 score to angle for the gauge needle (-90deg to +90deg)
   const needleAngle = data ? -90 + (data.score / 100) * 180 : 0;
+
+  if (loading && !data) {
+    return (
+      <div className="w-full min-h-[65vh] flex items-center justify-center p-4">
+        <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-cyan-500/20 bg-slate-950/60 shadow-2xl shadow-cyan-500/10 flex flex-col items-center">
+          <QuantumLoader 
+            size="lg" 
+            title="SENTIMENT & VOLATILITY MATRIX" 
+            subtitle="Calculating CBOE Put/Call, Junk Bond Spreads & Safe Haven Demand..." 
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-2 sm:pb-6 max-w-7xl mx-auto">
