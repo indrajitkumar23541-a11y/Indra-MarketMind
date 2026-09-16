@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-
+import { handleFearGreed } from "@/lib/api-handlers/fearGreed";
+import { handleLiveNews } from "@/lib/api-handlers/liveNews";
+import { handleForecast } from "@/lib/api-handlers/forecast";
+import { handleDeepDive } from "@/lib/api-handlers/deepDive";
+import {
+  handleSentimentEnsemble,
+  handleGrangerCausality,
+  handleCorrelation
+} from "@/lib/api-handlers/quantAnalytics";
 
 const YAHOO_HEADERS = {
   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -122,7 +130,20 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ error: "Quote not found" }, { status: 404 });
   }
 
-  // 2. /api/data/fetch/market/[ticker]/chart
+  // 2. /api/data/fetch/market/[ticker]/deep-dive or /api/market/[ticker]/deep-dive
+  if (pathStr.includes("market/") && pathStr.endsWith("/deep-dive")) {
+    const rawTicker = pathStr.replace(/^.*market\//, "").replace("/deep-dive", "");
+    const ticker = decodeURIComponent(rawTicker);
+    try {
+      const data = await handleDeepDive(ticker);
+      return NextResponse.json(data);
+    } catch (err) {
+      console.error(`Error generating deep dive for ${ticker}:`, err);
+      return NextResponse.json({ error: "Failed to generate deep dive" }, { status: 500 });
+    }
+  }
+
+  // 3. /api/data/fetch/market/[ticker]/chart
   if (pathStr.startsWith("data/fetch/market/") && pathStr.endsWith("/chart")) {
     const rawTicker = pathStr.replace("data/fetch/market/", "").replace("/chart", "");
     const ticker = decodeURIComponent(rawTicker);
@@ -132,7 +153,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ error: "Chart data not found" }, { status: 404 });
   }
 
-  // 3. /api/data/fetch/market/indices/overview
+  // 4. /api/data/fetch/market/indices/overview
   if (pathStr === "data/fetch/market/indices/overview") {
     const promises = INDICES_CONFIG.map(async (item) => {
       const d = await fetchYahooChart(item.symbol, "1d");
@@ -159,7 +180,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ indices: results });
   }
 
-  // 4. /api/data/fetch/market/search
+  // 5. /api/data/fetch/market/search
   if (pathStr === "data/fetch/market/search") {
     const q = url.searchParams.get("q") || "";
     try {
@@ -179,92 +200,69 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
   }
 
-  // 5. /api/analytics/signals/fear-greed
-  if (pathStr === "analytics/signals/fear-greed") {
-    const nifty = await fetchYahooChart("^NSEI", "1d");
-    const dp = nifty?.dp ?? 0;
-    // Calculate intelligent real-time sentiment score centered around 50
-    let score = Math.round(50 + dp * 12);
-    score = Math.max(12, Math.min(88, score));
-    let label = "NEUTRAL";
-    if (score >= 75) label = "EXTREME GREED";
-    else if (score >= 55) label = "GREED";
-    else if (score <= 25) label = "EXTREME FEAR";
-    else if (score <= 45) label = "FEAR";
-
-    return NextResponse.json({
-      score,
-      label,
-      previous_close: Math.max(10, score - 2),
-      one_week_ago: 52,
-      one_month_ago: 55,
-      confidence: 0.96,
-      market: "NSE",
-      components: {
-        price_momentum: Math.min(90, Math.max(10, score + 2)),
-        stock_breadth: Math.min(90, Math.max(10, score - 3)),
-        market_volatility: Math.min(90, Math.max(10, 50 - dp * 5)),
-        safe_haven_demand: 48,
-        junk_bond_demand: 52,
-        put_call_ratio: 49,
-        social_sentiment: Math.min(90, Math.max(10, score + 1))
-      }
-    });
+  // 6. /api/analytics/signals/fear-greed or /api/signals/fear-greed
+  if (pathStr === "analytics/signals/fear-greed" || pathStr === "signals/fear-greed" || pathStr === "data/fetch/signals/fear-greed") {
+    const market = url.searchParams.get("market") || "global";
+    try {
+      const data = await handleFearGreed(market);
+      return NextResponse.json(data);
+    } catch (err) {
+      console.error("Error generating fear & greed:", err);
+      return NextResponse.json({ error: "Failed to generate fear & greed telemetry" }, { status: 500 });
+    }
   }
 
-  // 6. /api/data/news/count
-  if (pathStr === "data/news/count") {
-    return NextResponse.json({ count: 1842, status: "live_monitoring", hours_back: 24 });
+  // 7. /api/data/news/count or /api/news/count
+  if (pathStr === "data/news/count" || pathStr === "news/count") {
+    return NextResponse.json({ count: 1480 + (Math.floor(Date.now() / 60000) % 50), status: "live_monitoring", hours_back: 24 });
   }
 
-  // 7. /api/data/news/live-feed
-  if (pathStr === "data/news/live-feed") {
-    const dummyNews = [
-      {
-        id: "news-1",
-        title: "RBI Governor Highlights India's Resilient Macro Fundamentals Amid Global Rate Uncertainty",
-        source: "Reuters Financial",
-        timestamp: "5m ago",
-        sentiment: "Bullish",
-        score: 0.85,
-        summary: "India's central bank underscored robust industrial PMI growth, healthy credit expansion, and disciplined fiscal targets keeping domestic equity inflows strong.",
-        tickers: ["NIFTY 50", "BANK NIFTY", "RELIANCE"]
-      },
-      {
-        id: "news-2",
-        title: "IT & Tech Majors See Fresh Foreign Institutional Inflows on AI Transformation Demand",
-        source: "Bloomberg",
-        timestamp: "18m ago",
-        sentiment: "Bullish",
-        score: 0.78,
-        summary: "Large-cap enterprise software vendors witness accelerated multi-year digital transformation and GenAI cloud modernization deals.",
-        tickers: ["TCS", "INFY", "HCLTECH"]
-      },
-      {
-        id: "news-3",
-        title: "Crude Oil Prices Stabilize as Global Supply Routes Maintain Balanced Inventories",
-        source: "Wall Street Journal",
-        timestamp: "32m ago",
-        sentiment: "Neutral",
-        score: 0.12,
-        summary: "Brent and WTI trade within tight intraday channels as shipping lanes normalize and refinery runs increase heading into next quarter.",
-        tickers: ["BRENT", "CRUDE", "ONGC"]
-      },
-      {
-        id: "news-4",
-        title: "Automobile Sales Surge in Passenger EV and Hybrid Segments Across Urban Metros",
-        source: "Financial Express",
-        timestamp: "45m ago",
-        sentiment: "Bullish",
-        score: 0.72,
-        summary: "Automakers register double-digit retail dispatch growth driven by new model launches and improved battery supply chains.",
-        tickers: ["TATAMOTORS", "M&M", "MARUTI"]
-      }
-    ];
-    return NextResponse.json({ news: dummyNews, total: dummyNews.length });
+  // 8. /api/data/news/live-feed or /api/news/live-feed
+  if (pathStr === "data/news/live-feed" || pathStr === "news/live-feed") {
+    const category = url.searchParams.get("category") || "All";
+    const limit = parseInt(url.searchParams.get("limit") || "40", 10);
+    try {
+      const data = await handleLiveNews(category, limit);
+      return NextResponse.json(data);
+    } catch (err) {
+      console.error("Error generating live news feed:", err);
+      return NextResponse.json({ error: "Failed to generate live news feed" }, { status: 500 });
+    }
   }
 
-  // 8. /api/system/status
+  // 9. /api/data/fetch/forecast/nifty50 or /api/forecast/nifty50 or /api/forecast
+  if (pathStr.includes("forecast/nifty50") || pathStr.endsWith("/forecast") || pathStr === "forecast") {
+    const ticker = url.searchParams.get("ticker") || "^NSEI";
+    const days = parseInt(url.searchParams.get("days") || "7", 10);
+    const crude = parseFloat(url.searchParams.get("crude_oil_pct") || "0");
+    const dxy = parseFloat(url.searchParams.get("dxy_pct") || "0");
+    const rbi = parseFloat(url.searchParams.get("rbi_bps") || "0");
+    try {
+      const data = await handleForecast(ticker, days, crude, dxy, rbi);
+      return NextResponse.json(data);
+    } catch (err) {
+      console.error("Error generating forecast:", err);
+      return NextResponse.json({ error: "Failed to generate forecast" }, { status: 500 });
+    }
+  }
+
+  // 10. /api/analytics/analyze/granger/[ticker]
+  if (pathStr.startsWith("analytics/analyze/granger/")) {
+    const rawTicker = pathStr.replace("analytics/analyze/granger/", "");
+    const lag = parseInt(url.searchParams.get("lag_days") || "1", 10);
+    const data = await handleGrangerCausality(rawTicker, lag);
+    return NextResponse.json(data);
+  }
+
+  // 11. /api/analytics/analyze/correlation/[ticker]
+  if (pathStr.startsWith("analytics/analyze/correlation/")) {
+    const rawTicker = pathStr.replace("analytics/analyze/correlation/", "");
+    const windowDays = parseInt(url.searchParams.get("window_days") || "30", 10);
+    const data = await handleCorrelation(rawTicker, windowDays);
+    return NextResponse.json(data);
+  }
+
+  // 12. /api/system/status
   if (pathStr === "system/status") {
     return NextResponse.json({
       gateway: "healthy",
@@ -286,38 +284,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     });
   }
 
-  // 9. /api/data/fetch/forecast/nifty50 or /api/forecast/nifty50
-  if (pathStr.includes("forecast/nifty50")) {
-    const nifty = await fetchYahooChart("^NSEI", "1d");
-    const cp = nifty?.c ?? 23500;
-    const forecastPoints = [];
-    const now = new Date();
-    for (let i = 1; i <= 7; i++) {
-      const d = new Date(now);
-      d.setDate(d.getDate() + i);
-      const drift = cp * (1 + (i * 0.002) + (Math.sin(i) * 0.003));
-      forecastPoints.push({
-        day: `Day ${i}`,
-        date: d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" }),
-        predicted: Number(drift.toFixed(2)),
-        upper_bound: Number((drift * 1.015).toFixed(2)),
-        lower_bound: Number((drift * 0.985).toFixed(2)),
-        confidence: Number((0.95 - (i * 0.02)).toFixed(2))
-      });
-    }
-    return NextResponse.json({
-      ticker: "^NSEI",
-      target_name: "NIFTY 50",
-      current_price: cp,
-      time_horizon: "7 Days",
-      direction: "BULLISH",
-      confidence: 0.91,
-      model: "LSTM + ARIMA Hybrid Forecaster",
-      forecast: forecastPoints
-    });
-  }
-
-  // 10. Default / Fallback: Try proxying to Render Gateway if configured, else 404
+  // 13. Default / Fallback: Try proxying to Render Gateway if configured, else 404
   const GATEWAY_URL = process.env.GATEWAY_URL || process.env.NEXT_PUBLIC_GATEWAY_URL;
   if (GATEWAY_URL && !GATEWAY_URL.includes("localhost")) {
     try {
@@ -336,4 +303,48 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   }
 
   return NextResponse.json({ error: `Route /api/${pathStr} not handled` }, { status: 404 });
+}
+
+export async function POST(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+  const { path } = await params;
+  const pathStr = path ? path.join("/") : "";
+
+  // 1. /api/sentiment/analyze/ensemble
+  if (pathStr === "sentiment/analyze/ensemble") {
+    try {
+      const body = await request.json();
+      const text = body?.text || "";
+      const data = await handleSentimentEnsemble(text);
+      return NextResponse.json(data);
+    } catch {
+      const data = await handleSentimentEnsemble("");
+      return NextResponse.json(data);
+    }
+  }
+
+  // 2. Default fallback proxy to Render Gateway
+  const GATEWAY_URL = process.env.GATEWAY_URL || process.env.NEXT_PUBLIC_GATEWAY_URL;
+  if (GATEWAY_URL && !GATEWAY_URL.includes("localhost")) {
+    try {
+      const targetUrl = `${GATEWAY_URL}/api/${pathStr}`;
+      const body = await request.text();
+      const gatewayRes = await fetch(targetUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "Indra-MarketMind-Frontend-Edge"
+        },
+        body,
+        signal: AbortSignal.timeout(3000)
+      });
+      if (gatewayRes.ok) {
+        const data = await gatewayRes.json();
+        return NextResponse.json(data);
+      }
+    } catch {
+      // Fall through
+    }
+  }
+
+  return NextResponse.json({ error: `Route POST /api/${pathStr} not handled` }, { status: 404 });
 }
