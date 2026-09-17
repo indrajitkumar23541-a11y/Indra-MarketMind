@@ -998,9 +998,9 @@ print(portfolio.stats())
               <span className="text-[10px] text-slate-400 font-mono">REAL DATES</span>
             </div>
 
-            <div className="space-y-3 overflow-x-auto">
+            <div className="space-y-3 overflow-x-auto custom-scrollbar">
               {monthlyMatrix.map((item) => (
-                <div key={item.year} className="space-y-1 min-w-65">
+                <div key={item.year} className="space-y-1 min-w-[300px]">
                   <div className="text-[11px] font-mono font-bold text-slate-300">
                     {item.year}
                   </div>

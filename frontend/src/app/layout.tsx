@@ -3,6 +3,7 @@ import { Inter, Manrope, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import TopNav from "@/components/TopNav";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import MarketMindCopilot from "@/components/MarketMindCopilot";
 import { NavProvider } from "@/lib/NavContext";
 
@@ -153,11 +154,12 @@ export default function RootLayout({
           <Sidebar />
           <div className="flex-1 flex flex-col min-w-0 h-full relative">
             <TopNav />
-            <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 pb-4 sm:pb-6 custom-scrollbar bg-radial-[at_100%_0%] from-indigo-900/10 via-[#05070D] to-[#030407]">
+            <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 pb-24 lg:pb-6 custom-scrollbar bg-radial-[at_100%_0%] from-indigo-900/10 via-[#05070D] to-[#030407]">
               {children}
             </main>
           </div>
           <MarketMindCopilot />
+          <MobileBottomNav />
         </NavProvider>
       </body>
     </html>

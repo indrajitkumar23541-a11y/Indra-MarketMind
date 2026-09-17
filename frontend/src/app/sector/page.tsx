@@ -450,8 +450,12 @@ export default function SectorRotationPage() {
               <span>Complete Sector Matrix</span>
               <span className="text-xs text-slate-400 font-mono">{filteredSectors.length} Sectors Active</span>
             </div>
+            <div className="sm:hidden px-4 py-1.5 text-[10px] text-purple-300 font-mono bg-purple-950/20 border-b border-white/5 flex items-center justify-between">
+              <span>👉 Swipe horizontally for all performance metrics</span>
+              <span className="font-bold">Matrix</span>
+            </div>
             <div className="overflow-x-auto custom-scrollbar">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[860px]">
                 <thead>
                   <tr className="border-b border-white/10 text-[11px] font-bold text-slate-400 uppercase tracking-wider bg-[#0A0E1A]">
                     <th className="py-3 px-4">Sector Index</th>

@@ -335,8 +335,12 @@ export default function InsiderSignalsPage() {
 
           {/* Transactions Table */}
           <div className="glass-panel rounded-2xl border border-white/10 overflow-hidden">
+            <div className="sm:hidden px-4 py-1.5 text-[10px] text-amber-300 font-mono bg-amber-950/20 border-b border-white/5 flex items-center justify-between">
+              <span>👉 Swipe horizontally for all transaction details</span>
+              <span className="font-bold">Deals</span>
+            </div>
             <div className="overflow-x-auto custom-scrollbar">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[920px]">
                 <thead>
                   <tr className="border-b border-white/10 bg-[#070B14]/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                     <th className="py-3.5 px-4">Date & Ticker</th>

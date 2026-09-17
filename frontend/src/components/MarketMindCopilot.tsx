@@ -124,21 +124,21 @@ export default function MarketMindCopilot() {
 
   return (
     <>
-      {/* Floating Trigger Button (Bottom-Right) */}
+      {/* Floating Trigger Button (Bottom-Right, elevated above MobileBottomNav on mobile) */}
       {!isOpen && (
-        <div className="fixed bottom-5 right-5 z-50">
+        <div className="fixed bottom-16 right-3 sm:bottom-5 sm:right-5 z-40">
           <button
             onClick={() => setIsOpen(true)}
-            className="group relative flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 text-white font-bold text-xs shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all cursor-pointer border border-white/30"
+            className="group relative flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 text-white font-bold text-xs shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all cursor-pointer border border-white/30"
           >
             <div className="relative">
-              <Brain className="w-5 h-5 text-black drop-shadow" />
-              <span className="animate-ping absolute -top-1 -right-1 flex h-2.5 w-2.5 rounded-full bg-cyan-300 opacity-80" />
+              <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-black drop-shadow" />
+              <span className="animate-ping absolute -top-1 -right-1 flex h-2 sm:h-2.5 w-2 sm:w-2.5 rounded-full bg-cyan-300 opacity-80" />
             </div>
             <span className="font-space tracking-wide text-slate-950 font-extrabold hidden sm:inline">
               MARKET COPILOT
             </span>
-            <span className="text-[10px] bg-black/40 text-cyan-300 px-1.5 py-0.5 rounded font-mono font-bold">
+            <span className="text-[9px] sm:text-[10px] bg-black/40 text-cyan-300 px-1.5 py-0.5 rounded font-mono font-bold">
               AI
             </span>
           </button>
@@ -148,10 +148,10 @@ export default function MarketMindCopilot() {
       {/* Slide-out Glassmorphism Chat Drawer */}
       {isOpen && (
         <div
-          className={`fixed bottom-4 right-4 z-50 transition-all duration-300 flex flex-col rounded-3xl border border-cyan-500/30 bg-[#060A14]/95 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.9)] overflow-hidden ${
+          className={`fixed z-50 transition-all duration-300 flex flex-col rounded-3xl border border-cyan-500/30 bg-[#060A14]/95 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.9)] overflow-hidden ${
             isExpanded
-              ? "w-[95vw] sm:w-[650px] h-[85vh]"
-              : "w-[92vw] sm:w-[420px] h-[560px]"
+              ? "inset-x-2 bottom-16 top-14 sm:inset-auto sm:bottom-5 sm:right-5 sm:w-[650px] sm:h-[85vh]"
+              : "inset-x-2 bottom-16 sm:inset-auto sm:bottom-5 sm:right-5 sm:w-[420px] max-h-[82vh] h-[520px]"
           }`}
         >
           {/* Header */}

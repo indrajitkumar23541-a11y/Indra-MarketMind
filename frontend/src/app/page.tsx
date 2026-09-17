@@ -676,9 +676,9 @@ export default function Dashboard() {
       </div>
 
       {/* Bottom Alert Banner */}
-      <div className="bg-[#10B981]/10 border border-[#10B981]/30 rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden">
+      <div className="bg-[#10B981]/10 border border-[#10B981]/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 relative overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#10B981] shadow-[0_0_10px_#10B981]"></div>
-        <div className="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center text-black">
+        <div className="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center text-black shrink-0">
           <Bell className="w-4 h-4" fill="currentColor" />
         </div>
         <div className="flex-1">
@@ -687,20 +687,20 @@ export default function Dashboard() {
             Market overview, indices and NLP sentiment engines are operating live at 100% capacity with sub-second polling.
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] text-slate-400 font-mono">LIVE FEED</span>
+        <div className="flex items-center gap-3 shrink-0">
+          <span className="text-[10px] text-slate-400 font-mono bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/30 text-emerald-400 font-bold">LIVE FEED</span>
         </div>
       </div>
 
       {/* MODAL: View All Major Indices & Commodities */}
       {showAllIndicesModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
           <div className="w-full max-w-4xl rounded-2xl bg-[#0A0E1A] border border-cyan-500/30 shadow-[0_25px_70px_rgba(0,0,0,0.9)] overflow-hidden">
-            <div className="flex items-center justify-between p-5 border-b border-white/10 bg-[#0F172A]">
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-white/10 bg-[#0F172A]">
               <div className="flex items-center gap-3">
                 <Globe2 className="w-5 h-5 text-cyan-400" />
                 <div>
-                  <h3 className="font-space font-bold text-lg text-white">Global Markets & Major Indices</h3>
+                  <h3 className="font-space font-bold text-base sm:text-lg text-white">Global Markets & Major Indices</h3>
                   <p className="text-xs text-slate-400">Live prices across India, US, Crypto, and Global Commodities</p>
                 </div>
               </div>
@@ -712,8 +712,8 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="p-5 max-h-[70vh] overflow-y-auto custom-scrollbar">
-              <table className="w-full text-left text-xs">
+            <div className="p-3 sm:p-5 max-h-[70vh] overflow-y-auto overflow-x-auto custom-scrollbar">
+              <table className="w-full text-left text-xs min-w-[580px]">
                 <thead>
                   <tr className="border-b border-white/10 text-slate-400 uppercase font-semibold text-[10px] tracking-wider">
                     <th className="pb-3">Index / Asset</th>

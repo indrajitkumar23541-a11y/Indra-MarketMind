@@ -159,7 +159,7 @@ export default function TopNav() {
               alt="Logo" 
               className="w-7 h-7 rounded-lg object-cover border border-[#00F0FF]/40" 
             />
-            <span className="font-space font-bold text-xs sm:text-sm text-white hidden xs:inline">
+            <span className="font-space font-bold text-xs sm:text-sm text-white hidden sm:inline">
               Indra-<span className="text-[#00F0FF]">MM</span>
             </span>
           </Link>
