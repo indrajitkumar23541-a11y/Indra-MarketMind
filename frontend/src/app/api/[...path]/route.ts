@@ -3,6 +3,10 @@ import { handleFearGreed } from "@/lib/api-handlers/fearGreed";
 import { handleLiveNews } from "@/lib/api-handlers/liveNews";
 import { handleForecast } from "@/lib/api-handlers/forecast";
 import { handleDeepDive } from "@/lib/api-handlers/deepDive";
+import { handleScreener } from "@/lib/api-handlers/screener";
+import { handleInsider } from "@/lib/api-handlers/insider";
+import { handleSector } from "@/lib/api-handlers/sector";
+import { handleChatCopilot } from "@/lib/api-handlers/chatCopilot";
 import {
   handleSentimentEnsemble,
   handleGrangerCausality,
@@ -262,7 +266,22 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json(data);
   }
 
-  // 12. /api/system/status
+  // 12. /api/screener or /api/data/screener
+  if (pathStr === "screener" || pathStr === "data/screener" || pathStr === "data/fetch/screener") {
+    return handleScreener();
+  }
+
+  // 13. /api/insider or /api/data/insider
+  if (pathStr === "insider" || pathStr === "data/insider" || pathStr === "data/fetch/insider") {
+    return handleInsider();
+  }
+
+  // 14. /api/sector or /api/data/sector
+  if (pathStr === "sector" || pathStr === "data/sector" || pathStr === "data/fetch/sector") {
+    return handleSector();
+  }
+
+  // 15. /api/system/status
   if (pathStr === "system/status") {
     return NextResponse.json({
       gateway: "healthy",
@@ -284,7 +303,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     });
   }
 
-  // 13. Default / Fallback: Try proxying to Render Gateway if configured, else 404
+  // 16. Default / Fallback: Try proxying to Render Gateway if configured, else 404
   const GATEWAY_URL = process.env.GATEWAY_URL || process.env.NEXT_PUBLIC_GATEWAY_URL;
   if (GATEWAY_URL && !GATEWAY_URL.includes("localhost")) {
     try {
@@ -322,7 +341,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
   }
 
-  // 2. Default fallback proxy to Render Gateway
+  // 2. /api/chat or /api/copilot/chat
+  if (pathStr === "chat" || pathStr === "copilot/chat" || pathStr === "ai/chat") {
+    return handleChatCopilot(request);
+  }
+
+  // 3. Default fallback proxy to Render Gateway
   const GATEWAY_URL = process.env.GATEWAY_URL || process.env.NEXT_PUBLIC_GATEWAY_URL;
   if (GATEWAY_URL && !GATEWAY_URL.includes("localhost")) {
     try {

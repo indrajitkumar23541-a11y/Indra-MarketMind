@@ -3,6 +3,7 @@ import { Inter, Manrope, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import TopNav from "@/components/TopNav";
+import MarketMindCopilot from "@/components/MarketMindCopilot";
 import { NavProvider } from "@/lib/NavContext";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -156,6 +157,7 @@ export default function RootLayout({
               {children}
             </main>
           </div>
+          <MarketMindCopilot />
         </NavProvider>
       </body>
     </html>

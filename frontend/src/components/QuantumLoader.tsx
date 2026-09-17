@@ -7,6 +7,7 @@ interface QuantumLoaderProps {
   size?: "sm" | "md" | "lg" | "fullscreen";
   title?: string;
   subtitle?: string;
+  text?: string;
   showMicroMessages?: boolean;
 }
 
@@ -23,8 +24,10 @@ export default function QuantumLoader({
   size = "md",
   title = "QUANTUM AI CORE",
   subtitle,
+  text,
   showMicroMessages = true
 }: QuantumLoaderProps) {
+  const displaySubtitle = text || subtitle;
   const [messageIndex, setMessageIndex] = useState(0);
 
   useEffect(() => {
@@ -131,7 +134,7 @@ export default function QuantumLoader({
 
           {/* Subtitle / Shifting Live Message */}
           <p className="text-[11px] sm:text-xs text-slate-400 font-sans tracking-wide min-h-[1.5rem] flex items-center justify-center transition-all duration-300">
-            {subtitle || (showMicroMessages ? TELEMETRY_MESSAGES[messageIndex] : "Calibrating real-time telemetry...")}
+            {displaySubtitle || (showMicroMessages ? TELEMETRY_MESSAGES[messageIndex] : "Calibrating real-time telemetry...")}
           </p>
 
           {/* Cybernetic Progress Scanline Bar */}
