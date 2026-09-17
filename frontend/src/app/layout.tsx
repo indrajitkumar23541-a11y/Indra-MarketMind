@@ -97,6 +97,21 @@ export const metadata: Metadata = {
   verification: {
     google: "I3W6dmeLScyhngNv9VskrtrJlR2NnLngOXJGHySNtFo",
   },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "MarketMind",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   category: "finance",
 };
 
@@ -131,6 +146,7 @@ const jsonLd = {
 };
 
 import MainContentWrapper from "@/components/MainContentWrapper";
+import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 
 export default function RootLayout({
   children,
@@ -160,6 +176,7 @@ export default function RootLayout({
           </div>
           <MarketMindCopilot />
           <MobileBottomNav />
+          <PwaInstallPrompt />
         </NavProvider>
       </body>
     </html>
