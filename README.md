@@ -1,15 +1,15 @@
 <div align="center">
   
-  <a href="https://indra-market-mind.vercel.app" target="_blank">
+  <a href="https://indra-marketmind.vercel.app" target="_blank">
     <img src="./logo.png" alt="Indra-MarketMind Logo" width="165" />
   </a>
 
-  <a href="https://indra-market-mind.vercel.app" target="_blank">
+  <a href="https://indra-marketmind.vercel.app" target="_blank">
     <img src="./banner.png" alt="Indra-MarketMind Header" width="100%" />
   </a>
   
   <p align="center">
-    <a href="https://indra-market-mind.vercel.app" target="_blank"><img src="https://img.shields.io/badge/Live%20Demo-Vercel%20Production-00F0FF?style=for-the-badge&logo=vercel&logoColor=black&labelColor=white" alt="Live Demo" /></a>
+    <a href="https://indra-marketmind.vercel.app" target="_blank"><img src="https://img.shields.io/badge/Live%20Demo-Vercel%20Production-00F0FF?style=for-the-badge&logo=vercel&logoColor=black&labelColor=white" alt="Live Demo" /></a>
     <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/stargazers"><img src="https://img.shields.io/github/stars/indrajitkumar23541-a11y/Indra-MarketMind?color=00F0FF&logo=github&style=for-the-badge" alt="Stars" /></a>
     <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/network/members"><img src="https://img.shields.io/github/forks/indrajitkumar23541-a11y/Indra-MarketMind?color=6C63FF&logo=github&style=for-the-badge" alt="Forks" /></a>
     <a href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind/issues"><img src="https://img.shields.io/github/issues/indrajitkumar23541-a11y/Indra-MarketMind?color=FF3366&logo=github&style=for-the-badge" alt="Issues" /></a>
@@ -20,12 +20,12 @@
   </p>
 
   <p align="center">
-    <a href="https://indra-market-mind.vercel.app" target="_blank">
-      <img src="https://img.shields.io/badge/🌐%20ACCESS%20LIVE%20PRODUCTION%20TERMINAL-indra--market--mind.vercel.app-00F0FF?style=for-the-badge&logo=vercel&logoColor=black" height="38" alt="Access Live Production Terminal" />
+    <a href="https://indra-marketmind.vercel.app" target="_blank">
+      <img src="https://img.shields.io/badge/🌐%20ACCESS%20LIVE%20PRODUCTION%20TERMINAL-indra--marketmind.vercel.app-00F0FF?style=for-the-badge&logo=vercel&logoColor=black" height="38" alt="Access Live Production Terminal" />
     </a>
   </p>
 
-  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=700&size=23&duration=3000&pause=1000&color=00F0FF&center=true&vCenter=true&width=850&height=50&lines=Unified+Dark+Sci-Fi+Terminal+Live+at+indra-market-mind.vercel.app!;Decoding+Global+Market+Emotions+with+5+NLP+Models...;Live+Quotes+%26+Accurate+Trading+Hours+Across+19+Global+Exchanges...;Hybrid+Prophet+%2B+PyTorch+LSTM+Price+Forecasting...;Welcome+to+Indra-MarketMind!" alt="Typing Animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=700&size=23&duration=3000&pause=1000&color=00F0FF&center=true&vCenter=true&width=850&height=50&lines=Unified+Dark+Sci-Fi+Terminal+Live+at+indra-marketmind.vercel.app!;Decoding+Global+Market+Emotions+with+5+NLP+Models...;Live+Quotes+%26+Accurate+Trading+Hours+Across+19+Global+Exchanges...;Hybrid+Prophet+%2B+PyTorch+LSTM+Price+Forecasting...;Welcome+to+Indra-MarketMind!" alt="Typing Animation" />
   
   <br>
   
@@ -63,13 +63,13 @@ Indra-MarketMind is deployed live in production on Vercel's global edge network,
 
 | Live Console / Subsystem | Direct Production URL | Deployment Tier | Real-Time Engine |
 | :--- | :--- | :---: | :--- |
-| **🌌 Live Unified Terminal** | [**`indra-market-mind.vercel.app`**](https://indra-market-mind.vercel.app) | Production | Real-time global quotes, indices overview, dynamic greetings & search |
-| **📰 Live AI News Feed** | [**`indra-market-mind.vercel.app/live-feed`**](https://indra-market-mind.vercel.app/live-feed) | Production | Dual FinBERT + RoBERTa NLP, Market Impact Matrices, & Trending Hashtags |
-| **😱 Global Fear & Greed** | [**`indra-market-mind.vercel.app/fear-greed`**](https://indra-market-mind.vercel.app/fear-greed) | Production | 7-factor institutional emotion telemetry for S&P 500 & NIFTY 50 |
-| **🔮 AI Forecast Terminal** | [**`indra-market-mind.vercel.app/forecast`**](https://indra-market-mind.vercel.app/forecast) | Production | 7-day Monte Carlo fan cones (P10–P90), Smart Money Radar & Audio Brief |
-| **🔬 Stock Deep Dive** | [**`indra-market-mind.vercel.app/deep-dive`**](https://indra-market-mind.vercel.app/deep-dive) | Production | Candlestick charts, EMAs, DCF valuation, Piotroski & Altman-Z health scores |
-| **🌍 Global Exchanges Radar** | [**`indra-market-mind.vercel.app/global-map`**](https://indra-market-mind.vercel.app/global-map) | Production | 19 worldwide exchange capitals with session status & timezone clocks |
-| **🔬 AI Quant Lab Pro** | [**`indra-market-mind.vercel.app/research`**](https://indra-market-mind.vercel.app/research) | Production | Vectorized backtesting, Model Arena, Granger causality & Monte Carlo VaR |
+| **🌌 Live Unified Terminal** | [**`indra-marketmind.vercel.app`**](https://indra-marketmind.vercel.app) | Production | Real-time global quotes, indices overview, dynamic greetings & search |
+| **📰 Live AI News Feed** | [**`indra-marketmind.vercel.app/live-feed`**](https://indra-marketmind.vercel.app/live-feed) | Production | Dual FinBERT + RoBERTa NLP, Market Impact Matrices, & Trending Hashtags |
+| **😱 Global Fear & Greed** | [**`indra-marketmind.vercel.app/fear-greed`**](https://indra-marketmind.vercel.app/fear-greed) | Production | 7-factor institutional emotion telemetry for S&P 500 & NIFTY 50 |
+| **🔮 AI Forecast Terminal** | [**`indra-marketmind.vercel.app/forecast`**](https://indra-marketmind.vercel.app/forecast) | Production | 7-day Monte Carlo fan cones (P10–P90), Smart Money Radar & Audio Brief |
+| **🔬 Stock Deep Dive** | [**`indra-marketmind.vercel.app/deep-dive`**](https://indra-marketmind.vercel.app/deep-dive) | Production | Candlestick charts, EMAs, DCF valuation, Piotroski & Altman-Z health scores |
+| **🌍 Global Exchanges Radar** | [**`indra-marketmind.vercel.app/global-map`**](https://indra-marketmind.vercel.app/global-map) | Production | 19 worldwide exchange capitals with session status & timezone clocks |
+| **🔬 AI Quant Lab Pro** | [**`indra-marketmind.vercel.app/research`**](https://indra-marketmind.vercel.app/research) | Production | Vectorized backtesting, Model Arena, Granger causality & Monte Carlo VaR |
 
 > [!NOTE]
 > The cloud deployment utilizes Next.js Serverless Edge Handlers ([`frontend/src/app/api/[...path]/route.ts`](frontend/src/app/api/[...path]/route.ts)) combined with direct high-speed Yahoo Finance API endpoints, ensuring complete independence, zero downtime, and instant live data rendering without relying on third-party backend servers.
@@ -84,7 +84,7 @@ Indra-MarketMind is deployed live in production on Vercel's global edge network,
 2. Evaluates narrative polarity and institutional psychology using an ensemble of **5 state-of-the-art NLP models** (*FinBERT, RoBERTa-Financial, FinGPT, VADER, and TextBlob*).
 3. Forecasts price trends with a **Hybrid Machine Learning pipeline** uniting Bayesian trend decomposition (*Prophet*) and deep sequential memory (*PyTorch Bi-LSTM*).
 4. Monitors **19 global financial exchanges** in real time with timezone-aware trading sessions, official market hours, and live quote benchmarks.
-5. Delivers all intelligence through a **single unified Dark Sci-Fi Web Terminal** deployed at [**`https://indra-market-mind.vercel.app`**](https://indra-market-mind.vercel.app) built on Next.js 16, glassmorphism aesthetics, and instant keyboard search (`Ctrl + /`).
+5. Delivers all intelligence through a **single unified Dark Sci-Fi Web Terminal** deployed at [**`https://indra-marketmind.vercel.app`**](https://indra-marketmind.vercel.app) built on Next.js 16, glassmorphism aesthetics, and instant keyboard search (`Ctrl + /`).
 
 ---
 
@@ -122,7 +122,7 @@ A premier geopolitical and market session radar visualizing 19 major global fina
 
 ---
 
-### 3. 📰 Live AI News Feed & Dual NLP Reasoning Matrices ([`/live-feed`](https://indra-market-mind.vercel.app/live-feed))
+### 3. 📰 Live AI News Feed & Dual NLP Reasoning Matrices ([`/live-feed`](https://indra-marketmind.vercel.app/live-feed))
 
 The Live Feed is not a generic RSS scraper; it is an institutional intelligence pipeline that digests breaking macroeconomic and financial dispatches and parses their quantitative market consequences in real time:
 
@@ -140,7 +140,7 @@ The Live Feed is not a generic RSS scraper; it is an institutional intelligence 
 
 ---
 
-### 4. 😱 Institutional 7-Factor Fear & Greed Terminal ([`/fear-greed`](https://indra-market-mind.vercel.app/fear-greed))
+### 4. 😱 Institutional 7-Factor Fear & Greed Terminal ([`/fear-greed`](https://indra-marketmind.vercel.app/fear-greed))
 
 Unlike basic retail sentiment gauges that only check 1 or 2 indicators, Indra-MarketMind implements a **comprehensive 7-Factor Institutional Psychology Engine** for both **Wall Street (S&P 500)** and **Dalal Street (NIFTY 50)**:
 
@@ -179,7 +179,7 @@ Unlike basic retail sentiment gauges that only check 1 or 2 indicators, Indra-Ma
 
 ---
 
-### 5. 🔮 AI Forecast Predictive Terminal & Monte Carlo Fan Cone ([`/forecast`](https://indra-market-mind.vercel.app/forecast))
+### 5. 🔮 AI Forecast Predictive Terminal & Monte Carlo Fan Cone ([`/forecast`](https://indra-marketmind.vercel.app/forecast))
 
 An institutional forecasting suite for benchmark indices (**NIFTY 50**, **BANK NIFTY**, **SENSEX**):
 
@@ -202,7 +202,7 @@ An institutional forecasting suite for benchmark indices (**NIFTY 50**, **BANK N
 
 ---
 
-### 6. 🔬 Institutional Stock Deep Dive & Solvency Matrix ([`/deep-dive`](https://indra-market-mind.vercel.app/deep-dive))
+### 6. 🔬 Institutional Stock Deep Dive & Solvency Matrix ([`/deep-dive`](https://indra-marketmind.vercel.app/deep-dive))
 
 Comprehensive institutional research tear-sheet supporting Indian market leaders (`RELIANCE.NS`, `TCS.NS`, `HDFCBANK.NS`, `TATAMOTORS.NS`, etc.) and US mega-caps (`NVDA`, `AAPL`, `MSFT`, `TSLA`):
 
@@ -219,7 +219,7 @@ Comprehensive institutional research tear-sheet supporting Indian market leaders
 
 ---
 
-### 7. 📈 Native Pro AI Quant Lab & Backtest Terminal ([`/research`](https://indra-market-mind.vercel.app/research))
+### 7. 📈 Native Pro AI Quant Lab & Backtest Terminal ([`/research`](https://indra-marketmind.vercel.app/research))
 
 An institutional quantitative research laboratory operating natively on **100% genuine live market tick & daily bar feeds**:
 
@@ -376,8 +376,8 @@ flowchart TD
 | **Multimodal Audio**| `8008` | Whisper speech-to-text earnings call analyzer | `/audio/transcribe`, `/audio/sentiment` |
 | **Crypto On-Chain** | `8009` | Blockchain whale tracker and on-chain intelligence | `/crypto/whales`, `/crypto/gas` |
 | **Alternative Data**| `8010` | Google Trends & social media volume scraper | `/altdata/trends`, `/altdata/volume` |
-| **Web Terminal** | `3000` | Next.js 16 Dark Sci-Fi UI, Global Radar, Live Overview | `http://localhost:3000` or [**`indra-market-mind.vercel.app`**](https://indra-market-mind.vercel.app) |
-| **AI Quant Lab** | `3000 / 8501` | Native Institutional Terminal with 100% Real Live Data, Strategy Backtesting, Model Arena, Granger Causality & Monte Carlo | `http://localhost:3000/research` or [**`indra-market-mind.vercel.app/research`**](https://indra-market-mind.vercel.app/research) |
+| **Web Terminal** | `3000` | Next.js 16 Dark Sci-Fi UI, Global Radar, Live Overview | `http://localhost:3000` or [**`indra-marketmind.vercel.app`**](https://indra-marketmind.vercel.app) |
+| **AI Quant Lab** | `3000 / 8501` | Native Institutional Terminal with 100% Real Live Data, Strategy Backtesting, Model Arena, Granger Causality & Monte Carlo | `http://localhost:3000/research` or [**`indra-marketmind.vercel.app/research`**](https://indra-marketmind.vercel.app/research) |
 
 ---
 
@@ -385,7 +385,7 @@ flowchart TD
 
 ### 1. Instant Cloud Access (No Setup Required)
 Simply open the official live deployment in your browser:
-👉 [**https://indra-market-mind.vercel.app**](https://indra-market-mind.vercel.app)
+👉 [**https://indra-marketmind.vercel.app**](https://indra-marketmind.vercel.app)
 
 ---
 
