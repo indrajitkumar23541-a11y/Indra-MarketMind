@@ -51,7 +51,7 @@
 
 | 🧭 **Live Cloud & Discovery** | 🧠 **Intelligence & Engines** | ⚙️ **Architecture & Deployment** |
 | :--- | :--- | :--- |
-| • [🌐 **Live Production Deployment**](#-live-cloud-deployment-vercel-production)<br>• [🌟 **Executive Summary**](#-executive-summary)<br>• [🌍 **19 Global Radar Hubs**](#1--worldwide-financial-exchanges-radar-19-hubs)<br>• [📊 **Live Market Dynamics**](#2--real-world-functional-market-overview)<br>• [📰 **Live AI News Feed & NLP**](#3--live-ai-news-feed--dual-nlp-reasoning-matrices-live-feed)<br>• [😱 **7-Factor Fear & Greed**](#4--institutional-7-factor-fear--greed-terminal-fear-greed) | • [🔮 **AI Predictive Terminal**](#5--ai-forecast-predictive-terminal--monte-carlo-fan-cone-forecast)<br>• [🔬 **Institutional Stock Deep Dive**](#6--institutional-stock-deep-dive--solvency-matrix-deep-dive)<br>• [📈 **Native AI Quant Lab Pro**](#7--native-pro-ai-quant-lab--backtest-terminal-research)<br>• [🧠 **5-Model NLP Sentiment**](#8--5-model-nlp-sentiment-ensemble)<br>• [🔮 **Hybrid DL Forecaster**](#9--hybrid-deep-learning-forecaster)<br>• [⚡ **Automated Trading & Risk**](#10--automated-trading--risk-manager)<br>• [🎙️ **Multimodal Audio AI**](#11-️-multimodal-audio-earnings-intelligence)<br>• [🐋 **Crypto On-Chain & Alt Data**](#12--crypto-on-chain--alt-data-scrapers) | • [🏗️ **Microservices Architecture**](#️-microservices-system-architecture)<br>• [🔌 **Registry & Port Mapping**](#-microservices-registry--port-mapping)<br>• [🚀 **Quickstart & Setup Guide**](#-quickstart--setup-guide)<br>• [☸️ **Kubernetes Deployment**](#️-production-kubernetes-deployment)<br>• [👑 **Author & Visionary**](#-author--visionary)<br>• [📝 **License & Disclaimer**](#-license--disclaimer) |
+| • [🌐 **Live Production Deployment**](#-live-cloud-deployment-vercel-production)<br>• [🌟 **Executive Summary**](#-executive-summary)<br>• [🌍 **19 Global Radar Hubs**](#1--worldwide-financial-exchanges-radar-19-hubs)<br>• [📊 **Live Market Dynamics**](#2--real-world-functional-market-overview)<br>• [📰 **Live AI News Feed & NLP**](#3--live-ai-news-feed--dual-nlp-reasoning-matrices-live-feed)<br>• [😱 **7-Factor Fear & Greed**](#4--institutional-7-factor-fear--greed-terminal-fear-greed)<br>• [⚡ **Multi-Factor Stock Screener**](#8--institutional-multi-factor-stock-screener-screener)<br>• [👔 **Smart Money & Insider Deals**](#9--smart-money--insider-deals-radar-insider) | • [🔮 **AI Predictive Terminal**](#5--ai-forecast-predictive-terminal--monte-carlo-fan-cone-forecast)<br>• [🔬 **Institutional Stock Deep Dive**](#6--institutional-stock-deep-dive--solvency-matrix-deep-dive)<br>• [📈 **Native AI Quant Lab Pro**](#7--native-pro-ai-quant-lab--backtest-terminal-research)<br>• [🔄 **Sector Rotation (RRG)**](#10--relative-rotation-graph-rrg--sector-flow-sector)<br>• [⭐ **Live Persistent Watchlist**](#11--live-persistent-watchlist--paper-portfolio-watchlist)<br>• [🚨 **Smart Alerts Console**](#12--institutional-smart-alerts-console-alerts)<br>• [🧠 **MarketMind AI Copilot**](#13--marketmind-ai-copilot-floating-financial-assistant)<br>• [🧠 **5-Model NLP Sentiment**](#14--5-model-nlp-sentiment-ensemble)<br>• [🔮 **Hybrid DL Forecaster**](#15--hybrid-deep-learning-forecaster)<br>• [⚡ **Automated Trading & Risk**](#16--automated-trading--risk-manager)<br>• [🎙️ **Multimodal Audio AI**](#17-️-multimodal-audio-earnings-intelligence)<br>• [🐋 **Crypto On-Chain & Alt Data**](#18--crypto-on-chain--alt-data-scrapers) | • [🏗️ **Microservices Architecture**](#️-microservices-system-architecture)<br>• [🔌 **Registry & Port Mapping**](#-microservices-registry--port-mapping)<br>• [🚀 **Quickstart & Setup Guide**](#-quickstart--setup-guide)<br>• [☸️ **Kubernetes Deployment**](#️-production-kubernetes-deployment)<br>• [👑 **Author & Visionary**](#-author--visionary)<br>• [📝 **License & Disclaimer**](#-license--disclaimer) |
 
 </div>
 
@@ -70,9 +70,16 @@ Indra-MarketMind is deployed live in production on Vercel's global edge network,
 | **🔬 Stock Deep Dive** | [**`indra-marketmind.vercel.app/deep-dive`**](https://indra-marketmind.vercel.app/deep-dive) | Production | Candlestick charts, EMAs, DCF valuation, Piotroski & Altman-Z health scores |
 | **🌍 Global Exchanges Radar** | [**`indra-marketmind.vercel.app/global-map`**](https://indra-marketmind.vercel.app/global-map) | Production | 19 worldwide exchange capitals with session status & timezone clocks |
 | **🔬 AI Quant Lab Pro** | [**`indra-marketmind.vercel.app/research`**](https://indra-marketmind.vercel.app/research) | Production | Vectorized backtesting, Model Arena, Granger causality & Monte Carlo VaR |
+| **⚡ Multi-Factor Screener** | [**`indra-marketmind.vercel.app/screener`**](https://indra-marketmind.vercel.app/screener) | Production | Real RSI-14, 50/200-SMA Golden Cross, Volume surge, & 5 strategy presets |
+| **👔 Smart Money & Insider** | [**`indra-marketmind.vercel.app/insider`**](https://indra-marketmind.vercel.app/insider) | Production | Real SEC Form 4 filings, NSE/BSE block deals, & C-Suite whale transactions |
+| **🔄 Sector Rotation (RRG)** | [**`indra-marketmind.vercel.app/sector`**](https://indra-marketmind.vercel.app/sector) | Production | Live 3-month mathematical Relative Rotation Graph across 8 NSE + 6 US sectors |
+| **⭐ Live Persistent Watchlist** | [**`indra-marketmind.vercel.app/watchlist`**](https://indra-marketmind.vercel.app/watchlist) | Production | LocalStorage persistence, live price polling & real mark-to-market P&L simulation |
+| **🚨 Smart Alerts Console** | [**`indra-marketmind.vercel.app/alerts`**](https://indra-marketmind.vercel.app/alerts) | Production | Multi-vector price, RSI, volatility surge triggers with audio-visual notifications |
+| **🧠 MarketMind AI Copilot** | [**Floating Bottom-Right Orb**](https://indra-marketmind.vercel.app) | Production | Persistent AI financial copilot grounded in live market quotes & sentiment |
 
 > [!NOTE]
-> The cloud deployment utilizes Next.js Serverless Edge Handlers ([`frontend/src/app/api/[...path]/route.ts`](frontend/src/app/api/[...path]/route.ts)) combined with direct high-speed Yahoo Finance API endpoints, ensuring complete independence, zero downtime, and instant live data rendering without relying on third-party backend servers.
+> - **Zero-Cold-Start Serverless Edge:** The cloud deployment utilizes Next.js Serverless Edge Handlers ([`frontend/src/app/api/[...path]/route.ts`](frontend/src/app/api/[...path]/route.ts)) combined with direct high-speed Yahoo Finance API endpoints, ensuring complete independence, zero downtime, and instant live data rendering without relying on third-party backend servers.
+> - **Search Engine Verified & Indexed:** Fully verified on Google Search Console with automated [`robots.txt`](https://indra-marketmind.vercel.app/robots.txt), dynamic [`sitemap.xml`](https://indra-marketmind.vercel.app/sitemap.xml) crawling all 12 core terminals, and rich OpenGraph/Twitter Card metadata.
 
 ---
 
@@ -236,7 +243,89 @@ An institutional quantitative research laboratory operating natively on **100% g
 
 ---
 
-### 8. 🧠 5-Model NLP Sentiment Ensemble
+### 8. ⚡ Institutional Multi-Factor Stock Screener ([`/screener`](https://indra-marketmind.vercel.app/screener))
+
+A high-speed algorithmic asset scanner filtering premier Indian securities (NSE) and Wall Street tech leaders (NASDAQ) with **100% genuine live market feeds**:
+
+- **Real-Time Technical Indicators:**
+  - **RSI (14):** Wilder's smoothed momentum oscillator with dynamic color badges (🟢 `< 35` Oversold, 🔴 `> 68` Overbought).
+  - **50-EMA & 200-SMA Golden Trend:** Identifies Golden Crosses (50 > 200) and pullback tests to the 50-day moving average.
+  - **Volume Surge Z-Score:** Compares 24-hour traded volume against the 20-day historical average (e.g. `1.8x` Volume Spike).
+  - **52-Week High Proximity:** Measures percentage distance from the 52W High with visual progress bars.
+- **5 Automated Strategy Presets:**
+  - 🚀 **Momentum Breakout:** Day change > 1.0% with expanding RSI.
+  - 💎 **Value Contrarian:** P/E < 22 with established fundamentals.
+  - 🌊 **RSI Oversold Bounce:** RSI < 38 dip-accumulation candidates.
+  - ⚡ **Golden Cross Trend:** Medium-term trend confirmed above 200-SMA.
+  - 🏆 **52-Week High Runners:** Within 5% of all-time/annual highs.
+- **1-Click CSV Export:** Export complete quantitative screen results for offline spreadsheet modeling.
+- **Deep Dive Integration:** Instant navigation to full financial tear-sheets for any screened asset.
+
+---
+
+### 9. 👔 Smart Money & Insider Deals Radar ([`/insider`](https://indra-marketmind.vercel.app/insider))
+
+An institutional intelligence radar tracking legal corporate insider filings and major institutional block transactions:
+
+- **Dual Ingestion Engine:** Continuously digests **SEC Form 4 filings** (US mega-caps) and **NSE Bulk / Block Deal registers** (Indian bluechips).
+- **Institutional Sentiment Pulse:** Calculates real-time Net Buy Ratio percentage and classifies market flow (*Strong Accumulation* vs *Distribution*).
+- **High-Impact Whale Deal Cards:** Surface high-conviction transactions by C-Suite executives (e.g., Jensen Huang, Satya Nadella) and Promoter Groups (e.g., Tata Sons, Reliance Promoter Group) exceeding ₹50 Cr / $10M with institutional financial reasoning.
+- **FII / DII Cash Flow Matrix:** Real-time net daily cash market activity for Foreign Institutional Investors (FII) and Domestic Institutional Investors (DII).
+- **Filterable Transaction Matrix:** Filter across Open Market Buys, Sells, Block Deals, and Option Exercises.
+
+---
+
+### 10. 🔄 Relative Rotation Graph (RRG) & Sector Flow ([`/sector`](https://indra-marketmind.vercel.app/sector))
+
+A mathematical sector rotation engine visualizing the movement of institutional capital across 8 Indian sector benchmarks and 6 US Sector SPDRs against the NIFTY 50 (`^NSEI`):
+
+- **Real 3-Month Trailing Alpha:** Ingests daily closes for NIFTY IT, NIFTY Bank, NIFTY Auto, NIFTY Pharma, NIFTY FMCG, NIFTY Metal, and NIFTY Energy alongside Tech (XLK), Financials (XLF), and Energy (XLE).
+- **4 Canonical Rotation Quadrants:**
+  - 🟢 **Leading (RS > 100, RM > 100):** High relative strength and accelerating momentum. Overweight allocation.
+  - 🟡 **Weakening (RS > 100, RM < 100):** High relative strength but decelerating momentum. Tighten trailing stops.
+  - 🔴 **Lagging (RS < 100, RM < 100):** Underperforming benchmark with negative momentum. Avoid/Underweight.
+  - 🔵 **Improving (RS < 100, RM > 100):** Lagging assets beginning to accelerate. Early accumulation zone.
+- **Interactive Scatter Canvas:** Hover to inspect exact Relative Strength and Relative Momentum scores, quadrant assignments, and top alpha-driving constituent stocks.
+
+---
+
+### 11. ⭐ Live Persistent Watchlist & Paper Portfolio ([`/watchlist`](https://indra-marketmind.vercel.app/watchlist))
+
+A personalized real-time market command center with client-side persistence and simulated portfolio tracking:
+
+- **Browser LocalStorage Persistence:** Automatically saves your tracked tickers; persistent across browser restarts without requiring an external login database.
+- **Live Price Polling:** Real-time CMP, day change %, and 52-week range progress bars for every saved asset.
+- **Mark-to-Market P&L Simulator:** Set your hypothetical **Shares Owned** and **Average Buy Price**; the terminal automatically calculates live unrealized profit/loss across both Indian (`₹`) and US (`$`) portfolios.
+- **Quick Symbol Validation:** Instant search-and-add bar supporting all NSE equities and global tickers.
+
+---
+
+### 12. 🚨 Institutional Smart Alerts Console ([`/alerts`](https://indra-marketmind.vercel.app/alerts))
+
+A multi-vector algorithmic trigger dispatch console:
+
+- **Configurable Condition Triggers:**
+  - `PRICE_ABOVE` & `PRICE_BELOW`: Real-time price cross thresholds.
+  - `RSI_OVERSOLD`: Alerts when RSI drops below 30/35 for dip-buy opportunities.
+  - `VOLATILITY_SPIKE`: Alerts when intraday price movement exceeds 3%.
+  - `WHALE_FLOW`: Alerts on institutional block deals exceeding specified capital thresholds.
+- **1-Click Arming / Pausing:** Toggle active monitoring status instantly.
+- **Audio-Visual Notification Simulation:** "Test Sound Alert" button simulates immediate browser audio-visual dispatch.
+- **Telegram & Webhook Dispatching:** Architecture documentation to link backend alert dispatchers (`services/alerts/scheduler.py`) to your smartphone.
+
+---
+
+### 13. 🧠 MarketMind AI Copilot (Floating Financial Assistant)
+
+A persistent, floating Dark Sci-Fi AI Copilot orb mounted at the bottom-right corner of every screen in the terminal:
+
+- **Live Market Grounding:** Reads current live NIFTY 50 quotes, Fear & Greed scores, and sector rotation metrics to answer market queries with actual quantitative facts.
+- **Grounded Stock Diagnostic:** Ask questions like *"Analyze Reliance"*, *"What is the NIFTY 50 trend?"*, or *"Is NVDA overbought?"* and receive structured support/resistance levels, valuation metrics, and risk factors.
+- **Interactive Prompt Chips & Fullscreen Mode:** Pre-loaded with institutional query suggestions, expandable drawer, and real-time reasoning indicators.
+
+---
+
+### 14. 🧠 5-Model NLP Sentiment Ensemble
 The market is driven by human psychology and narrative momentum. MarketMind parses every article and tweet through 5 specialized AI models:
 
 ```
@@ -267,14 +356,14 @@ The market is driven by human psychology and narrative momentum. MarketMind pars
 
 ---
 
-### 9. 🔮 Hybrid Deep Learning Forecaster
+### 15. 🔮 Hybrid Deep Learning Forecaster
 Combines the strength of statistical time-series decomposition and non-linear deep learning:
 - **Facebook Prophet:** Extracts macro trends, weekly seasonalities, and holiday effects.
 - **PyTorch Bidirectional LSTM:** Consumes Prophet residuals alongside the 5-model sentiment composite to forecast upcoming volatility swings and target price corridors.
 
 ---
 
-### 10. ⚡ Automated Trading & Risk Manager
+### 16. ⚡ Automated Trading & Risk Manager
 - **Paper Trading Engine:** Full mock order execution (Market, Limit, Stop-Loss) with simulated slippage and commission tracking.
 - **Risk Management System:**
   - Dynamic Position Sizing using the **Kelly Criterion**.
@@ -283,13 +372,13 @@ Combines the strength of statistical time-series decomposition and non-linear de
 
 ---
 
-### 11. 🎙️ Multimodal Audio Earnings Intelligence
+### 17. 🎙️ Multimodal Audio Earnings Intelligence
 - **OpenAI Whisper Audio Pipeline:** Ingests live earnings conference call audio recordings and investor presentations.
-- Generates timestamped transcripts with speaker diarization and computes sentence-by-sentence executive sentiment polarity.
+- **Transcripts & Diarization:** Generates timestamped transcripts with speaker diarization and computes sentence-by-sentence executive sentiment polarity.
 
 ---
 
-### 12. 🐋 Crypto On-Chain & Alt Data Scrapers
+### 18. 🐋 Crypto On-Chain & Alt Data Scrapers
 - **Whale Transaction Alerting:** Tracks high-value transfers across major blockchain networks.
 - **Alternative Data Engine:** Correlates Google Search Trends, Reddit WallStreetBets discussion velocity, and Twitter/X viral metrics to detect retail sentiment shifts.
 
@@ -378,6 +467,12 @@ flowchart TD
 | **Alternative Data**| `8010` | Google Trends & social media volume scraper | `/altdata/trends`, `/altdata/volume` |
 | **Web Terminal** | `3000` | Next.js 16 Dark Sci-Fi UI, Global Radar, Live Overview | `http://localhost:3000` or [**`indra-marketmind.vercel.app`**](https://indra-marketmind.vercel.app) |
 | **AI Quant Lab** | `3000 / 8501` | Native Institutional Terminal with 100% Real Live Data, Strategy Backtesting, Model Arena, Granger Causality & Monte Carlo | `http://localhost:3000/research` or [**`indra-marketmind.vercel.app/research`**](https://indra-marketmind.vercel.app/research) |
+| **Stock Screener** | `3000 / Edge` | Multi-Factor Algorithmic Scanner, RSI-14, 50/200-SMA, 52W Proximity, CSV Export | `/api/screener` or [**`indra-marketmind.vercel.app/screener`**](https://indra-marketmind.vercel.app/screener) |
+| **Insider Radar** | `3000 / Edge` | SEC Form 4 Filings, NSE Block Deals, C-Suite Whale Inflows/Outflows | `/api/insider` or [**`indra-marketmind.vercel.app/insider`**](https://indra-marketmind.vercel.app/insider) |
+| **Sector Rotation**| `3000 / Edge` | Mathematical Relative Rotation Graph (RRG) benchmarked against NIFTY 50 | `/api/sector` or [**`indra-marketmind.vercel.app/sector`**](https://indra-marketmind.vercel.app/sector) |
+| **Smart Watchlist**| `3000 / Edge` | Persistent Watchlist with Real-time Mark-to-Market P&L Portfolio Simulator | `/watchlist` or [**`indra-marketmind.vercel.app/watchlist`**](https://indra-marketmind.vercel.app/watchlist) |
+| **Smart Alerts** | `3000 / 8005` | Multi-vector Price, RSI, and Volatility Triggers with Audio-Visual Alerts | `/alerts` or [**`indra-marketmind.vercel.app/alerts`**](https://indra-marketmind.vercel.app/alerts) |
+| **MarketMind Copilot**| `3000 / Edge`| Grounded Financial AI Assistant for Real-time Q&A and Stock Diagnostics | `/api/chat` or [**Floating Orb on Terminal**](https://indra-marketmind.vercel.app) |
 
 ---
 
