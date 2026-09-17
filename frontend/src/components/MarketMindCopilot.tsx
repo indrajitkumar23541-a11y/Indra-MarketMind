@@ -20,6 +20,7 @@ import {
   LineChart,
 } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
+import { usePathname } from "next/navigation";
 
 interface ChatMessage {
   id: string;
@@ -157,9 +158,14 @@ function formatInlineMarkdown(text: string): string {
 }
 
 export default function MarketMindCopilot() {
+  const pathname = usePathname();
   const { isCopilotOpen, setIsCopilotOpen, closeCopilot } = useNav();
   const isOpen = isCopilotOpen;
   const setIsOpen = setIsCopilotOpen;
+
+  if (pathname === "/copilot") {
+    return null;
+  }
 
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [inputQuery, setInputQuery] = useState<string>("");
@@ -567,11 +573,6 @@ export default function MarketMindCopilot() {
                 >
                   <ArrowUp className="w-5 h-5 stroke-[2.5]" />
                 </button>
-              </div>
-
-              {/* Disclaimer */}
-              <div className="text-[10px] text-slate-400 text-center mt-2 font-mono">
-                Indra-MarketMind Copilot can make mistakes. Verify critical trade executions.
               </div>
             </div>
           </footer>

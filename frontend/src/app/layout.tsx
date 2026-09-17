@@ -130,6 +130,8 @@ const jsonLd = {
   ],
 };
 
+import MainContentWrapper from "@/components/MainContentWrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -154,9 +156,7 @@ export default function RootLayout({
           <Sidebar />
           <div className="flex-1 flex flex-col min-w-0 h-full relative">
             <TopNav />
-            <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 pb-24 lg:pb-6 custom-scrollbar bg-radial-[at_100%_0%] from-indigo-900/10 via-[#05070D] to-[#030407]">
-              {children}
-            </main>
+            <MainContentWrapper>{children}</MainContentWrapper>
           </div>
           <MarketMindCopilot />
           <MobileBottomNav />

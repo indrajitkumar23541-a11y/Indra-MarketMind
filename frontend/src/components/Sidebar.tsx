@@ -20,7 +20,8 @@ import {
   HelpCircle, 
   Zap,
   FlaskConical,
-  X
+  X,
+  Brain
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -29,6 +30,7 @@ export default function Sidebar() {
 
   const mainLinks = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
+    { name: "MarketMind Copilot", href: "/copilot", icon: Brain, badge: "AI" },
     { name: "Global Map", href: "/global-map", icon: Globe2 },
     { name: "Live Feed", href: "/live-feed", icon: Rss },
     { name: "AI Forecast", href: "/forecast", icon: LineChart },
