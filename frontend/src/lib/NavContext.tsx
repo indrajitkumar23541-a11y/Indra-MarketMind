@@ -8,6 +8,11 @@ interface NavContextType {
   setIsMobileNavOpen: (open: boolean) => void;
   toggleMobileNav: () => void;
   closeMobileNav: () => void;
+  isCopilotOpen: boolean;
+  setIsCopilotOpen: (open: boolean) => void;
+  toggleCopilot: () => void;
+  openCopilot: () => void;
+  closeCopilot: () => void;
 }
 
 const NavContext = createContext<NavContextType>({
@@ -15,10 +20,16 @@ const NavContext = createContext<NavContextType>({
   setIsMobileNavOpen: () => {},
   toggleMobileNav: () => {},
   closeMobileNav: () => {},
+  isCopilotOpen: false,
+  setIsCopilotOpen: () => {},
+  toggleCopilot: () => {},
+  openCopilot: () => {},
+  closeCopilot: () => {},
 });
 
 export function NavProvider({ children }: { children: React.ReactNode }) {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   const pathname = usePathname();
 
   // Close mobile navigation drawer whenever route/pathname changes
@@ -38,8 +49,25 @@ export function NavProvider({ children }: { children: React.ReactNode }) {
     };
   }, [isMobileNavOpen]);
 
-  const toggleMobileNav = () => setIsMobileNavOpen((prev) => !prev);
+  const toggleMobileNav = () => {
+    setIsMobileNavOpen((prev) => {
+      if (!prev) setIsCopilotOpen(false); // Close copilot if opening nav
+      return !prev;
+    });
+  };
   const closeMobileNav = () => setIsMobileNavOpen(false);
+
+  const toggleCopilot = () => {
+    setIsCopilotOpen((prev) => {
+      if (!prev) setIsMobileNavOpen(false); // Close nav drawer if opening copilot
+      return !prev;
+    });
+  };
+  const openCopilot = () => {
+    setIsMobileNavOpen(false);
+    setIsCopilotOpen(true);
+  };
+  const closeCopilot = () => setIsCopilotOpen(false);
 
   return (
     <NavContext.Provider
@@ -48,6 +76,11 @@ export function NavProvider({ children }: { children: React.ReactNode }) {
         setIsMobileNavOpen,
         toggleMobileNav,
         closeMobileNav,
+        isCopilotOpen,
+        setIsCopilotOpen,
+        toggleCopilot,
+        openCopilot,
+        closeCopilot,
       }}
     >
       {children}

@@ -17,6 +17,7 @@ import {
   Maximize2,
   Minimize2,
 } from "lucide-react";
+import { useNav } from "@/lib/NavContext";
 
 interface ChatMessage {
   id: string;
@@ -50,7 +51,10 @@ I am your institutional financial co-pilot, grounded in real-time market quotes,
 ];
 
 export default function MarketMindCopilot() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isCopilotOpen, setIsCopilotOpen, closeCopilot } = useNav();
+  const isOpen = isCopilotOpen;
+  const setIsOpen = setIsCopilotOpen;
+
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [inputQuery, setInputQuery] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -124,21 +128,21 @@ export default function MarketMindCopilot() {
 
   return (
     <>
-      {/* Floating Trigger Button (Bottom-Right, elevated above MobileBottomNav on mobile) */}
+      {/* Floating Trigger Button (Hidden on mobile because Copilot is directly in MobileBottomNav!) */}
       {!isOpen && (
-        <div className="fixed bottom-16 right-3 sm:bottom-5 sm:right-5 z-40">
+        <div className="hidden lg:block fixed bottom-5 right-5 z-40">
           <button
             onClick={() => setIsOpen(true)}
-            className="group relative flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 text-white font-bold text-xs shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all cursor-pointer border border-white/30"
+            className="group relative flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 text-white font-bold text-xs shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all cursor-pointer border border-white/30"
           >
             <div className="relative">
-              <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-black drop-shadow" />
-              <span className="animate-ping absolute -top-1 -right-1 flex h-2 sm:h-2.5 w-2 sm:w-2.5 rounded-full bg-cyan-300 opacity-80" />
+              <Brain className="w-5 h-5 text-black drop-shadow" />
+              <span className="animate-ping absolute -top-1 -right-1 flex h-2.5 w-2.5 rounded-full bg-cyan-300 opacity-80" />
             </div>
-            <span className="font-space tracking-wide text-slate-950 font-extrabold hidden sm:inline">
+            <span className="font-space tracking-wide text-slate-950 font-extrabold">
               MARKET COPILOT
             </span>
-            <span className="text-[9px] sm:text-[10px] bg-black/40 text-cyan-300 px-1.5 py-0.5 rounded font-mono font-bold">
+            <span className="text-[10px] bg-black/40 text-cyan-300 px-1.5 py-0.5 rounded font-mono font-bold">
               AI
             </span>
           </button>
@@ -150,8 +154,8 @@ export default function MarketMindCopilot() {
         <div
           className={`fixed z-50 transition-all duration-300 flex flex-col rounded-3xl border border-cyan-500/30 bg-[#060A14]/95 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.9)] overflow-hidden ${
             isExpanded
-              ? "inset-x-2 bottom-16 top-14 sm:inset-auto sm:bottom-5 sm:right-5 sm:w-[650px] sm:h-[85vh]"
-              : "inset-x-2 bottom-16 sm:inset-auto sm:bottom-5 sm:right-5 sm:w-[420px] max-h-[82vh] h-[520px]"
+              ? "inset-x-2 bottom-16 top-14 lg:inset-auto lg:bottom-5 lg:right-5 lg:w-[650px] lg:h-[85vh]"
+              : "inset-x-2 bottom-16 lg:inset-auto lg:bottom-5 lg:right-5 lg:w-[420px] max-h-[82vh] h-[520px]"
           }`}
         >
           {/* Header */}
@@ -178,7 +182,7 @@ export default function MarketMindCopilot() {
                 {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
               </button>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => closeCopilot()}
                 className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
                 title="Close Copilot"
               >
