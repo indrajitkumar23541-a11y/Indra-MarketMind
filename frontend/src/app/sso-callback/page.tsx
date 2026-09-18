@@ -1,6 +1,22 @@
+"use client";
+
+import React, { useEffect } from "react";
 import { AuthenticateWithRedirectCallback } from "@clerk/nextjs";
+import { useMarketMindAuth } from "@/lib/AuthContext";
+import { useRouter } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 export default function SSOCallback() {
+  const { isClerkConfigured } = useMarketMindAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isClerkConfigured) {
+      router.replace("/");
+    }
+  }, [isClerkConfigured, router]);
+
   return (
     <div className="min-h-screen bg-[#060913] flex items-center justify-center p-4">
       <div className="flex flex-col items-center gap-3 text-white text-center">
@@ -11,7 +27,7 @@ export default function SSOCallback() {
         <p className="text-xs text-slate-400 font-sans">
           Establishing encrypted session with Indra-MarketMind.
         </p>
-        <AuthenticateWithRedirectCallback />
+        {isClerkConfigured && <AuthenticateWithRedirectCallback />}
       </div>
     </div>
   );

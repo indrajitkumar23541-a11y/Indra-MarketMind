@@ -19,7 +19,28 @@ import {
 type AuthMethod = "phone" | "email";
 type Step = "input" | "otp";
 
+function ClerkConnectedModal() {
+  const clerk = useClerk();
+  return <AuthModalInner clerk={clerk} />;
+}
+
+function FallbackModal() {
+  return <AuthModalInner clerk={null} />;
+}
+
 export default function AuthModal() {
+  const { isClerkConfigured, isAuthModalOpen } = useMarketMindAuth();
+
+  if (!isAuthModalOpen) return null;
+
+  if (isClerkConfigured) {
+    return <ClerkConnectedModal />;
+  }
+
+  return <FallbackModal />;
+}
+
+function AuthModalInner({ clerk }: { clerk: any }) {
   const {
     isAuthModalOpen,
     closeAuthModal,
@@ -27,8 +48,6 @@ export default function AuthModal() {
     setSessionUser,
     isClerkConfigured,
   } = useMarketMindAuth();
-
-  const clerk = useClerk();
 
   // Selected Tab: Phone or Email
   const [authMethod, setAuthMethod] = useState<AuthMethod>("phone");

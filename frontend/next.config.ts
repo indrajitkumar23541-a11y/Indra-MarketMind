@@ -46,6 +46,15 @@ const nextConfig: NextConfig = {
   // Hide Next.js technology fingerprint to thwart malicious vulnerability scanners
   poweredByHeader: false,
 
+  // Fallback public environment variables for zero-config Vercel deployments
+  env: {
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+      "pk_test_ZXhwZXJ0LXJhY2VyLTIwNTcuY2xlcmsuYWNjb3VudHMuZGV2JA",
+    NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL: "/",
+    NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL: "/",
+  },
+
   // Inject hardened security headers across all routes
   async headers() {
     return [

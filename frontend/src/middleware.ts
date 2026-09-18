@@ -57,7 +57,7 @@ const SUSPICIOUS_PATTERNS = [
   /\bunion\s+select/i, // Basic SQLi attempt
 ];
 
-export default clerkMiddleware(async (_auth, req: NextRequest) => {
+const baseMiddleware = async (req: NextRequest) => {
   const pathname = req.nextUrl.pathname;
   const search = req.nextUrl.search;
 
@@ -107,9 +107,20 @@ export default clerkMiddleware(async (_auth, req: NextRequest) => {
     }
   }
 
-  // Proceed with standard Next.js / Clerk lifecycle
+  // Proceed with standard Next.js lifecycle
   return NextResponse.next();
-});
+};
+
+const hasClerk = Boolean(
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.startsWith("pk_")
+);
+
+export default hasClerk
+  ? clerkMiddleware(async (_auth, req: NextRequest) => {
+      return baseMiddleware(req);
+    })
+  : baseMiddleware;
 
 export const config = {
   matcher: [
