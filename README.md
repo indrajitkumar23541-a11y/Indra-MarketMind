@@ -49,9 +49,9 @@
 
 <div align="center">
 
-| 🧭 **Live Cloud & Discovery** | 🧠 **Intelligence & Engines** | ⚙️ **Architecture & Deployment** |
+| 🧭 **Live Cloud & Discovery** | 🧠 **Intelligence & Engines** | ⚙️ **Architecture & Security** |
 | :--- | :--- | :--- |
-| • [🌐 **Live Production Deployment**](#-live-cloud-deployment-vercel-production)<br>• [🌟 **Executive Summary**](#-executive-summary)<br>• [🌍 **19 Global Radar Hubs**](#1--worldwide-financial-exchanges-radar-19-hubs)<br>• [📊 **Live Market Dynamics**](#2--real-world-functional-market-overview)<br>• [📰 **Live AI News Feed & NLP**](#3--live-ai-news-feed--dual-nlp-reasoning-matrices-live-feed)<br>• [😱 **7-Factor Fear & Greed**](#4--institutional-7-factor-fear--greed-terminal-fear-greed)<br>• [⚡ **Multi-Factor Stock Screener**](#8--institutional-multi-factor-stock-screener-screener)<br>• [👔 **Smart Money & Insider Deals**](#9--smart-money--insider-deals-radar-insider) | • [🔮 **AI Predictive Terminal**](#5--ai-forecast-predictive-terminal--monte-carlo-fan-cone-forecast)<br>• [🔬 **Institutional Stock Deep Dive**](#6--institutional-stock-deep-dive--solvency-matrix-deep-dive)<br>• [📈 **Native AI Quant Lab Pro**](#7--native-pro-ai-quant-lab--backtest-terminal-research)<br>• [🔄 **Sector Rotation (RRG)**](#10--relative-rotation-graph-rrg--sector-flow-sector)<br>• [⭐ **Live Persistent Watchlist**](#11--live-persistent-watchlist--paper-portfolio-watchlist)<br>• [🚨 **Smart Alerts Console**](#12--institutional-smart-alerts-console-alerts)<br>• [🧠 **MarketMind AI Copilot**](#13--marketmind-ai-copilot-floating-financial-assistant)<br>• [🧠 **5-Model NLP Sentiment**](#14--5-model-nlp-sentiment-ensemble)<br>• [🔮 **Hybrid DL Forecaster**](#15--hybrid-deep-learning-forecaster)<br>• [⚡ **Automated Trading & Risk**](#16--automated-trading--risk-manager)<br>• [🎙️ **Multimodal Audio AI**](#17-️-multimodal-audio-earnings-intelligence)<br>• [🐋 **Crypto On-Chain & Alt Data**](#18--crypto-on-chain--alt-data-scrapers) | • [🏗️ **Microservices Architecture**](#️-microservices-system-architecture)<br>• [🔌 **Registry & Port Mapping**](#-microservices-registry--port-mapping)<br>• [🚀 **Quickstart & Setup Guide**](#-quickstart--setup-guide)<br>• [☸️ **Kubernetes Deployment**](#️-production-kubernetes-deployment)<br>• [👑 **Author & Visionary**](#-author--visionary)<br>• [📝 **License & Disclaimer**](#-license--disclaimer) |
+| • [🌐 **Live Production Deployment**](#-live-cloud-deployment-vercel-production)<br>• [🌟 **Executive Summary**](#-executive-summary)<br>• [🌍 **19 Global Radar Hubs**](#1--worldwide-financial-exchanges-radar-19-hubs)<br>• [📊 **Live Market Dynamics**](#2--real-world-functional-market-overview)<br>• [📰 **Live AI News Feed & NLP**](#3--live-ai-news-feed--dual-nlp-reasoning-matrices-live-feed)<br>• [😱 **7-Factor Fear & Greed**](#4--institutional-7-factor-fear--greed-terminal-fear-greed)<br>• [⚡ **Multi-Factor Stock Screener**](#8--institutional-multi-factor-stock-screener-screener)<br>• [👔 **Smart Money & Insider Deals**](#9--smart-money--insider-deals-radar-insider)<br>• [🔔 **Live News & Volatility Push**](#20--automated-real-time-live-news--volatility-alert-push-engine) | • [🔮 **AI Predictive Terminal**](#5--ai-forecast-predictive-terminal--monte-carlo-fan-cone-forecast)<br>• [🔬 **Institutional Stock Deep Dive**](#6--institutional-stock-deep-dive--solvency-matrix-deep-dive)<br>• [📈 **Native AI Quant Lab Pro**](#7--native-pro-ai-quant-lab--backtest-terminal-research)<br>• [🔄 **Sector Rotation (RRG)**](#10--relative-rotation-graph-rrg--sector-flow-sector)<br>• [⭐ **Live Persistent Watchlist**](#11--live-persistent-watchlist--paper-portfolio-watchlist)<br>• [🚨 **Smart Alerts Console**](#12--institutional-smart-alerts-console-alerts)<br>• [🧠 **MarketMind AI Copilot**](#13--marketmind-ai-copilot-floating-financial-assistant)<br>• [💬 **Fullscreen Copilot Terminal**](#-fullscreen-copilot--tactical-assistant)<br>• [🧠 **5-Model NLP Sentiment**](#14--5-model-nlp-sentiment-ensemble)<br>• [🔮 **Hybrid DL Forecaster**](#15--hybrid-deep-learning-forecaster) | • [🔐 **ChatGPT-Style 3-Way Auth**](#19--chatgpt-style-3-way-authentication--persistent-session-clerk)<br>• [🛡️ **Enterprise CyberShield**](#21-️-enterprise-hedge-fund-grade-cyber-security-indra-marketmind-cybershield)<br>• [👥 **Admin User Alert Engine**](#22--real-time-user-registration--admin-alert-engine)<br>• [⚙️ **Terminal Settings & i18n**](#23-️-terminal-settings-ai-copilot-configuration--multilingual-i18n)<br>• [🏗️ **Microservices Architecture**](#️-microservices-system-architecture)<br>• [🔌 **Registry & Port Mapping**](#-microservices-registry--port-mapping)<br>• [🚀 **Quickstart & Setup Guide**](#-quickstart--setup-guide)<br>• [☸️ **Kubernetes Deployment**](#️-production-kubernetes-deployment)<br>• [👑 **Author & Visionary**](#-author--visionary) |
 
 </div>
 
@@ -75,7 +75,10 @@ Indra-MarketMind is deployed live in production on Vercel's global edge network,
 | **🔄 Sector Rotation (RRG)** | [**`indra-marketmind.vercel.app/sector`**](https://indra-marketmind.vercel.app/sector) | Production | Live 3-month mathematical Relative Rotation Graph across 8 NSE + 6 US sectors |
 | **⭐ Live Persistent Watchlist** | [**`indra-marketmind.vercel.app/watchlist`**](https://indra-marketmind.vercel.app/watchlist) | Production | LocalStorage persistence, live price polling & real mark-to-market P&L simulation |
 | **🚨 Smart Alerts Console** | [**`indra-marketmind.vercel.app/alerts`**](https://indra-marketmind.vercel.app/alerts) | Production | Multi-vector price, RSI, volatility surge triggers with audio-visual notifications |
+| **💬 Dedicated AI Copilot** | [**`indra-marketmind.vercel.app/copilot`**](https://indra-marketmind.vercel.app/copilot) | Production | Full-screen ChatGPT-style quantitative conversational analyst |
+| **⚙️ Terminal Settings & i18n** | [**`indra-marketmind.vercel.app/settings`**](https://indra-marketmind.vercel.app/settings) | Production | Dynamic Clerk profile, AI style toggles, multi-currency & English/Hindi/Hinglish |
 | **🧠 MarketMind AI Copilot** | [**Floating Bottom-Right Orb**](https://indra-marketmind.vercel.app) | Production | Persistent AI financial copilot grounded in live market quotes & sentiment |
+
 
 > [!NOTE]
 > - **Zero-Cold-Start Serverless Edge:** The cloud deployment utilizes Next.js Serverless Edge Handlers ([`frontend/src/app/api/[...path]/route.ts`](frontend/src/app/api/[...path]/route.ts)) combined with direct high-speed Yahoo Finance API endpoints, ensuring complete independence, zero downtime, and instant live data rendering without relying on third-party backend servers.
@@ -381,6 +384,100 @@ Combines the strength of statistical time-series decomposition and non-linear de
 ### 18. 🐋 Crypto On-Chain & Alt Data Scrapers
 - **Whale Transaction Alerting:** Tracks high-value transfers across major blockchain networks.
 - **Alternative Data Engine:** Correlates Google Search Trends, Reddit WallStreetBets discussion velocity, and Twitter/X viral metrics to detect retail sentiment shifts.
+
+---
+
+### 19. 🔐 ChatGPT-Style 3-Way Authentication & Persistent Session (Clerk)
+
+Indra-MarketMind incorporates a seamless, frictionless authentication suite powered by **Clerk** styled with Dark Sci-Fi OLED aesthetics matching the terminal:
+
+- **1-Click Google Login (ChatGPT Style)**:
+  - Instant Google OAuth authentication with zero password friction.
+  - Native `<GoogleOneTap />` integration delivering automatic 1-tap sign-in prompts on both mobile and laptop browsers.
+- **Phone Number Login with SMS OTP**:
+  - Multi-country code selector (`+91` India default, `+1` US, `+44` UK, `+971` UAE, `+65` SG).
+  - 6 individual auto-advancing verification code boxes with backspace support and instant clipboard paste detection.
+  - 30-second countdown timer for resending codes.
+- **Passwordless Email OTP Verification**:
+  - Direct email verification codes (`email_code`) for secure, password-free login.
+- **Persistent Device Session**:
+  - Sessions persist across app restarts and mobile browsers (`__session` cookie + synchronized local session store) so traders stay logged in without being repeatedly prompted.
+- **Zero-Watermark Native Theme**:
+  - All third-party watermarks and logos are removed in favor of a sleek, dark cyberpunk modal with cyan accents.
+
+---
+
+### 20. 🔔 Automated Real-Time Live News & Volatility Alert Push Engine
+
+A real-time notification engine that monitors live market developments and volatility spikes in the background:
+
+- **Zero Mock Notifications**: Completely eliminated static notifications in favor of live polling against wire APIs (`/api/data/news/live-feed` and `/api/data/fetch/market/indices/overview`).
+- **Breaking News & Volatility Detection**: Automatically detects breaking macro stories and index movements exceeding 0.8% volatility, instantly dispatching notification cards.
+- **Floating Toast Dispatcher (`LiveNotificationToast.tsx`)**: Displays an audio-visual floating banner on the top-right of the screen with a subtle audio chime, visual badges, and 6-second auto-dismiss.
+- **HTML5 Native OS Push Notifications**: Dispatches native OS-level desktop and mobile notification banners (`new Notification(...)`) when authorized.
+- **Mobile-Responsive Popover**: Built with responsive positioning (`fixed inset-x-3` on mobile screens with backdrop dismissal) to ensure zero horizontal cutoff on handheld devices.
+
+---
+
+### 21. 🛡️ Enterprise Hedge-Fund Grade Cyber Security (Indra-MarketMind CyberShield)
+
+A defense-in-depth security architecture protecting all layers of the application against unauthorized access, injection, automated scraping, and DoS attacks:
+
+- **Strict HTTP Security Response Headers (`next.config.ts`)**:
+  - `Content-Security-Policy` (CSP): Enforces `default-src 'self'`, restricting script execution to approved origins and Clerk auth workers, eliminating Cross-Site Scripting (XSS).
+  - `X-Frame-Options: DENY`: Blocks Clickjacking by forbidding the application from being embedded in transparent `<iframe>` tags on external sites.
+  - `X-Content-Type-Options: nosniff`: Prevents MIME-type confusion exploits.
+  - `Strict-Transport-Security` (HSTS): Enforces 2-year TLS/HTTPS encryption with subdomains and preload (`max-age=63072000`).
+  - `Referrer-Policy: strict-origin-when-cross-origin`: Shields internal routes and sensitive search params from leaking via referrers.
+  - `Permissions-Policy`: Disables unauthorized access to camera, microphone, geolocation, and payment APIs.
+  - `poweredByHeader: false`: Completely strips `X-Powered-By: Next.js` to mask server technology fingerprints from automated scanners.
+- **Edge Sliding-Window Rate Limiting (`middleware.ts`)**:
+  - Tracks request frequency per client IP directly at the Next.js middleware edge.
+  - Standard API routes: 100 req/min; AI Copilot and heavy forecast endpoints: 25 req/min. Exceeding limits triggers an immediate `429 Too Many Requests` response with `Retry-After`.
+- **Anti-Injection & Path Traversal Guard**:
+  - Middleware inspects path signatures, blocking directory traversal (`..`, `%2e%2e`), null bytes (`%00`), script tags (`<script>`), and SQL syntax before hitting handlers.
+- **Strict Parameter Sanitization & Memory-Exhaustion DoS Guard (`route.ts`)**:
+  - Tickers validated against regex `^[A-Za-z0-9\.\-\_\^=]{1,20}$`.
+  - POST requests strictly capped at 100KB payload limit (returns `413 Payload Too Large` if breached).
+  - Parameter clamping for forecast horizons (1–90 days) and news limits (1–100 articles).
+- **Backend Gateway CORS Tightening (`services/gateway/main.py`)**:
+  - Replaced wildcard `allow_origins=["*"]` with explicit trusted origins (`http://localhost:3000`, `http://127.0.0.1:3000`).
+
+---
+
+### 22. 👥 Real-Time User Registration & Admin Alert Engine
+
+Provides the platform administrator with real-time telemetry whenever a new trader registers on Indra-MarketMind:
+
+- **Automated Sign-Up Detection**: Triggered inside `ClerkAuthProvider.tsx` when a user authenticates for the first time.
+- **Captured Telemetry**:
+  - Full Name (e.g. `Rahul Kumar`, `Priya Sharma`)
+  - Registered Email Address
+  - Registration Timestamp (Indian Standard Time - `IST`)
+  - Sign-in Method (`Google 1-Tap / OAuth`, `Phone Number (SMS OTP)`, `Email OTP Verification`)
+  - Platform User ID
+- **Multi-Channel Admin Alerts**:
+  - **Email Notification**: Dispatches a styled Dark OLED HTML card directly to the administrator's email (`indrajitkumar23541@gmail.com`).
+  - **Instant Telegram Push**: Sends an instantaneous markdown dispatch to the administrator's phone via the configured Telegram bot.
+- **Persistent Server Ledger (`registered_users.json`) & Admin API**:
+  - User records are stored in a persistent server ledger, accessible to the admin at any time via `GET /api/admin/users`.
+  - User records are strictly kept private via `.gitignore` to prevent any data exposure in public repositories.
+
+---
+
+### 23. ⚙️ Terminal Settings, AI Copilot Configuration & Multilingual i18n ([`/settings`](https://indra-marketmind.vercel.app/settings))
+
+A centralized preferences console and dynamic profile manager:
+
+- **Dynamic Account Management**: Displays live Clerk avatar, authenticated display name, registered email, and a 1-click Sign Out button.
+- **AI Copilot Diagnostic Tuning**:
+  - **Style Toggle**: Switch between *⚡ Concise & Tactical* bullets and *🔬 Deep Institutional Tear-Sheets*.
+  - **Continuous Liquidity Scanner Toggle**: Enable or disable sub-second order book and block flow absorption telemetry.
+  - **Risk-Hedged Trade Corridors Toggle**: Append institutional entry levels, strict structural Stop-Loss (SL), and Take-Profit targets (TP1/TP2).
+  - **Interactive Real-Time Preview Simulator**: Dynamically displays simulated AI responses adapting as you flip settings toggles.
+- **Multilingual i18n Engine (English, Hindi, Hinglish)**:
+  - Full interface localization with dynamic headline translation and regional terminology (`Tezi`, `Mandi`, `Barabar`).
+  - Multi-currency support (`INR (₹)`, `USD ($)`, `EUR (€)`, `GBP (£)`, `AED (د.إ)`).
 
 ---
 
