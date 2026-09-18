@@ -1,5 +1,5 @@
 // Indra-MarketMind Institutional Service Worker
-const CACHE_NAME = "indra-marketmind-v2";
+const CACHE_NAME = "indra-marketmind-v3";
 const STATIC_ASSETS = [
   "/",
   "/manifest.webmanifest",

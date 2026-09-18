@@ -16,13 +16,13 @@ export default function MainContentWrapper({
   return (
     <main
       className={cn(
-        "flex-1 custom-scrollbar bg-radial-[at_100%_0%] from-indigo-900/10 via-[#05070D] to-[#030407]",
+        "flex-1 min-h-0 custom-scrollbar bg-radial-[at_100%_0%] from-indigo-900/10 via-[#05070D] to-[#030407]",
         isCopilot
           ? "overflow-hidden p-0 pb-[60px] lg:pb-0 flex flex-col h-full"
-          : "overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 pb-32 lg:pb-16 flex flex-col"
+          : "overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6 pb-36 lg:pb-28"
       )}
     >
-      <div className="flex-1 w-full min-h-0">{children}</div>
+      <div className="w-full">{children}</div>
       {!isCopilot && <Footer />}
     </main>
   );
