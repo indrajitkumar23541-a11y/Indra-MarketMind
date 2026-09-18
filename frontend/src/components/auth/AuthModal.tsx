@@ -18,6 +18,15 @@ import {
 
 type AuthMethod = "phone" | "email";
 type Step = "input" | "otp";
+type ClerkInstance = ReturnType<typeof useClerk> | null;
+
+interface ClerkErrorLike {
+  errors?: Array<{
+    message?: string;
+    longMessage?: string;
+  }>;
+  message?: string;
+}
 
 function ClerkConnectedModal() {
   const clerk = useClerk();
@@ -40,12 +49,10 @@ export default function AuthModal() {
   return <FallbackModal />;
 }
 
-function AuthModalInner({ clerk }: { clerk: any }) {
+function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
   const {
-    isAuthModalOpen,
     closeAuthModal,
     simulateLogin,
-    setSessionUser,
     isClerkConfigured,
   } = useMarketMindAuth();
 
@@ -77,6 +84,16 @@ function AuthModalInner({ clerk }: { clerk: any }) {
     useRef<HTMLInputElement>(null),
   ];
 
+  // Reset modal state cleanly upon closing
+  const handleCloseModal = () => {
+    setStep("input");
+    setOtpCode(["", "", "", "", "", ""]);
+    setErrorMessage("");
+    setIsLoading(false);
+    setLoadingType(null);
+    closeAuthModal();
+  };
+
   // Countdown timer for Resend OTP
   useEffect(() => {
     if (resendCountdown > 0) {
@@ -84,19 +101,6 @@ function AuthModalInner({ clerk }: { clerk: any }) {
       return () => clearTimeout(timer);
     }
   }, [resendCountdown]);
-
-  // Reset modal state on close
-  useEffect(() => {
-    if (!isAuthModalOpen) {
-      setStep("input");
-      setOtpCode(["", "", "", "", "", ""]);
-      setErrorMessage("");
-      setIsLoading(false);
-      setLoadingType(null);
-    }
-  }, [isAuthModalOpen]);
-
-  if (!isAuthModalOpen) return null;
 
   // 1. Google 1-Click Instant Login (ChatGPT Style)
   const handleGoogleLogin = async () => {
@@ -117,10 +121,10 @@ function AuthModalInner({ clerk }: { clerk: any }) {
         setTimeout(() => {
           simulateLogin("trader.google@marketmind.ai", "Indrajit Kumar (Google)");
           setIsLoading(false);
-          closeAuthModal();
+          handleCloseModal();
         }, 500);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.warn("Google sign in redirect error:", err);
       // If user isn't registered yet, trigger sign-up redirect
       try {
@@ -132,11 +136,13 @@ function AuthModalInner({ clerk }: { clerk: any }) {
           });
           return;
         }
-      } catch (signupErr: any) {
+      } catch (signupErr: unknown) {
+        const errObj = err as ClerkErrorLike;
+        const signupErrObj = signupErr as ClerkErrorLike;
         setErrorMessage(
-          signupErr?.errors?.[0]?.longMessage ||
-          signupErr?.errors?.[0]?.message ||
-          err?.errors?.[0]?.message ||
+          signupErrObj?.errors?.[0]?.longMessage ||
+          signupErrObj?.errors?.[0]?.message ||
+          errObj?.errors?.[0]?.message ||
           "Google login could not be initiated. Please try with Phone or Email."
         );
       }
@@ -179,15 +185,15 @@ function AuthModalInner({ clerk }: { clerk: any }) {
               identifier: fullPhone,
             });
             const firstFactor = signInAttempt.supportedFirstFactors?.find(
-              (f: any) => f.strategy === "phone_code"
-            );
-            if (firstFactor) {
+              (f: { strategy?: string }) => f.strategy === "phone_code"
+            ) as { phoneNumberId?: string } | undefined;
+            if (firstFactor?.phoneNumberId) {
               await clerk.client.signIn.prepareFirstFactor({
                 strategy: "phone_code",
-                phoneNumberId: (firstFactor as any).phoneNumberId,
+                phoneNumberId: firstFactor.phoneNumberId,
               });
             }
-          } catch (signInErr: any) {
+          } catch {
             // If user doesn't exist yet, automatically initiate Sign-Up
             await clerk.client.signUp.create({
               phoneNumber: fullPhone,
@@ -203,15 +209,15 @@ function AuthModalInner({ clerk }: { clerk: any }) {
               identifier: cleanEmail,
             });
             const firstFactor = signInAttempt.supportedFirstFactors?.find(
-              (f: any) => f.strategy === "email_code"
-            );
-            if (firstFactor) {
+              (f: { strategy?: string }) => f.strategy === "email_code"
+            ) as { emailAddressId?: string } | undefined;
+            if (firstFactor?.emailAddressId) {
               await clerk.client.signIn.prepareFirstFactor({
                 strategy: "email_code",
-                emailAddressId: (firstFactor as any).emailAddressId,
+                emailAddressId: firstFactor.emailAddressId,
               });
             }
-          } catch (signInErr: any) {
+          } catch {
             // If user doesn't exist yet, automatically initiate Sign-Up
             await clerk.client.signUp.create({
               emailAddress: cleanEmail,
@@ -234,12 +240,13 @@ function AuthModalInner({ clerk }: { clerk: any }) {
           setTimeout(() => otpRefs[0].current?.focus(), 100);
         }, 400);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Send OTP error:", err);
+      const errObj = err as ClerkErrorLike;
       const msg =
-        err?.errors?.[0]?.longMessage ||
-        err?.errors?.[0]?.message ||
-        err?.message ||
+        errObj?.errors?.[0]?.longMessage ||
+        errObj?.errors?.[0]?.message ||
+        errObj?.message ||
         "Could not send verification code. Please check details.";
       setErrorMessage(msg);
     } finally {
@@ -262,7 +269,6 @@ function AuthModalInner({ clerk }: { clerk: any }) {
     setIsLoading(true);
     setLoadingType("verify");
 
-    const fullPhone = `${countryCode}${phoneNumber.replace(/\D/g, "")}`;
     const cleanEmail = emailAddress.trim();
 
     try {
@@ -310,7 +316,7 @@ function AuthModalInner({ clerk }: { clerk: any }) {
 
         if (activeSessionId) {
           await clerk.setActive({ session: activeSessionId });
-          closeAuthModal();
+          handleCloseModal();
         } else {
           setErrorMessage("Verification could not be completed. Please try again.");
         }
@@ -325,15 +331,16 @@ function AuthModalInner({ clerk }: { clerk: any }) {
           } else {
             simulateLogin(cleanEmail, cleanEmail.split("@")[0]);
           }
-          closeAuthModal();
+          handleCloseModal();
         }, 500);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Verify OTP error:", err);
+      const errObj = err as ClerkErrorLike;
       const msg =
-        err?.errors?.[0]?.longMessage ||
-        err?.errors?.[0]?.message ||
-        err?.message ||
+        errObj?.errors?.[0]?.longMessage ||
+        errObj?.errors?.[0]?.message ||
+        errObj?.message ||
         "Invalid OTP code. Please check your messages and try again.";
       setErrorMessage(msg);
     } finally {
@@ -390,7 +397,7 @@ function AuthModalInner({ clerk }: { clerk: any }) {
 
         {/* Close Button */}
         <button
-          onClick={closeAuthModal}
+          onClick={handleCloseModal}
           className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer z-10"
           aria-label="Close"
         >
