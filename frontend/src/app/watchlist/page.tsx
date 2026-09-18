@@ -19,6 +19,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import QuantumLoader from "@/components/QuantumLoader";
+import { useSettings } from "@/lib/SettingsContext";
 
 interface WatchlistItem {
   ticker: string;
@@ -44,6 +45,7 @@ const DEFAULT_WATCHLIST = [
 ];
 
 export default function WatchlistPage() {
+  const { formatCurrency, refreshIntervalMs, t } = useSettings();
   const [items, setItems] = useState<WatchlistItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [newTicker, setNewTicker] = useState<string>("");
@@ -72,8 +74,8 @@ export default function WatchlistPage() {
   };
 
   // Fetch live quotes for all tickers
-  const fetchWatchlistQuotes = async () => {
-    setLoading(true);
+  const fetchWatchlistQuotes = async (silent = false) => {
+    if (!silent) setLoading(true);
     const saved = loadSavedWatchlist();
     const fetchedItems: WatchlistItem[] = [];
 
@@ -107,12 +109,16 @@ export default function WatchlistPage() {
     fetchedItems.sort((a, b) => tickerOrder.indexOf(a.ticker) - tickerOrder.indexOf(b.ticker));
 
     setItems(fetchedItems);
-    setLoading(false);
+    if (!silent) setLoading(false);
   };
 
   useEffect(() => {
     fetchWatchlistQuotes();
-  }, []);
+    const interval = setInterval(() => {
+      fetchWatchlistQuotes(true);
+    }, refreshIntervalMs);
+    return () => clearInterval(interval);
+  }, [refreshIntervalMs]);
 
   const handleAddTicker = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -228,12 +234,12 @@ export default function WatchlistPage() {
 
         <div className="relative z-10 flex items-center gap-3 self-end md:self-auto">
           <button
-            onClick={fetchWatchlistQuotes}
+            onClick={() => fetchWatchlistQuotes()}
             disabled={loading}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 border border-white/10 hover:border-pink-500/40 text-slate-300 hover:text-white text-xs font-semibold transition-all cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-pink-400" : ""}`} />
-            Refresh Quotes
+            {t("watchlist.refreshBtn")}
           </button>
         </div>
       </div>
@@ -260,7 +266,7 @@ export default function WatchlistPage() {
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-pink-500 hover:bg-pink-400 text-black text-xs font-bold shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all cursor-pointer disabled:opacity-50"
           >
             <Plus className="w-4 h-4" />
-            {isAdding ? "Adding..." : "Add to Watchlist"}
+            {isAdding ? "Adding..." : t("watchlist.addBtn")}
           </button>
         </form>
         {addingError && (
@@ -276,19 +282,19 @@ export default function WatchlistPage() {
         {/* India Segment P&L */}
         <div className="glass-panel p-5 rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-950/20 to-[#070B14]">
           <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-            <span>🇮🇳 INDIA EQUITIES PORTFOLIO</span>
+            <span>🇮🇳 {t("watchlist.indiaPortfolio")}</span>
             <span className="text-xs text-cyan-400 font-mono">NSE / BSE</span>
           </div>
           <div className="flex items-baseline justify-between mb-3">
             <div>
               <div className="text-2xl font-bold text-white font-mono">
-                ₹{totalValueINR.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                {formatCurrency(totalValueINR, { from: "INR" })}
               </div>
-              <div className="text-[11px] text-slate-500">Invested: ₹{totalCostINR.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</div>
+              <div className="text-[11px] text-slate-500">{t("watchlist.invested")}: {formatCurrency(totalCostINR, { from: "INR" })}</div>
             </div>
             <div className="text-right">
               <div className={`text-lg font-bold font-mono ${netPLINR >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                {netPLINR >= 0 ? "+" : ""}₹{netPLINR.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                {netPLINR >= 0 ? "+" : ""}{formatCurrency(netPLINR, { from: "INR" })}
               </div>
               <div className={`text-xs font-bold font-mono ${plPercentINR >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                 ({plPercentINR >= 0 ? "+" : ""}{plPercentINR.toFixed(2)}%)
@@ -300,19 +306,19 @@ export default function WatchlistPage() {
         {/* US Segment P&L */}
         <div className="glass-panel p-5 rounded-2xl border border-white/10 bg-gradient-to-br from-purple-950/20 to-[#070B14]">
           <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-            <span>🇺🇸 US TECH PORTFOLIO</span>
+            <span>🇺🇸 {t("watchlist.usPortfolio")}</span>
             <span className="text-xs text-purple-400 font-mono">NASDAQ / NYSE</span>
           </div>
           <div className="flex items-baseline justify-between mb-3">
             <div>
               <div className="text-2xl font-bold text-white font-mono">
-                ${totalValueUSD.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                {formatCurrency(totalValueUSD, { from: "USD" })}
               </div>
-              <div className="text-[11px] text-slate-500">Invested: ${totalCostUSD.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
+              <div className="text-[11px] text-slate-500">{t("watchlist.invested")}: {formatCurrency(totalCostUSD, { from: "USD" })}</div>
             </div>
             <div className="text-right">
               <div className={`text-lg font-bold font-mono ${netPLUSD >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
-                {netPLUSD >= 0 ? "+" : ""}${netPLUSD.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                {netPLUSD >= 0 ? "+" : ""}{formatCurrency(netPLUSD, { from: "USD" })}
               </div>
               <div className={`text-xs font-bold font-mono ${plPercentUSD >= 0 ? "text-emerald-400" : "text-rose-400"}`}>
                 ({plPercentUSD >= 0 ? "+" : ""}{plPercentUSD.toFixed(2)}%)
@@ -375,8 +381,7 @@ export default function WatchlistPage() {
                   {/* CMP and Day Change */}
                   <div className="my-3 flex items-baseline justify-between">
                     <div className="text-2xl font-mono font-extrabold text-white">
-                      {symSymbol}
-                      {item.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                      {formatCurrency(item.price, { from: item.currency as any })}
                     </div>
                     <span
                       className={`inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold font-mono ${
@@ -393,19 +398,19 @@ export default function WatchlistPage() {
                   {/* 52W High/Low Progress */}
                   <div className="mb-4">
                     <div className="flex justify-between text-[10px] text-slate-500 font-mono mb-1">
-                      <span>52W L: {symSymbol}{item.low52.toFixed(1)}</span>
-                      <span>52W H: {symSymbol}{item.high52.toFixed(1)}</span>
+                      <span>52W L: {formatCurrency(item.low52, { from: item.currency as any })}</span>
+                      <span>52W H: {formatCurrency(item.high52, { from: item.currency as any })}</span>
                     </div>
                     <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-linear-to-r from-pink-500 to-cyan-400"
                         style={{
                           width: `${Math.min(
-                            100,
-                            Math.max(5, ((item.price - item.low52) / (item.high52 - item.low52 || 1)) * 100)
-                          )}%`,
-                        }}
-                      />
+                          100,
+                          Math.max(5, ((item.price - item.low52) / (item.high52 - item.low52 || 1)) * 100)
+                        )}%`,
+                      }}
+                    />
                     </div>
                   </div>
 
@@ -451,8 +456,7 @@ export default function WatchlistPage() {
                         <div>
                           <div className="text-[10px] text-slate-500 uppercase">Position ({item.sharesOwned || 0} Shs)</div>
                           <div className="font-mono font-semibold text-slate-200">
-                            {symSymbol}
-                            {positionValue.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                            {formatCurrency(positionValue, { from: item.currency as any })}
                           </div>
                         </div>
 
@@ -464,8 +468,7 @@ export default function WatchlistPage() {
                             }`}
                           >
                             {positionPL >= 0 ? "+" : ""}
-                            {symSymbol}
-                            {positionPL.toFixed(2)} ({plPercent >= 0 ? "+" : ""}
+                            {formatCurrency(positionPL, { from: item.currency as any })} ({plPercent >= 0 ? "+" : ""}
                             {plPercent.toFixed(1)}%)
                           </div>
                         </div>

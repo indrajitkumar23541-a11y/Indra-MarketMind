@@ -17,6 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 import QuantumLoader from "@/components/QuantumLoader";
+import { useSettings } from "@/lib/SettingsContext";
 
 interface ScreenerItem {
   ticker: string;
@@ -45,6 +46,7 @@ type FilterPreset = "ALL" | "MOMENTUM" | "VALUE" | "OVERSOLD" | "GOLDEN_CROSS" |
 type SortField = "changePercent" | "rsi14" | "volumeSurge" | "dist52wHigh" | "price";
 
 export default function ScreenerPage() {
+  const { formatCurrency, tableDensityClass, refreshIntervalMs, t } = useSettings();
   const [data, setData] = useState<ScreenerItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,8 +60,8 @@ export default function ScreenerPage() {
   const [sortField, setSortField] = useState<SortField>("changePercent");
   const [sortAsc, setSortAsc] = useState<boolean>(false);
 
-  const fetchScreenerData = async () => {
-    setLoading(true);
+  const fetchScreenerData = async (silent = false) => {
+    if (!silent) setLoading(true);
     setError(null);
     try {
       const res = await fetch("/api/screener");
@@ -70,13 +72,17 @@ export default function ScreenerPage() {
     } catch (err: any) {
       setError(err.message || "Network error loading screener data");
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchScreenerData();
-  }, []);
+    const interval = setInterval(() => {
+      fetchScreenerData(true);
+    }, refreshIntervalMs);
+    return () => clearInterval(interval);
+  }, [refreshIntervalMs]);
 
   // Filtered & Sorted Data
   const filteredData = useMemo(() => {
@@ -211,7 +217,7 @@ export default function ScreenerPage() {
 
         <div className="relative z-10 flex items-center gap-3 self-end md:self-auto">
           <button
-            onClick={fetchScreenerData}
+            onClick={() => fetchScreenerData()}
             disabled={loading}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 border border-white/10 hover:border-cyan-500/40 text-slate-300 hover:text-white text-xs font-semibold transition-all cursor-pointer"
           >
@@ -233,12 +239,12 @@ export default function ScreenerPage() {
       {/* Preset Filter Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
         {[
-          { id: "ALL", label: "All Equities", icon: Activity },
-          { id: "MOMENTUM", label: "🚀 Momentum Breakout", icon: TrendingUp },
-          { id: "VALUE", label: "💎 Value Contrarian (P/E < 22)", icon: Sparkles },
-          { id: "OVERSOLD", label: "🌊 RSI Oversold (< 38)", icon: ShieldAlert },
-          { id: "GOLDEN_CROSS", label: "⚡ Golden Cross Trend", icon: Zap },
-          { id: "52W_HIGH", label: "🏆 52-Week High Runners", icon: Flame },
+          { id: "ALL", label: t("screener.presets.all"), icon: Activity },
+          { id: "MOMENTUM", label: `🚀 ${t("screener.presets.momentum")}`, icon: TrendingUp },
+          { id: "VALUE", label: `💎 ${t("screener.presets.value")}`, icon: Sparkles },
+          { id: "OVERSOLD", label: `🌊 ${t("screener.presets.oversold")}`, icon: ShieldAlert },
+          { id: "GOLDEN_CROSS", label: `⚡ ${t("screener.presets.goldenCross")}`, icon: Zap },
+          { id: "52W_HIGH", label: `🏆 ${t("screener.presets.high52")}`, icon: Flame },
         ].map((item) => {
           const Icon = item.icon;
           const active = preset === item.id;
@@ -323,7 +329,7 @@ export default function ScreenerPage() {
         <div className="glass-panel p-8 text-center rounded-2xl border border-red-500/30 text-red-400">
           <p className="font-bold">{error}</p>
           <button
-            onClick={fetchScreenerData}
+            onClick={() => fetchScreenerData()}
             className="mt-3 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-xl text-xs font-bold"
           >
             Retry
@@ -356,9 +362,9 @@ export default function ScreenerPage() {
             <table className="w-full text-left border-collapse min-w-[920px]">
               <thead>
                 <tr className="border-b border-white/10 bg-[#070B14]/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  <th className="py-3.5 px-4">Asset</th>
+                  <th className={tableDensityClass}>Asset</th>
                   <th
-                    className="py-3.5 px-4 cursor-pointer hover:text-white"
+                    className={`${tableDensityClass} cursor-pointer hover:text-white`}
                     onClick={() => handleSort("price")}
                   >
                     <div className="flex items-center gap-1">
@@ -367,7 +373,7 @@ export default function ScreenerPage() {
                     </div>
                   </th>
                   <th
-                    className="py-3.5 px-4 cursor-pointer hover:text-white"
+                    className={`${tableDensityClass} cursor-pointer hover:text-white`}
                     onClick={() => handleSort("changePercent")}
                   >
                     <div className="flex items-center gap-1">
@@ -376,7 +382,7 @@ export default function ScreenerPage() {
                     </div>
                   </th>
                   <th
-                    className="py-3.5 px-4 cursor-pointer hover:text-white"
+                    className={`${tableDensityClass} cursor-pointer hover:text-white`}
                     onClick={() => handleSort("rsi14")}
                   >
                     <div className="flex items-center gap-1">
@@ -385,7 +391,7 @@ export default function ScreenerPage() {
                     </div>
                   </th>
                   <th
-                    className="py-3.5 px-4 cursor-pointer hover:text-white"
+                    className={`${tableDensityClass} cursor-pointer hover:text-white`}
                     onClick={() => handleSort("volumeSurge")}
                   >
                     <div className="flex items-center gap-1">
@@ -393,9 +399,9 @@ export default function ScreenerPage() {
                       <ArrowUpDown className="w-3 h-3" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">50-SMA</th>
+                  <th className={tableDensityClass}>50-SMA</th>
                   <th
-                    className="py-3.5 px-4 cursor-pointer hover:text-white"
+                    className={`${tableDensityClass} cursor-pointer hover:text-white`}
                     onClick={() => handleSort("dist52wHigh")}
                   >
                     <div className="flex items-center gap-1">
@@ -403,15 +409,15 @@ export default function ScreenerPage() {
                       <ArrowUpDown className="w-3 h-3" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">P/E & Mcap</th>
-                  <th className="py-3.5 px-4">Quantitative Signals</th>
-                  <th className="py-3.5 px-4 text-right">Deep Dive</th>
+                  <th className={tableDensityClass}>P/E & Mcap</th>
+                  <th className={tableDensityClass}>Quantitative Signals</th>
+                  <th className={`${tableDensityClass} text-right`}>Deep Dive</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 text-xs font-sans">
                 {filteredData.map((item) => {
                   const isPositive = item.changePercent >= 0;
-                  const currency = item.exchange === "NSE" ? "₹" : "$";
+                  const sourceCurr = item.exchange === "NSE" ? "INR" : "USD";
 
                   // RSI badge styling
                   let rsiBg = "bg-slate-800 text-slate-300";
@@ -424,7 +430,7 @@ export default function ScreenerPage() {
                       className="hover:bg-cyan-950/15 transition-colors group"
                     >
                       {/* Asset */}
-                      <td className="py-3 px-4">
+                      <td className={tableDensityClass}>
                         <div className="font-bold text-white font-mono group-hover:text-cyan-400 transition-colors">
                           {item.ticker}
                         </div>
@@ -435,13 +441,12 @@ export default function ScreenerPage() {
                       </td>
 
                       {/* CMP */}
-                      <td className="py-3 px-4 font-mono font-bold text-slate-100">
-                        {currency}
-                        {item.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                      <td className={`${tableDensityClass} font-mono font-bold text-slate-100`}>
+                        {formatCurrency(item.price, { from: sourceCurr })}
                       </td>
 
                       {/* Day % */}
-                      <td className="py-3 px-4 font-mono font-semibold">
+                      <td className={`${tableDensityClass} font-mono font-semibold`}>
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold ${
                             isPositive
@@ -455,14 +460,14 @@ export default function ScreenerPage() {
                       </td>
 
                       {/* RSI (14) */}
-                      <td className="py-3 px-4">
+                      <td className={tableDensityClass}>
                         <span className={`px-2 py-0.5 rounded-md font-mono text-xs font-bold ${rsiBg}`}>
                           {item.rsi14}
                         </span>
                       </td>
 
                       {/* Vol Surge */}
-                      <td className="py-3 px-4 font-mono">
+                      <td className={`${tableDensityClass} font-mono`}>
                         <span
                           className={`font-bold ${
                             item.volumeSurge >= 1.5 ? "text-amber-400" : "text-slate-400"
@@ -476,9 +481,8 @@ export default function ScreenerPage() {
                       </td>
 
                       {/* 50-SMA */}
-                      <td className="py-3 px-4 font-mono text-slate-300">
-                        {currency}
-                        {item.sma50.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                      <td className={`${tableDensityClass} font-mono text-slate-300`}>
+                        {formatCurrency(item.sma50, { from: sourceCurr })}
                         <div
                           className={`text-[10px] ${
                             item.distSma50 >= 0 ? "text-emerald-400" : "text-rose-400"
@@ -490,7 +494,7 @@ export default function ScreenerPage() {
                       </td>
 
                       {/* 52W High Dist */}
-                      <td className="py-3 px-4 font-mono text-slate-300">
+                      <td className={`${tableDensityClass} font-mono text-slate-300`}>
                         -{item.dist52wHigh.toFixed(1)}%
                         <div className="w-16 h-1 bg-slate-800 rounded-full mt-1 overflow-hidden">
                           <div
@@ -501,13 +505,13 @@ export default function ScreenerPage() {
                       </td>
 
                       {/* P/E & Mcap */}
-                      <td className="py-3 px-4 font-mono">
+                      <td className={`${tableDensityClass} font-mono`}>
                         <div className="text-slate-200">{item.marketCap}</div>
                         <div className="text-[10px] text-slate-400">P/E: {item.peRatio || "N/A"}</div>
                       </td>
 
                       {/* Signals */}
-                      <td className="py-3 px-4">
+                      <td className={tableDensityClass}>
                         <div className="flex flex-wrap gap-1 max-w-[200px]">
                           {item.signals.map((sig, i) => (
                             <span
@@ -521,7 +525,7 @@ export default function ScreenerPage() {
                       </td>
 
                       {/* Deep Dive Action */}
-                      <td className="py-3 px-4 text-right">
+                      <td className={`${tableDensityClass} text-right`}>
                         <Link
                           href={`/deep-dive?ticker=${encodeURIComponent(item.ticker)}`}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-cyan-500 hover:text-black border border-white/10 hover:border-cyan-400 text-slate-300 text-xs font-semibold transition-all shadow"

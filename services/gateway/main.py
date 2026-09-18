@@ -22,14 +22,36 @@ app = FastAPI(
     version="3.0.0"
 )
 
-# CORS middleware
+# Allowed Origins for CORS Hardening (Anti-CSRF & Cross-Origin Leakage)
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+frontend_env_url = getattr(settings, "FRONTEND_URL", None) or os.getenv("FRONTEND_URL")
+if frontend_env_url and frontend_env_url not in ALLOWED_ORIGINS:
+    ALLOWED_ORIGINS.append(frontend_env_url)
+
+# CORS middleware with restricted origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
     allow_headers=["*"],
 )
+
+# Custom Security Headers Middleware for Gateway
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
+
 
 SERVICES = {
     "data_ingestion": settings.DATA_SERVICE_URL,

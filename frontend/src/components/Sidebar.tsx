@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useNav } from "@/lib/NavContext";
+import { useSettings } from "@/lib/SettingsContext";
 import { 
   LayoutDashboard, 
   Globe2, 
@@ -27,29 +28,30 @@ import {
 export default function Sidebar() {
   const pathname = usePathname();
   const { isMobileNavOpen, closeMobileNav } = useNav();
+  const { t } = useSettings();
 
   const mainLinks = [
-    { name: "Dashboard", href: "/", icon: LayoutDashboard },
-    { name: "MarketMind Copilot", href: "/copilot", icon: Brain, badge: "AI" },
-    { name: "Global Map", href: "/global-map", icon: Globe2 },
-    { name: "Live Feed", href: "/live-feed", icon: Rss },
-    { name: "AI Forecast", href: "/forecast", icon: LineChart },
-    { name: "Deep Dive", href: "/deep-dive", icon: BarChart2 },
-    { name: "Fear & Greed", href: "/fear-greed", icon: Smile },
+    { name: t("nav.dashboard"), href: "/", icon: LayoutDashboard },
+    { name: t("nav.copilot"), href: "/copilot", icon: Brain, badge: "AI" },
+    { name: t("nav.globalMap"), href: "/global-map", icon: Globe2 },
+    { name: t("nav.liveFeed"), href: "/live-feed", icon: Rss },
+    { name: t("nav.forecast"), href: "/forecast", icon: LineChart },
+    { name: t("nav.deepDive"), href: "/deep-dive", icon: BarChart2 },
+    { name: t("nav.fearGreed"), href: "/fear-greed", icon: Smile },
   ];
 
   const toolsLinks = [
-    { name: "AI Quant Lab", href: "/research", icon: FlaskConical, badge: "Live" },
-    { name: "Stock Screener", href: "/screener", icon: Activity, badge: "New" },
-    { name: "Sector Rotation", href: "/sector", icon: RefreshCcw },
-    { name: "Insider Signals", href: "/insider", icon: Key },
-    { name: "Watchlist", href: "/watchlist", icon: Star },
-    { name: "Alerts", href: "/alerts", icon: Bell },
+    { name: t("nav.quantLab"), href: "/research", icon: FlaskConical, badge: "Live" },
+    { name: t("nav.screener"), href: "/screener", icon: Activity, badge: "New" },
+    { name: t("nav.sector"), href: "/sector", icon: RefreshCcw },
+    { name: t("nav.insider"), href: "/insider", icon: Key },
+    { name: t("nav.watchlist"), href: "/watchlist", icon: Star },
+    { name: t("nav.alerts"), href: "/alerts", icon: Bell },
   ];
 
   const settingsLinks = [
-    { name: "Settings", href: "/settings", icon: Settings },
-    { name: "Help & Support", href: "/support", icon: HelpCircle },
+    { name: t("nav.settings"), href: "/settings", icon: Settings },
+    { name: t("nav.support"), href: "/support", icon: HelpCircle },
   ];
 
   const renderNavContent = (isMobile = false) => (

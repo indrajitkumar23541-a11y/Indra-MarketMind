@@ -16,6 +16,7 @@ import {
   Sparkles,
   ExternalLink,
 } from "lucide-react";
+import { useSettings } from "@/lib/SettingsContext";
 
 interface SmartAlert {
   id: string;
@@ -73,6 +74,7 @@ const DEFAULT_ALERTS: SmartAlert[] = [
 ];
 
 export default function AlertsPage() {
+  const { settings, speakAlert, formatCurrency, t } = useSettings();
   const [alerts, setAlerts] = useState<SmartAlert[]>([]);
   const [ticker, setTicker] = useState<string>("");
   const [condition, setCondition] = useState<SmartAlert["condition"]>("PRICE_ABOVE");
@@ -133,10 +135,22 @@ export default function AlertsPage() {
   };
 
   const triggerTestAlert = () => {
-    setTestNotification("🚨 [TEST ALERT] NIFTY 50 Put-OI Wall Defense Triggered at 23,489 (Simulated Audio Alert)");
+    let alertMsg = "";
+    if (settings.language === "hinglish") {
+      alertMsg = "Alert! Nifty 50 ne 23,489 par Put Open Interest support hold kiya hai!";
+    } else if (settings.language === "hi") {
+      alertMsg = "अलर्ट! निफ्टी 50 ने 23,489 पर महत्वपूर्ण समर्थन स्तर बनाए रखा है।";
+    } else if (settings.language === "es") {
+      alertMsg = "¡Alerta! Nifty 50 activó la defensa de soporte en 23,489.";
+    } else {
+      alertMsg = "Alert! NIFTY 50 Put Open Interest Wall Defense Triggered at 23,489.";
+    }
+
+    setTestNotification(`🚨 [${settings.language.toUpperCase()}] ${alertMsg}`);
+    speakAlert(alertMsg);
     setTimeout(() => {
       setTestNotification(null);
-    }, 4500);
+    }, 5500);
   };
 
   return (
@@ -169,8 +183,8 @@ export default function AlertsPage() {
             onClick={triggerTestAlert}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 border border-white/10 hover:border-red-500/40 text-slate-300 hover:text-white text-xs font-semibold transition-all cursor-pointer"
           >
-            <Volume2 className="w-3.5 h-3.5 text-amber-400" />
-            Test Sound Alert
+            <Volume2 className="w-3.5 h-3.5 text-red-400 animate-pulse" />
+            <span>{t("alerts.voiceTest")} ({settings.language.toUpperCase()})</span>
           </button>
 
           <button

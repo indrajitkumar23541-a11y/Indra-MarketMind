@@ -16,11 +16,20 @@ import {
   ExternalLink,
   ShieldCheck,
   AlertTriangle,
-  Menu
+  Menu,
+  ChevronDown,
+  User,
+  LogOut,
+  Settings as SettingsIcon,
+  Zap,
+  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useNav } from "@/lib/NavContext";
+import { useSettings } from "@/lib/SettingsContext";
+import { useMarketMindAuth } from "@/lib/AuthContext";
+import { useNotifications } from "@/lib/NotificationContext";
 
 interface SearchResult {
   symbol: string;
@@ -32,52 +41,32 @@ interface SearchResult {
   percent_change?: number;
 }
 
-interface NotificationItem {
-  id: string;
-  title: string;
-  message: string;
-  time: string;
-  type: "bullish" | "bearish" | "alert";
-  read: boolean;
-}
-
 export default function TopNav() {
   const { toggleMobileNav } = useNav();
+  const { settings, t, formatCurrency } = useSettings();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const [notifOpen, setNotifOpen] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
-    {
-      id: "1",
-      title: "NIFTY 50 Volatility Alert",
-      message: "NIFTY 50 trading at 23,488 (-1.22%). Support range tested near 23,460.",
-      time: "2m ago",
-      type: "bearish",
-      read: false
-    },
-    {
-      id: "2",
-      title: "Global Fear & Greed Updated",
-      message: "Market sentiment shifted into NEUTRAL (50/100) based on 7 technical indicators.",
-      time: "10m ago",
-      type: "alert",
-      read: false
-    },
-    {
-      id: "3",
-      title: "Bitcoin Whale Activity",
-      message: "BTC holds strong above $79,400 with +1.29% positive momentum.",
-      time: "25m ago",
-      type: "bullish",
-      read: false
-    }
-  ]);
+  const {
+    notifications,
+    unreadCount,
+    markAllAsRead,
+    markAsRead,
+    clearAll,
+    triggerTestNotification,
+    requestPushPermission,
+    pushPermission,
+  } = useNotifications();
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const { user, isSignedIn, openSignIn, signOut } = useMarketMindAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   // Keyboard shortcut (Ctrl + / or Cmd + /)
   useEffect(() => {
@@ -89,6 +78,7 @@ export default function TopNav() {
       if (e.key === "Escape") {
         setSearchOpen(false);
         setNotifOpen(false);
+        setUserMenuOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -103,11 +93,14 @@ export default function TopNav() {
     }
   }, [searchOpen]);
 
-  // Click outside notification listener
+  // Click outside listener for notifications and user menu
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setNotifOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -129,12 +122,6 @@ export default function TopNav() {
     } finally {
       setIsSearching(false);
     }
-  };
-
-  const unreadCount = notifications.filter(n => !n.read).length;
-
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
 
   return (
@@ -172,7 +159,7 @@ export default function TopNav() {
             <Search className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 mr-1.5 sm:mr-2.5 transition-colors shrink-0" />
             <span className="flex-1 text-left text-xs text-slate-400 group-hover:text-slate-300 truncate">
               <span className="sm:hidden">Search...</span>
-              <span className="hidden sm:inline">Search stocks, news, indices...</span>
+              <span className="hidden sm:inline">{t("header.searchPlaceholder")}</span>
             </span>
             <span className="hidden md:inline px-1.5 py-0.5 rounded border border-white/10 bg-slate-800/80 text-[10px] text-slate-400 font-mono shrink-0 ml-1">
               Ctrl /
@@ -209,69 +196,212 @@ export default function TopNav() {
 
             {/* Responsive Notification Popover */}
             {notifOpen && (
-              <div className="absolute right-0 mt-3 w-[calc(100vw-2rem)] sm:w-96 max-w-sm rounded-2xl bg-[#0F172A] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-3.5 sm:p-4 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="font-space font-bold text-sm text-white">Live Market Alerts</span>
-                    {unreadCount > 0 && (
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
-                        {unreadCount} New
+              <>
+                {/* Mobile Backdrop to dismiss on tap */}
+                <div
+                  className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 sm:hidden animate-in fade-in duration-100"
+                  onClick={() => setNotifOpen(false)}
+                />
+
+                <div className="fixed inset-x-3 top-[66px] sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2.5 w-auto sm:w-96 sm:max-w-sm rounded-2xl bg-[#0F172A]/95 sm:bg-[#0F172A] border border-cyan-500/30 sm:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.95)] p-3.5 sm:p-4 z-50 backdrop-blur-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+                  {/* Popover Header */}
+                  <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-space font-bold text-sm text-white">Live Market Alerts</span>
+                      {unreadCount > 0 ? (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 font-mono">
+                          {unreadCount} New
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-mono">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          LIVE
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {notifications.length > 0 && (
+                        <>
+                          <button
+                            onClick={markAllAsRead}
+                            className="text-[11px] text-slate-400 hover:text-cyan-400 transition cursor-pointer"
+                          >
+                            Read all
+                          </button>
+                          <button
+                            onClick={clearAll}
+                            className="text-[11px] text-slate-400 hover:text-rose-400 transition cursor-pointer"
+                          >
+                            Clear
+                          </button>
+                        </>
+                      )}
+                      <button
+                        onClick={() => setNotifOpen(false)}
+                        className="sm:hidden p-1 rounded-md text-slate-400 hover:text-white hover:bg-white/10 cursor-pointer"
+                        aria-label="Close notifications"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Body: Empty State or Live Notifications */}
+                  {notifications.length === 0 ? (
+                    <div className="py-7 px-3 text-center space-y-3">
+                      <div className="relative w-11 h-11 mx-auto flex items-center justify-center">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400/20" />
+                        <div className="relative w-9 h-9 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                          <Zap className="w-4 h-4" />
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-space font-bold text-white">Live Monitoring Active</h4>
+                        <p className="text-[11px] text-slate-400 mt-1 max-w-[240px] mx-auto leading-relaxed">
+                          Scanning real-time news & market spikes. Breaking alerts will appear instantly.
+                        </p>
+                      </div>
+                      <button
+                        onClick={triggerTestNotification}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-[11px] font-semibold cursor-pointer transition-all active:scale-95"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>Send Test Live Alert</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2 max-h-[50vh] sm:max-h-72 overflow-y-auto custom-scrollbar pr-1">
+                      {notifications.map((n) => (
+                        <Link
+                          key={n.id}
+                          href={n.url || "/live-feed"}
+                          onClick={() => {
+                            markAsRead(n.id);
+                            setNotifOpen(false);
+                          }}
+                          className={cn(
+                            "block p-2.5 sm:p-3 rounded-xl border text-xs transition-all hover:bg-white/10 group cursor-pointer",
+                            n.read ? "bg-white/[0.02] border-white/5 opacity-70" : "bg-white/[0.06] border-white/15",
+                            n.type === "bearish"
+                              ? "border-l-4 border-l-rose-500"
+                              : n.type === "bullish"
+                              ? "border-l-4 border-l-emerald-500"
+                              : "border-l-4 border-l-cyan-400"
+                          )}
+                        >
+                          <div className="flex items-center justify-between font-semibold text-slate-200 mb-1">
+                            <span className="truncate pr-2 group-hover:text-cyan-300 transition-colors font-medium">
+                              {n.title}
+                            </span>
+                            <span className="text-[10px] text-slate-500 font-mono shrink-0">{n.time}</span>
+                          </div>
+                          <p className="text-slate-400 text-[11px] leading-relaxed line-clamp-2">{n.message}</p>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Footer */}
+                  <div className="pt-3 mt-3 border-t border-white/10 flex justify-between items-center text-xs">
+                    {pushPermission !== "granted" ? (
+                      <button
+                        onClick={requestPushPermission}
+                        className="text-[11px] text-cyan-400 hover:underline flex items-center gap-1 cursor-pointer font-medium"
+                      >
+                        <Bell className="w-3 h-3" />
+                        <span>Enable Push Alerts</span>
+                      </button>
+                    ) : (
+                      <span className="text-emerald-400 text-[10px] sm:text-[11px] flex items-center gap-1 font-mono">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        Push Active
                       </span>
                     )}
+                    <Link
+                      href="/alerts"
+                      onClick={() => setNotifOpen(false)}
+                      className="text-cyan-400 hover:underline font-semibold flex items-center gap-1 text-[11px]"
+                    >
+                      Alerts Center <ArrowUpRight className="w-3 h-3" />
+                    </Link>
                   </div>
-                  {unreadCount > 0 && (
-                    <button
-                      onClick={markAllAsRead}
-                      className="text-[11px] text-slate-400 hover:text-cyan-400 transition"
-                    >
-                      Mark all as read
-                    </button>
-                  )}
                 </div>
-
-                <div className="space-y-2 max-h-64 sm:max-h-72 overflow-y-auto custom-scrollbar pr-1">
-                  {notifications.map((n) => (
-                    <div
-                      key={n.id}
-                      className={cn(
-                        "p-2.5 sm:p-3 rounded-xl border text-xs transition-all",
-                        n.read ? "bg-white/[0.02] border-white/5 opacity-75" : "bg-white/[0.06] border-white/10",
-                        n.type === "bearish" ? "border-l-4 border-l-rose-500" : n.type === "bullish" ? "border-l-4 border-l-emerald-500" : "border-l-4 border-l-amber-500"
-                      )}
-                    >
-                      <div className="flex items-center justify-between font-semibold text-slate-200 mb-1">
-                        <span className="truncate pr-2">{n.title}</span>
-                        <span className="text-[10px] text-slate-500 font-normal shrink-0">{n.time}</span>
-                      </div>
-                      <p className="text-slate-400 text-[11px] leading-relaxed">{n.message}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-3 mt-3 border-t border-white/10 flex justify-between items-center text-xs">
-                  <span className="text-slate-500 text-[10px] sm:text-[11px]">System: Online</span>
-                  <Link
-                    href="/alerts"
-                    onClick={() => setNotifOpen(false)}
-                    className="text-cyan-400 hover:underline font-semibold flex items-center gap-1 text-[11px]"
-                  >
-                    Alerts Center <ArrowUpRight className="w-3 h-3" />
-                  </Link>
-                </div>
-              </div>
+              </>
             )}
           </div>
 
           <div className="h-5 sm:h-6 w-px bg-white/10"></div>
 
-          {/* Clean Sign In Button */}
-          <button 
-            onClick={() => alert("Authentication system will be enabled soon! You are currently browsing as Guest with full live terminal access.")}
-            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
-          >
-            <LogIn className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden xs:inline">Sign In</span>
-          </button>
+          {/* Dynamic User Profile or Sign In Button */}
+          {!isSignedIn ? (
+            <button
+              onClick={openSignIn}
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-cyan-400/50 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 text-xs font-semibold shadow-[0_0_15px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all cursor-pointer shrink-0"
+            >
+              <LogIn className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="font-space font-bold">Sign In</span>
+            </button>
+          ) : (
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
+              >
+                {user?.imageUrl ? (
+                  <img
+                    src={user.imageUrl}
+                    alt={user.fullName}
+                    className="w-5 h-5 rounded-md object-cover border border-cyan-400/40 shrink-0"
+                  />
+                ) : (
+                  <div className="w-5 h-5 rounded-md bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold text-[10px] shrink-0 shadow-sm">
+                    {user?.initials || "U"}
+                  </div>
+                )}
+                <span className="hidden xs:inline font-space truncate max-w-[120px]">
+                  {user?.firstName || user?.fullName || "Member"}
+                </span>
+                <ChevronDown className="w-3 h-3 text-slate-400 hidden xs:block" />
+              </button>
+
+              {/* User Dropdown */}
+              {userMenuOpen && (
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0A0E1A] border border-cyan-500/30 shadow-[0_15px_40px_rgba(0,0,0,0.85)] p-2 z-50 text-xs space-y-1 animate-in fade-in zoom-in-95 duration-100">
+                  <div className="px-2.5 py-2 border-b border-white/10">
+                    <div className="font-space font-bold text-white truncate">
+                      {user?.fullName || "Member"}
+                    </div>
+                    {user?.email && (
+                      <div className="text-[10px] text-slate-400 font-mono truncate">
+                        {user.email}
+                      </div>
+                    )}
+                    <span className="mt-1.5 inline-block text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-mono font-bold">
+                      ACTIVE MEMBER
+                    </span>
+                  </div>
+                  <Link
+                    href="/settings"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-2.5 py-2 rounded-lg hover:bg-white/5 text-slate-300 hover:text-white transition-colors"
+                  >
+                    <SettingsIcon className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Settings & Preferences</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      signOut();
+                    }}
+                    className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg hover:bg-red-500/10 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
         </div>
       </header>
@@ -345,7 +475,7 @@ export default function TopNav() {
 
                       <div className="text-right">
                         <div className="text-sm font-bold font-mono text-white">
-                          {item.price ? `₹${item.price.toLocaleString('en-IN')}` : "Live Quote"}
+                          {item.price ? formatCurrency(item.exchange === "NSE" || item.exchange === "BSE" ? item.price / 86.5 : item.price) : "Live Quote"}
                         </div>
                         {item.percent_change !== undefined && item.percent_change !== null && (
                           <div className={cn("text-xs font-semibold flex items-center justify-end gap-0.5", item.percent_change >= 0 ? "text-emerald-400" : "text-rose-400")}>

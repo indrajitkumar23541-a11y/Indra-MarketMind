@@ -17,6 +17,8 @@ import {
   BookOpen,
   CheckCircle2
 } from "lucide-react";
+import { useSettings } from "@/lib/SettingsContext";
+import { localizeNewsHeadline, localizeNewsSnippet } from "@/lib/i18n";
 
 export interface MarketAssetImpact {
   asset: string;
@@ -137,6 +139,8 @@ function FormattedArticleContent({ content }: { content: string }) {
 }
 
 export default function NewsDetailModal({ article, onClose }: NewsDetailModalProps) {
+  const { settings, t } = useSettings();
+
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -234,13 +238,13 @@ export default function NewsDetailModal({ article, onClose }: NewsDetailModalPro
                 }`}>
                   {isBullish && <ArrowUpRight className="w-3 h-3" />}
                   {isBearish && <ArrowDownRight className="w-3 h-3" />}
-                  <span>{article.sentiment}</span>
+                  <span>{t(`sentiment.${article.sentiment.toLowerCase()}`) || article.sentiment}</span>
                   <span className="font-mono">({article.score})</span>
                 </span>
               </div>
 
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold font-manrope text-white tracking-tight leading-snug">
-                {article.title}
+                {localizeNewsHeadline(article.title, settings.language)}
               </h2>
             </div>
 
@@ -268,7 +272,7 @@ export default function NewsDetailModal({ article, onClose }: NewsDetailModalPro
               </div>
 
               {/* Formatted Article Content with Beautiful Typography */}
-              <FormattedArticleContent content={article.content} />
+              <FormattedArticleContent content={localizeNewsSnippet(article.content, settings.language)} />
             </div>
 
             {/* 🔮 INDRA MARKET IMPACT MATRIX (Kiska Rate Badhega vs Girega) */}
@@ -341,7 +345,7 @@ export default function NewsDetailModal({ article, onClose }: NewsDetailModalPro
                       Actionable Quant Takeaway
                     </h4>
                     <p className="text-xs sm:text-[13px] text-slate-200 leading-relaxed font-sans">
-                      {impact.key_takeaway}
+                      {localizeNewsSnippet(impact.key_takeaway, settings.language)}
                     </p>
                   </div>
                 </div>

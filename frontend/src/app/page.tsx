@@ -32,6 +32,8 @@ import {
 } from "recharts";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/lib/SettingsContext";
+import { localizeNewsHeadline } from "@/lib/i18n";
 
 interface ChartPoint {
   time: string;
@@ -63,7 +65,9 @@ const sentimentData = [
 ];
 
 export default function Dashboard() {
-  // Dynamic Greeting based on real-time
+  const { settings, formatCurrency, refreshIntervalMs, t } = useSettings();
+
+  // Dynamic Greeting based on real-time and language
   const [greeting, setGreeting] = useState<{ text: string; emoji: string }>({
     text: "Good Morning",
     emoji: "☀️"
@@ -102,17 +106,17 @@ export default function Dashboard() {
     const updateGreeting = () => {
       const hour = new Date().getHours();
       if (hour >= 4 && hour < 12) {
-        setGreeting({ text: "Good Morning", emoji: "☀️" });
+        setGreeting({ text: t("dashboard.greetings.morning"), emoji: "☀️" });
       } else if (hour >= 12 && hour < 17) {
-        setGreeting({ text: "Good Afternoon", emoji: "🌤️" });
+        setGreeting({ text: t("dashboard.greetings.afternoon"), emoji: "🌤️" });
       } else {
-        setGreeting({ text: "Good Evening", emoji: "🌙" });
+        setGreeting({ text: t("dashboard.greetings.evening"), emoji: "🌙" });
       }
     };
     updateGreeting();
     const interval = setInterval(updateGreeting, 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [t]);
 
   // 2. Fetch NIFTY 50 Quote & Auto Refresh
   const fetchNiftyQuote = async () => {
@@ -205,16 +209,16 @@ export default function Dashboard() {
     fetchIndices();
     fetchChart("1D");
 
-    const quoteInterval = setInterval(fetchNiftyQuote, 10000);
-    const indicesInterval = setInterval(fetchIndices, 15000);
-    const newsInterval = setInterval(fetchArticlesCount, 30000);
+    const quoteInterval = setInterval(fetchNiftyQuote, refreshIntervalMs);
+    const indicesInterval = setInterval(fetchIndices, refreshIntervalMs);
+    const newsInterval = setInterval(fetchArticlesCount, Math.max(refreshIntervalMs * 2, 10000));
 
     return () => {
       clearInterval(quoteInterval);
       clearInterval(indicesInterval);
       clearInterval(newsInterval);
     };
-  }, []);
+  }, [refreshIntervalMs]);
 
   const handleTimeframeChange = (tf: "1D" | "1W" | "1M" | "3M" | "1Y" | "All") => {
     setActiveTimeframe(tf);
@@ -243,10 +247,10 @@ export default function Dashboard() {
             <span className="text-base sm:text-lg">{greeting.emoji}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-manrope font-bold mb-1.5 sm:mb-2 text-white">
-            Welcome to <span className="text-[#00F0FF] neon-text-cyan">Indra-MarketMind</span>
+            {t("dashboard.welcome")} <span className="text-[#00F0FF] neon-text-cyan">Indra-MarketMind</span>
           </h1>
           <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-            AI-Powered Financial Intelligence & Real-Time Market Sentiment Terminal
+            {t("dashboard.tagline")}
           </p>
         </div>
         <div className="relative z-10 hidden md:flex items-center justify-center">
@@ -265,7 +269,7 @@ export default function Dashboard() {
         {/* 1. Global Fear & Greed */}
         <div className="glass-panel p-4 sm:p-5 flex flex-col justify-between border border-white/10 hover:border-cyan-500/30 transition-all rounded-2xl">
           <div className="text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase mb-3 sm:mb-4 flex items-center justify-between">
-            <span>GLOBAL FEAR & GREED</span>
+            <span>{t("dashboard.kpi.fearGreed")}</span>
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
           </div>
           <div className="flex items-center justify-between">
@@ -299,11 +303,11 @@ export default function Dashboard() {
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-manrope font-bold text-white mb-1 font-mono">
-              {displayPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-white mb-1">
+              {formatCurrency(displayPrice, { from: "INR" })}
             </div>
             <div className={cn("flex items-center gap-1 text-xs sm:text-sm font-semibold mb-2 font-mono", isPositive ? "text-[#10B981]" : "text-[#EF4444]")}>
-              {isPositive ? "+" : ""}{displayChange.toFixed(2)} ({isPositive ? "+" : ""}{displayPercent.toFixed(2)}%)
+              {isPositive ? "+" : ""}{formatCurrency(displayChange, { from: "INR" })} ({isPositive ? "+" : ""}{displayPercent.toFixed(2)}%)
               {isPositive ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
             </div>
             <div className="flex items-end justify-between">
@@ -311,7 +315,7 @@ export default function Dashboard() {
                 <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981] animate-pulse"></span> Live NSE
               </div>
               <div className="text-[10px] sm:text-[11px] text-slate-500 font-mono">
-                Day: {displayLow.toFixed(0)} - {displayHigh.toFixed(0)}
+                Day: {formatCurrency(displayLow, { from: "INR" })} - {formatCurrency(displayHigh, { from: "INR" })}
               </div>
             </div>
           </div>
@@ -320,13 +324,13 @@ export default function Dashboard() {
         {/* 3. Articles Scanned (24H) */}
         <div className="glass-panel p-4 sm:p-5 flex flex-col justify-between border border-white/10 rounded-2xl">
           <div className="flex justify-between items-start mb-3 sm:mb-4">
-            <div className="text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase">ARTICLES SCANNED (24H)</div>
+            <div className="text-[10px] sm:text-[11px] font-bold tracking-widest text-slate-400 uppercase">{t("dashboard.kpi.articlesScanned")}</div>
             <div className="bg-indigo-500/10 text-indigo-400 p-1.5 rounded-lg border border-indigo-500/20">
               <Search className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-manrope font-bold text-white mb-1 sm:mb-2 font-mono">
+            <div className="text-2xl sm:text-3xl font-mono font-bold text-white mb-1 sm:mb-2">
               {newsCount.toLocaleString()}
             </div>
             <div className="text-xs text-emerald-400 mb-2 flex items-center gap-1.5">
@@ -414,7 +418,7 @@ export default function Dashboard() {
 
               {/* Target Price Bubble */}
               <div className="absolute right-2 sm:right-4 top-2 sm:top-4 bg-[#10B981] text-black text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 rounded-lg shadow-lg z-10 font-mono">
-                ₹{displayPrice.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                {formatCurrency(displayPrice, { from: "INR" })}
               </div>
               
               <ResponsiveContainer width="100%" height="100%">
@@ -522,7 +526,7 @@ export default function Dashboard() {
 
             {/* Sentiment Distribution Pie & Alert */}
             <div className="glass-panel p-4 sm:p-6 flex flex-col justify-between rounded-2xl border border-white/10">
-              <h3 className="font-manrope font-bold text-sm mb-3 sm:mb-4 text-white">Sentiment Distribution</h3>
+              <h3 className="font-manrope font-bold text-sm mb-3 sm:mb-4 text-white">{t("dashboard.kpi.sentimentDist")}</h3>
               <div className="flex items-center gap-4 sm:gap-6 mb-3 sm:mb-4">
                 <div className="w-20 sm:w-24 h-20 sm:h-24 shrink-0">
                   <ResponsiveContainer width="100%" height="100%">
@@ -580,14 +584,14 @@ export default function Dashboard() {
           <div className="glass-panel p-4 sm:p-5 flex-1 rounded-2xl border border-white/10">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-2">
-                <h3 className="font-manrope font-bold text-sm text-white">Major Indices</h3>
+                <h3 className="font-manrope font-bold text-sm text-white">{t("dashboard.kpi.majorIndices")}</h3>
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               </div>
               <button 
                 onClick={() => setShowAllIndicesModal(true)}
                 className="text-[11px] text-cyan-400 font-bold hover:text-cyan-300 transition-colors flex items-center gap-1 cursor-pointer"
               >
-                View All <ExternalLink className="w-3 h-3" />
+                {t("dashboard.kpi.viewAll")} <ExternalLink className="w-3 h-3" />
               </button>
             </div>
             
@@ -610,7 +614,7 @@ export default function Dashboard() {
 
                     <div className="flex items-center gap-4 text-right">
                       <div className="text-xs font-bold font-mono text-white">
-                        {idx.name === "BITCOIN" || idx.name === "ETHEREUM" ? `$${idx.c.toLocaleString()}` : idx.c.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                        {formatCurrency(idx.c, { from: (idx.name === "BITCOIN" || idx.name === "ETHEREUM" || idx.region.includes("US")) ? "USD" : "INR" })}
                       </div>
 
                       {/* Mini Real Sparkline SVG */}
@@ -634,9 +638,9 @@ export default function Dashboard() {
           {/* Live News & Sentiment */}
           <div className="glass-panel p-5 flex-1 rounded-2xl border border-white/10">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-manrope font-bold text-sm text-white">Live News & Sentiment</h3>
+              <h3 className="font-manrope font-bold text-sm text-white">{t("dashboard.kpi.liveFeed")}</h3>
               <Link href="/live-feed" className="text-[11px] text-cyan-400 font-bold hover:text-cyan-300 transition-colors">
-                View Feed
+                {t("dashboard.viewFeed")}
               </Link>
             </div>
 
@@ -653,10 +657,12 @@ export default function Dashboard() {
                       {n.src} <span className="w-1 h-1 bg-slate-600 rounded-full"></span> {n.time}
                     </div>
                     <div className="text-[9px] font-bold px-1.5 py-0.5 rounded" style={{ color: n.color, backgroundColor: `${n.color}20` }}>
-                      {n.tag}
+                      {t(`sentiment.${n.tag.toLowerCase()}`) || n.tag}
                     </div>
                   </div>
-                  <div className="text-xs font-medium leading-relaxed mb-2 text-slate-200">{n.title}</div>
+                  <div className="text-xs font-medium leading-relaxed mb-2 text-slate-200">
+                    {localizeNewsHeadline(n.title, settings.language)}
+                  </div>
                   <div className="flex items-center gap-2">
                     <div className="text-[9px] text-slate-400 font-mono">Score: <span style={{ color: n.color }}>{n.sent > 0 ? `+${n.sent}` : n.sent}</span></div>
                     <div className="flex-1 h-1 bg-slate-800 rounded-full overflow-hidden">
@@ -668,7 +674,7 @@ export default function Dashboard() {
             </div>
 
             <Link href="/live-feed" className="w-full mt-4 py-2 border border-cyan-500/30 text-cyan-300 text-xs font-semibold rounded-xl hover:bg-cyan-950/20 transition-colors flex items-center justify-center gap-2">
-              View All News Feeds <ArrowRight className="w-3 h-3" />
+              {t("dashboard.viewAllNews")} <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
 
@@ -682,13 +688,13 @@ export default function Dashboard() {
           <Bell className="w-4 h-4" fill="currentColor" />
         </div>
         <div className="flex-1">
-          <h4 className="text-sm font-bold text-[#10B981] mb-0.5">Real-Time Market Synchronized</h4>
+          <h4 className="text-sm font-bold text-[#10B981] mb-0.5">{t("dashboard.syncBanner.title")}</h4>
           <p className="text-xs text-slate-300">
-            Market overview, indices and NLP sentiment engines are operating live at 100% capacity with sub-second polling.
+            {t("dashboard.syncBanner.desc")}
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
-          <span className="text-[10px] text-slate-400 font-mono bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/30 text-emerald-400 font-bold">LIVE FEED</span>
+          <span className="text-[10px] font-mono bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/30 text-emerald-400 font-bold">LIVE FEED</span>
         </div>
       </div>
 
@@ -740,7 +746,7 @@ export default function Dashboard() {
                         </td>
                         <td className="py-3 font-sans text-slate-400 text-xs">{idx.region}</td>
                         <td className="py-3 text-right font-bold text-white text-sm">
-                          {idx.name === "BITCOIN" || idx.name === "ETHEREUM" ? `$${idx.c.toLocaleString()}` : idx.c.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                          {formatCurrency(idx.c, { from: (idx.name === "BITCOIN" || idx.name === "ETHEREUM" || idx.region.includes("US")) ? "USD" : "INR" })}
                         </td>
                         <td className={cn("py-3 text-right font-bold", isUp ? "text-[#10B981]" : "text-[#EF4444]")}>
                           {isUp ? "+" : ""}{idx.dp.toFixed(2)}%

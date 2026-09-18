@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import NewsDetailModal, { NewsArticleItem } from "@/components/NewsDetailModal";
 import QuantumLoader from "@/components/QuantumLoader";
+import { useSettings } from "@/lib/SettingsContext";
+import { localizeNewsHeadline, localizeNewsSnippet } from "@/lib/i18n";
 
 const CATEGORIES = ["All Sources", "Equities", "Forex", "Crypto", "Macro", "Earnings"];
 
@@ -73,6 +75,7 @@ function cleanPreviewSnippet(text: string): string {
 }
 
 export default function LiveFeed() {
+  const { settings, t, refreshIntervalMs } = useSettings();
   const [articles, setArticles] = useState<NewsArticleItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -389,19 +392,19 @@ export default function LiveFeed() {
                     }`}>
                       {isBullish && <ArrowUpRight className="w-3.5 h-3.5" />}
                       {isBearish && <ArrowDownRight className="w-3.5 h-3.5" />}
-                      <span>{item.sentiment}</span>
+                      <span>{t(`sentiment.${item.sentiment.toLowerCase()}`) || item.sentiment}</span>
                       <span className="font-mono">{item.score}</span>
                     </div>
                   </div>
 
                   {/* Headline Title */}
                   <h2 className="text-base sm:text-lg font-bold text-white mb-2 group-hover:text-[#00F0FF] transition-colors leading-snug">
-                    {item.title}
+                    {localizeNewsHeadline(item.title, settings.language)}
                   </h2>
 
-                  {/* Content Preview (HTML Cleaned) */}
+                  {/* Content Preview (HTML Cleaned & Localized) */}
                   <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4 line-clamp-2">
-                    {cleanPreviewSnippet(item.content)}
+                    {localizeNewsSnippet(cleanPreviewSnippet(item.content), settings.language)}
                   </p>
 
                   {/* Card Bottom: Tags & Click CTA */}

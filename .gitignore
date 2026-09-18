@@ -2,5 +2,31 @@ venv/
 __pycache__/
 *.pyc
 .env
+.env.*
+!.env.example
+*.local
 .idea/
 .vscode/
+node_modules/
+
+# Secrets, Keys, and Certificates
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+credentials.json
+service_account*.json
+
+# Logs and system caches
+*.log
+npm-debug.log*
+yarn-debug.log*
+.DS_Store
+Thumbs.db
+
+# User records & runtime databases (private)
+frontend/data/*.json
+!frontend/data/.gitkeep
+

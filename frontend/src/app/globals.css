@@ -93,8 +93,144 @@ html {
   scroll-behavior: smooth;
 }
 
+html.theme-oled,
+html.theme-dark {
+  --background: #05070D;
+  --foreground: #F8FAFC;
+  color-scheme: dark;
+}
+
+html.theme-midnight {
+  --background: #070D1D;
+  --foreground: #F8FAFC;
+}
+
+html.theme-emerald {
+  --background: #03140F;
+  --foreground: #F8FAFC;
+}
+
+/* Institutional Bright Theme (Light Mode) */
+html.theme-bright {
+  --background: #F1F5F9;
+  --foreground: #0F172A;
+  color-scheme: light;
+}
+
+html.theme-bright body {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+}
+
+/* Glass panel in bright mode */
+html.theme-bright .glass-panel {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Panels and card backgrounds in bright mode */
+html.theme-bright .bg-\[\#05070D\],
+html.theme-bright .bg-\[\#060A14\],
+html.theme-bright .bg-\[\#070B14\],
+html.theme-bright .bg-\[\#070D1D\],
+html.theme-bright .bg-\[\#080E1C\],
+html.theme-bright .bg-\[\#0A101E\],
+html.theme-bright .bg-\[\#0A1226\],
+html.theme-bright .bg-\[\#0C1222\],
+html.theme-bright .bg-\[\#0D1424\],
+html.theme-bright .bg-\[\#131E35\] {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.theme-bright .bg-\[\#0A101E\]\/90,
+html.theme-bright .bg-\[\#0A101E\]\/80,
+html.theme-bright .bg-\[\#060A14\]\/95,
+html.theme-bright .bg-\[\#080E1C\]\/90,
+html.theme-bright .bg-\[\#0D1424\]\/95,
+html.theme-bright .bg-\[\#0C1222\]\/90 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Sidebar & Navigation in bright mode */
+html.theme-bright aside {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.theme-bright header {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Text adjustments in bright mode */
+html.theme-bright .text-white {
+  color: #0F172A !important;
+}
+
+html.theme-bright .text-slate-200 {
+  color: #1E293B !important;
+}
+
+html.theme-bright .text-slate-300 {
+  color: #334155 !important;
+}
+
+html.theme-bright .text-slate-400 {
+  color: #64748B !important;
+}
+
+html.theme-bright .border-white\/5,
+html.theme-bright .border-white\/10,
+html.theme-bright .border-white\/15,
+html.theme-bright .border-white\/20 {
+  border-color: #E2E8F0 !important;
+}
+
+html.theme-bright .bg-white\/5,
+html.theme-bright .bg-white\/10,
+html.theme-bright .bg-white\/\[0\.02\],
+html.theme-bright .bg-white\/\[0\.04\] {
+  background-color: #F1F5F9 !important;
+}
+
+html.theme-bright .divide-white\/5 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #E2E8F0 !important;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   overscroll-behavior-y: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* Clerk Custom Styling & Watermark Removal */
+.cl-footer,
+.cl-footerAction,
+.cl-footerPages,
+.cl-internal-b3fm6y,
+.cl-logoBox,
+.cl-logoImage,
+.cl-headerBackLink,
+[data-localization-key="badge__securedByClerk"],
+.cl-badge,
+.cl-powered-by-clerk,
+.cl-internal-phfxlr,
+.cl-internal-1dauvpw {
+  display: none !important;
+}
+
+.cl-modalBackdrop {
+  backdrop-filter: blur(8px) !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.cl-card {
+  background-color: #0A0E1A !important;
+  border: 1px solid rgba(0, 240, 255, 0.25) !important;
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.15) !important;
+  border-radius: 1rem !important;
+}
+

@@ -12,6 +12,7 @@ import {
   handleGrangerCausality,
   handleCorrelation
 } from "@/lib/api-handlers/quantAnalytics";
+import { recordAndNotifyNewUser, getRegisteredUsers } from "@/lib/adminNotifier";
 
 const YAHOO_HEADERS = {
   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -120,6 +121,12 @@ const INDICES_CONFIG = [
   { symbol: "CL=F", name: "CRUDE OIL", label: "OIL", region: "Commodity" }
 ];
 
+const TICKER_REGEX = /^[A-Za-z0-9\.\-\_\^=]{1,20}$/;
+
+function isValidTicker(ticker: string): boolean {
+  return typeof ticker === "string" && TICKER_REGEX.test(ticker.trim());
+}
+
 export async function GET(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   const { path } = await params;
   const pathStr = path ? path.join("/") : "";
@@ -128,7 +135,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   // 1. /api/data/fetch/market/[ticker]/quote
   if (pathStr.startsWith("data/fetch/market/") && pathStr.endsWith("/quote")) {
     const rawTicker = pathStr.replace("data/fetch/market/", "").replace("/quote", "");
-    const ticker = decodeURIComponent(rawTicker);
+    const ticker = decodeURIComponent(rawTicker).trim();
+    if (!isValidTicker(ticker)) {
+      return NextResponse.json({ error: "Invalid ticker symbol format" }, { status: 400 });
+    }
     const data = await fetchYahooChart(ticker, "1d");
     if (data) return NextResponse.json(data);
     return NextResponse.json({ error: "Quote not found" }, { status: 404 });
@@ -137,7 +147,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   // 2. /api/data/fetch/market/[ticker]/deep-dive or /api/market/[ticker]/deep-dive
   if (pathStr.includes("market/") && pathStr.endsWith("/deep-dive")) {
     const rawTicker = pathStr.replace(/^.*market\//, "").replace("/deep-dive", "");
-    const ticker = decodeURIComponent(rawTicker);
+    const ticker = decodeURIComponent(rawTicker).trim();
+    if (!isValidTicker(ticker)) {
+      return NextResponse.json({ error: "Invalid ticker symbol format" }, { status: 400 });
+    }
     try {
       const data = await handleDeepDive(ticker);
       return NextResponse.json(data);
@@ -150,8 +163,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   // 3. /api/data/fetch/market/[ticker]/chart
   if (pathStr.startsWith("data/fetch/market/") && pathStr.endsWith("/chart")) {
     const rawTicker = pathStr.replace("data/fetch/market/", "").replace("/chart", "");
-    const ticker = decodeURIComponent(rawTicker);
-    const range = url.searchParams.get("range") || "1d";
+    const ticker = decodeURIComponent(rawTicker).trim();
+    if (!isValidTicker(ticker)) {
+      return NextResponse.json({ error: "Invalid ticker symbol format" }, { status: 400 });
+    }
+    const rawRange = url.searchParams.get("range") || "1d";
+    const range = /^(1d|1w|1m|3m|6m|1y|3y|all)$/i.test(rawRange) ? rawRange : "1d";
     const data = await fetchYahooChart(ticker, range);
     if (data) return NextResponse.json(data);
     return NextResponse.json({ error: "Chart data not found" }, { status: 404 });
@@ -186,7 +203,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
   // 5. /api/data/fetch/market/search
   if (pathStr === "data/fetch/market/search") {
-    const q = url.searchParams.get("q") || "";
+    const rawQ = url.searchParams.get("q") || "";
+    // Sanitize query: max 100 characters and remove dangerous characters
+    const q = rawQ.slice(0, 100).replace(/[<>{}"';`\\]/g, "").trim();
+    if (!q) {
+      return NextResponse.json({ results: [] });
+    }
     try {
       const searchRes = await fetch(`https://query2.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(q)}&quotesCount=8&newsCount=0`, {
         headers: YAHOO_HEADERS
@@ -206,7 +228,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
   // 6. /api/analytics/signals/fear-greed or /api/signals/fear-greed
   if (pathStr === "analytics/signals/fear-greed" || pathStr === "signals/fear-greed" || pathStr === "data/fetch/signals/fear-greed") {
-    const market = url.searchParams.get("market") || "global";
+    const rawMarket = url.searchParams.get("market") || "global";
+    const market = rawMarket.slice(0, 20).replace(/[^a-zA-Z0-9_-]/g, "");
     try {
       const data = await handleFearGreed(market);
       return NextResponse.json(data);
@@ -223,8 +246,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
   // 8. /api/data/news/live-feed or /api/news/live-feed
   if (pathStr === "data/news/live-feed" || pathStr === "news/live-feed") {
-    const category = url.searchParams.get("category") || "All";
-    const limit = parseInt(url.searchParams.get("limit") || "40", 10);
+    const rawCategory = url.searchParams.get("category") || "All";
+    const category = rawCategory.slice(0, 50).replace(/[<>{}]/g, "");
+    const rawLimit = parseInt(url.searchParams.get("limit") || "40", 10);
+    const limit = Math.max(1, Math.min(isNaN(rawLimit) ? 40 : rawLimit, 100));
     try {
       const data = await handleLiveNews(category, limit);
       return NextResponse.json(data);
@@ -236,11 +261,19 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
   // 9. /api/data/fetch/forecast/nifty50 or /api/forecast/nifty50 or /api/forecast
   if (pathStr.includes("forecast/nifty50") || pathStr.endsWith("/forecast") || pathStr === "forecast") {
-    const ticker = url.searchParams.get("ticker") || "^NSEI";
-    const days = parseInt(url.searchParams.get("days") || "7", 10);
-    const crude = parseFloat(url.searchParams.get("crude_oil_pct") || "0");
-    const dxy = parseFloat(url.searchParams.get("dxy_pct") || "0");
-    const rbi = parseFloat(url.searchParams.get("rbi_bps") || "0");
+    const rawTicker = url.searchParams.get("ticker") || "^NSEI";
+    const ticker = decodeURIComponent(rawTicker).trim();
+    if (!isValidTicker(ticker)) {
+      return NextResponse.json({ error: "Invalid ticker format for forecast" }, { status: 400 });
+    }
+    const rawDays = parseInt(url.searchParams.get("days") || "7", 10);
+    const days = Math.max(1, Math.min(isNaN(rawDays) ? 7 : rawDays, 90));
+    const crudeRaw = parseFloat(url.searchParams.get("crude_oil_pct") || "0");
+    const crude = Math.max(-100, Math.min(isNaN(crudeRaw) ? 0 : crudeRaw, 100));
+    const dxyRaw = parseFloat(url.searchParams.get("dxy_pct") || "0");
+    const dxy = Math.max(-100, Math.min(isNaN(dxyRaw) ? 0 : dxyRaw, 100));
+    const rbiRaw = parseFloat(url.searchParams.get("rbi_bps") || "0");
+    const rbi = Math.max(-1000, Math.min(isNaN(rbiRaw) ? 0 : rbiRaw, 1000));
     try {
       const data = await handleForecast(ticker, days, crude, dxy, rbi);
       return NextResponse.json(data);
@@ -253,16 +286,26 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   // 10. /api/analytics/analyze/granger/[ticker]
   if (pathStr.startsWith("analytics/analyze/granger/")) {
     const rawTicker = pathStr.replace("analytics/analyze/granger/", "");
-    const lag = parseInt(url.searchParams.get("lag_days") || "1", 10);
-    const data = await handleGrangerCausality(rawTicker, lag);
+    const ticker = decodeURIComponent(rawTicker).trim();
+    if (!isValidTicker(ticker)) {
+      return NextResponse.json({ error: "Invalid ticker format" }, { status: 400 });
+    }
+    const rawLag = parseInt(url.searchParams.get("lag_days") || "1", 10);
+    const lag = Math.max(1, Math.min(isNaN(rawLag) ? 1 : rawLag, 30));
+    const data = await handleGrangerCausality(ticker, lag);
     return NextResponse.json(data);
   }
 
   // 11. /api/analytics/analyze/correlation/[ticker]
   if (pathStr.startsWith("analytics/analyze/correlation/")) {
     const rawTicker = pathStr.replace("analytics/analyze/correlation/", "");
-    const windowDays = parseInt(url.searchParams.get("window_days") || "30", 10);
-    const data = await handleCorrelation(rawTicker, windowDays);
+    const ticker = decodeURIComponent(rawTicker).trim();
+    if (!isValidTicker(ticker)) {
+      return NextResponse.json({ error: "Invalid ticker format" }, { status: 400 });
+    }
+    const rawWindow = parseInt(url.searchParams.get("window_days") || "30", 10);
+    const windowDays = Math.max(5, Math.min(isNaN(rawWindow) ? 30 : rawWindow, 365));
+    const data = await handleCorrelation(ticker, windowDays);
     return NextResponse.json(data);
   }
 
@@ -303,6 +346,21 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     });
   }
 
+  // 15. /api/admin/users
+  if (pathStr === "admin/users" || pathStr === "admin/registered-users") {
+    try {
+      const users = await getRegisteredUsers();
+      return NextResponse.json({
+        platform: "Indra-MarketMind V3.0",
+        totalRegisteredUsers: users.length,
+        adminEmail: "indrajitkumar23541@gmail.com",
+        users,
+      });
+    } catch {
+      return NextResponse.json({ error: "Failed to read registered users" }, { status: 500 });
+    }
+  }
+
   // 16. Default / Fallback: Try proxying to Render Gateway if configured, else 404
   const GATEWAY_URL = process.env.GATEWAY_URL || process.env.NEXT_PUBLIC_GATEWAY_URL;
   if (GATEWAY_URL && !GATEWAY_URL.includes("localhost")) {
@@ -328,11 +386,47 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const { path } = await params;
   const pathStr = path ? path.join("/") : "";
 
-  // 1. /api/sentiment/analyze/ensemble
+  // CyberShield: Payload size guard to prevent Memory-Exhaustion DoS
+  const contentLength = request.headers.get("content-length");
+  if (contentLength && parseInt(contentLength, 10) > 102400) {
+    return NextResponse.json(
+      { error: "Payload exceeds 100KB limit.", shield: "Indra-MarketMind CyberShield" },
+      { status: 413 }
+    );
+  }
+
+  // 1. /api/admin/notify-new-user
+  if (pathStr === "admin/notify-new-user") {
+    try {
+      const body = await request.json();
+      const forwardedFor = request.headers.get("x-forwarded-for");
+      const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : request.headers.get("x-real-ip") || "127.0.0.1";
+      const userAgent = request.headers.get("user-agent") || undefined;
+
+      const result = await recordAndNotifyNewUser({
+        userId: String(body?.userId || "unknown"),
+        name: String(body?.name || "Unknown Trader").slice(0, 100),
+        email: String(body?.email || "").slice(0, 120),
+        joinedAt: body?.joinedAt ? String(body.joinedAt).slice(0, 80) : undefined,
+        method: body?.method ? String(body.method).slice(0, 50) : "Clerk Auth",
+        ip,
+        userAgent,
+      });
+
+      return NextResponse.json(result);
+    } catch (err: any) {
+      console.error("Error recording user:", err);
+      return NextResponse.json({ error: "Failed to record user registration" }, { status: 500 });
+    }
+  }
+
+  // 2. /api/sentiment/analyze/ensemble
   if (pathStr === "sentiment/analyze/ensemble") {
     try {
       const body = await request.json();
-      const text = body?.text || "";
+      const rawText = typeof body?.text === "string" ? body.text : "";
+      // Bound text length to max 10,000 characters
+      const text = rawText.slice(0, 10000);
       const data = await handleSentimentEnsemble(text);
       return NextResponse.json(data);
     } catch {
@@ -341,10 +435,11 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
   }
 
-  // 2. /api/chat or /api/copilot/chat
+  // 3. /api/chat or /api/copilot/chat
   if (pathStr === "chat" || pathStr === "copilot/chat" || pathStr === "ai/chat") {
     return handleChatCopilot(request);
   }
+
 
   // 3. Default fallback proxy to Render Gateway
   const GATEWAY_URL = process.env.GATEWAY_URL || process.env.NEXT_PUBLIC_GATEWAY_URL;

@@ -5,16 +5,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Rss, Activity, LineChart, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/lib/SettingsContext";
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const { t } = useSettings();
 
   const navItems = [
-    { name: "Overview", href: "/", icon: LayoutDashboard },
-    { name: "Feed", href: "/live-feed", icon: Rss },
-    { name: "Screener", href: "/screener", icon: Activity, badge: "Live" },
-    { name: "Forecast", href: "/forecast", icon: LineChart },
-    { name: "Copilot", href: "/copilot", icon: Brain, isCopilot: true, badge: "AI" },
+    { name: t("nav.dashboard"), href: "/", icon: LayoutDashboard },
+    { name: t("nav.liveFeed"), href: "/live-feed", icon: Rss },
+    { name: t("nav.screener"), href: "/screener", icon: Activity, badge: "Live" },
+    { name: t("nav.forecast"), href: "/forecast", icon: LineChart },
+    { name: t("nav.copilot"), href: "/copilot", icon: Brain, isCopilot: true, badge: "AI" },
   ];
 
   return (

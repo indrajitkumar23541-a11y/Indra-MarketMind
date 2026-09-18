@@ -18,9 +18,11 @@ import {
   Shield,
   Compass,
   LineChart,
+  Volume2,
 } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
 import { usePathname } from "next/navigation";
+import { useSettings } from "@/lib/SettingsContext";
 
 interface ChatMessage {
   id: string;
@@ -160,6 +162,7 @@ function formatInlineMarkdown(text: string): string {
 export default function MarketMindCopilot() {
   const pathname = usePathname();
   const { isCopilotOpen, setIsCopilotOpen, closeCopilot } = useNav();
+  const { settings, playAlertChime, speakAlert } = useSettings();
   const isOpen = isCopilotOpen;
   const setIsOpen = setIsCopilotOpen;
 
@@ -237,7 +240,14 @@ export default function MarketMindCopilot() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, history: messages.slice(-4) }),
+        body: JSON.stringify({
+          query,
+          history: messages.slice(-4),
+          aiStyle: settings.aiStyle,
+          language: settings.language,
+          aiAutoAnalysis: settings.aiAutoAnalysis,
+          aiTradingAlerts: settings.aiTradingAlerts,
+        }),
       });
 
       if (!res.ok) throw new Error("Copilot response error");
@@ -255,6 +265,9 @@ export default function MarketMindCopilot() {
       };
 
       setMessages((prev) => [...prev, aiMsg]);
+      if (settings.alertSound) {
+        playAlertChime(660, 0.12);
+      }
     } catch {
       const errorMsg: ChatMessage = {
         id: "ai-err-" + Date.now(),
@@ -337,9 +350,26 @@ export default function MarketMindCopilot() {
 
               {/* Title & Subtitle Requested by User */}
               <div className="flex flex-col">
-                <div className="font-space font-bold text-sm md:text-base text-white tracking-tight flex items-center gap-2">
+                <div className="font-space font-bold text-sm md:text-base text-white tracking-tight flex items-center gap-2 flex-wrap">
                   MarketMind Copilot
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                  <span className="hidden sm:inline-flex text-[9px] px-2 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono uppercase">
+                    {settings.aiStyle === "deep" ? "🔬 Deep Mode" : "⚡ Concise Mode"}
+                  </span>
+                  <span className={`hidden md:inline-flex text-[9px] px-1.5 py-0.5 rounded-full border font-mono uppercase ${
+                    settings.aiAutoAnalysis
+                      ? "bg-emerald-950/60 border-emerald-500/40 text-emerald-300"
+                      : "bg-slate-900 border-white/10 text-slate-500"
+                  }`}>
+                    {settings.aiAutoAnalysis ? "📡 Radar ON" : "📡 Radar OFF"}
+                  </span>
+                  <span className={`hidden md:inline-flex text-[9px] px-1.5 py-0.5 rounded-full border font-mono uppercase ${
+                    settings.aiTradingAlerts
+                      ? "bg-indigo-950/60 border-indigo-500/40 text-indigo-300"
+                      : "bg-slate-900 border-white/10 text-slate-500"
+                  }`}>
+                    {settings.aiTradingAlerts ? "🎯 Hedged SL ON" : "🎯 Signals OFF"}
+                  </span>
                 </div>
                 <div className="text-[11px] text-cyan-400 font-mono tracking-wide">
                   Real-Time Financial Intelligence
@@ -460,19 +490,34 @@ export default function MarketMindCopilot() {
                           : "bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-medium"
                       }`}
                     >
-                      {/* Copy button for AI response */}
+                      {/* Actions for AI response (Speech & Copy) */}
                       {isAi && (
-                        <button
-                          onClick={() => handleCopy(msg.id, msg.text)}
-                          className="absolute top-3 right-3 p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
-                          title="Copy response"
-                        >
-                          {copiedId === msg.id ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
+                        <div className="absolute top-2.5 right-2.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() =>
+                              speakAlert(
+                                msg.text
+                                  .replace(/###|\*\*|\*|`|\[|\]|\(.*?\)|\n/g, " ")
+                                  .slice(0, 220)
+                              )
+                            }
+                            className="p-1.5 text-slate-400 hover:text-cyan-300 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                            title="Listen in your selected language"
+                          >
+                            <Volume2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleCopy(msg.id, msg.text)}
+                            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                            title="Copy response"
+                          >
+                            {copiedId === msg.id ? (
+                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+                        </div>
                       )}
 
                       {/* Render formatted message */}

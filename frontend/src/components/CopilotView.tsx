@@ -14,7 +14,10 @@ import {
   Shield,
   Compass,
   LineChart,
+  Volume2,
 } from "lucide-react";
+import { useSettings } from "@/lib/SettingsContext";
+import { speakText, LanguageCode } from "@/lib/i18n";
 
 export interface ChatMessage {
   id: string;
@@ -24,11 +27,62 @@ export interface ChatMessage {
   suggestedFollowUps?: string[];
 }
 
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: "msg-welcome",
-    sender: "ai",
-    text: `### 🌌 Welcome to Indra-MarketMind AI Copilot!
+function getInitialMessages(lang: LanguageCode): ChatMessage[] {
+  if (lang === "hinglish") {
+    return [
+      {
+        id: "msg-welcome",
+        sender: "ai",
+        text: `### 🌌 Indra-MarketMind AI Copilot me aapka swagat hai!
+
+Main aapka institutional financial co-pilot hoon, jo real-time market quotes, 5-model NLP sentiment feeds, aur risk models se powered hai.
+
+**Aaj main aapki market research me kaise madad kar sakta hoon?**
+- Live benchmarks puchiye (*"NIFTY 50 ka trend kaisa hai?"*)
+- Institutional analysis maangiye (*"Reliance ka breakdown do"* ya *"NVDA analyze karo"*)
+- Market sentiment samjhiye (*"Aaj ka Fear & Greed index kaisa hai?"*)
+- Sector momentum explore kijiye (*"Kaun se sectors lead kar rahe hain?"*)`,
+        timestamp: "Now",
+        suggestedFollowUps: [
+          "NIFTY 50 ka trend kaisa hai?",
+          "Reliance Industries analyze karo",
+          "Smart money flows kahan ja raha hai?",
+          "Fear & Greed index breakdown samjhao",
+        ],
+      },
+    ];
+  }
+
+  if (lang === "hi") {
+    return [
+      {
+        id: "msg-welcome",
+        sender: "ai",
+        text: `### 🌌 इंद्र-मार्केटमाइंड एआई कोपायलट में आपका स्वागत है!
+
+मैं आपका संस्थागत वित्तीय सह-पायलट हूँ, जो रीयल-टाइम मार्केट कोट्स और 5-मॉडल एनएलपी से संचालित है।
+
+**आज मैं आपकी बाज़ार रिसर्च में क्या मदद कर सकता हूँ?**
+- प्रमुख सूचकांक रुझान (*"निफ्टी 50 का आज क्या रुझान है?"*)
+- संस्थागत विश्लेषण (*"रिलायंस इंडस्ट्रीज का विश्लेषण करें"*)
+- बाज़ार मनोविज्ञान (*"डर और लालच सूचकांक समझाएं"*)
+- सेक्टर गतिशीलता (*"कौन से क्षेत्र आगे चल रहे हैं?"*)`,
+        timestamp: "Now",
+        suggestedFollowUps: [
+          "निफ्टी 50 का आज क्या रुझान है?",
+          "रिलायंस इंडस्ट्रीज का विश्लेषण करें",
+          "स्मार्ट मनी प्रवाह कहाँ जा रहा है?",
+          "डर व लालच सूचकांक समझाइए",
+        ],
+      },
+    ];
+  }
+
+  return [
+    {
+      id: "msg-welcome",
+      sender: "ai",
+      text: `### 🌌 Welcome to Indra-MarketMind AI Copilot!
 
 I am your institutional financial co-pilot, grounded in real-time market quotes, 5-model NLP sentiment feeds, and quantitative risk models.
 
@@ -37,38 +91,91 @@ I am your institutional financial co-pilot, grounded in real-time market quotes,
 - Request an institutional tear-sheet (*"Analyze Reliance"* or *"Analyze NVDA"*)
 - Decode institutional sentiment (*"Explain today's Fear & Greed index"*)
 - Explore sector momentum (*"Which sectors are leading?"*)`,
-    timestamp: "Now",
-    suggestedFollowUps: [
-      "What is the NIFTY 50 trend today?",
-      "Analyze Reliance Industries",
-      "Where is smart money flowing?",
-      "Fear & Greed index breakdown",
-    ],
-  },
-];
+      timestamp: "Now",
+      suggestedFollowUps: [
+        "What is the NIFTY 50 trend today?",
+        "Analyze Reliance Industries",
+        "Where is smart money flowing?",
+        "Fear & Greed index breakdown",
+      ],
+    },
+  ];
+}
 
-const PROMPT_SUGGESTIONS = [
-  {
-    icon: TrendingUp,
-    title: "NIFTY & BANKNIFTY Trend",
-    query: "What is the NIFTY 50 and BANKNIFTY trend today?",
-  },
-  {
-    icon: LineChart,
-    title: "Institutional Tear-Sheet",
-    query: "Analyze Reliance Industries with live market metrics",
-  },
-  {
-    icon: Shield,
-    title: "Fear & Greed Breakdown",
-    query: "Explain today's Fear & Greed index and institutional positioning",
-  },
-  {
-    icon: Compass,
-    title: "Macro & FII/DII Flows",
-    query: "How are crude oil and USD/INR impacting smart money flows?",
-  },
-];
+function getPromptSuggestions(lang: LanguageCode) {
+  if (lang === "hinglish") {
+    return [
+      {
+        icon: TrendingUp,
+        title: "NIFTY & BANKNIFTY Trend",
+        query: "NIFTY 50 aur BANKNIFTY ka live trend kaisa hai?",
+      },
+      {
+        icon: LineChart,
+        title: "Institutional Tear-Sheet",
+        query: "Reliance Industries ka live market breakdown do",
+      },
+      {
+        icon: Shield,
+        title: "Fear & Greed Breakdown",
+        query: "Aaj ka Fear & Greed index aur institutional positioning samjhao",
+      },
+      {
+        icon: Compass,
+        title: "Macro & FII/DII Flows",
+        query: "Crude oil aur USD/INR ka smart money flows par kya impact hai?",
+      },
+    ];
+  }
+
+  if (lang === "hi") {
+    return [
+      {
+        icon: TrendingUp,
+        title: "निफ्टी व बैंक निफ्टी रुझान",
+        query: "निफ्टी 50 और बैंक निफ्टी का आज क्या रुझान है?",
+      },
+      {
+        icon: LineChart,
+        title: "संस्थागत विश्लेषण",
+        query: "रिलायंस इंडस्ट्रीज का लाइव विश्लेषण दिखाएं",
+      },
+      {
+        icon: Shield,
+        title: "डर व लालच सूचकांक",
+        query: "आज का डर व लालच सूचकांक और संस्थागत स्थिति बताएं",
+      },
+      {
+        icon: Compass,
+        title: "मैक्रो एवं FII/DII प्रवाह",
+        query: "कच्चा तेल और रुपया-डॉलर बाज़ार को कैसे प्रभावित कर रहे हैं?",
+      },
+    ];
+  }
+
+  return [
+    {
+      icon: TrendingUp,
+      title: "NIFTY & BANKNIFTY Trend",
+      query: "What is the NIFTY 50 and BANKNIFTY trend today?",
+    },
+    {
+      icon: LineChart,
+      title: "Institutional Tear-Sheet",
+      query: "Analyze Reliance Industries with live market metrics",
+    },
+    {
+      icon: Shield,
+      title: "Fear & Greed Breakdown",
+      query: "Explain today's Fear & Greed index and institutional positioning",
+    },
+    {
+      icon: Compass,
+      title: "Macro & FII/DII Flows",
+      query: "How are crude oil and USD/INR impacting smart money flows?",
+    },
+  ];
+}
 
 function FormattedMessage({ content }: { content: string }) {
   const lines = content.split("\n");
@@ -149,13 +256,24 @@ function formatInlineMarkdown(text: string): string {
 }
 
 export default function CopilotView() {
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const { settings } = useSettings();
+  const [messages, setMessages] = useState<ChatMessage[]>(() =>
+    getInitialMessages(settings.language)
+  );
   const [inputQuery, setInputQuery] = useState<string>("");
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // Sync initial welcome message when language changes if no conversation started
+  useEffect(() => {
+    if (messages.length === 1 && messages[0].id === "msg-welcome") {
+      setMessages(getInitialMessages(settings.language));
+    }
+  }, [settings.language]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -171,8 +289,15 @@ export default function CopilotView() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  const handleSpeak = (id: string, text: string) => {
+    setSpeakingId(id);
+    const clean = text.replace(/[#*`_]/g, "").replace(/\[.*?\]/g, "");
+    speakText(clean, settings.language);
+    setTimeout(() => setSpeakingId(null), 6000);
+  };
+
   const handleClearChat = () => {
-    setMessages(INITIAL_MESSAGES);
+    setMessages(getInitialMessages(settings.language));
   };
 
   const handleSend = async (textToSend?: string) => {
@@ -197,7 +322,14 @@ export default function CopilotView() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, history: messages.slice(-4) }),
+        body: JSON.stringify({
+          query,
+          history: messages.slice(-4),
+          language: settings.language,
+          aiStyle: settings.aiStyle,
+          aiAutoAnalysis: settings.aiAutoAnalysis,
+          aiTradingAlerts: settings.aiTradingAlerts,
+        }),
       });
 
       if (!res.ok) throw new Error("Copilot response error");
@@ -250,15 +382,32 @@ export default function CopilotView() {
           </div>
 
           {/* Title & Subtitle Requested by User */}
-          <div className="flex flex-col">
-            <div className="font-space font-bold text-xs sm:text-sm text-white tracking-tight flex items-center gap-1.5 leading-none">
-              MarketMind Copilot
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+            <div className="flex flex-col">
+              <div className="font-space font-bold text-xs sm:text-sm text-white tracking-tight flex items-center gap-1.5 leading-none flex-wrap">
+                MarketMind Copilot
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                <span className="hidden sm:inline-flex text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono uppercase">
+                  {settings.aiStyle === "deep" ? "🔬 Deep" : "⚡ Concise"}
+                </span>
+                <span className={`hidden md:inline-flex text-[9px] px-1.5 py-0.5 rounded-full border font-mono uppercase ${
+                  settings.aiAutoAnalysis
+                    ? "bg-emerald-950/60 border-emerald-500/40 text-emerald-300"
+                    : "bg-slate-900 border-white/10 text-slate-500"
+                }`}>
+                  {settings.aiAutoAnalysis ? "📡 Radar ON" : "📡 Radar OFF"}
+                </span>
+                <span className={`hidden md:inline-flex text-[9px] px-1.5 py-0.5 rounded-full border font-mono uppercase ${
+                  settings.aiTradingAlerts
+                    ? "bg-indigo-950/60 border-indigo-500/40 text-indigo-300"
+                    : "bg-slate-900 border-white/10 text-slate-500"
+                }`}>
+                  {settings.aiTradingAlerts ? "🎯 Signals ON" : "🎯 Signals OFF"}
+                </span>
+              </div>
+              <div className="text-[9px] sm:text-[10px] text-cyan-400 font-mono tracking-tight mt-0.5">
+                Real-Time Financial Intelligence
+              </div>
             </div>
-            <div className="text-[9px] sm:text-[10px] text-cyan-400 font-mono tracking-tight mt-0.5">
-              Real-Time Financial Intelligence
-            </div>
-          </div>
         </div>
 
         {/* Right Action Tools */}
@@ -294,7 +443,7 @@ export default function CopilotView() {
 
               {/* Suggestion Prompt Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left max-w-lg mx-auto">
-                {PROMPT_SUGGESTIONS.map((item, idx) => {
+                {getPromptSuggestions(settings.language).map((item, idx) => {
                   const Icon = item.icon;
                   return (
                     <button
@@ -353,19 +502,32 @@ export default function CopilotView() {
                       : "bg-gradient-to-r from-cyan-600 to-indigo-600 text-white font-medium"
                   }`}
                 >
-                  {/* Copy button for AI response */}
+                  {/* Action buttons for AI response: Speak & Copy */}
                   {isAi && (
-                    <button
-                      onClick={() => handleCopy(msg.id, msg.text)}
-                      className="absolute top-2.5 right-2.5 p-1 text-slate-400 hover:text-white rounded hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
-                      title="Copy response"
-                    >
-                      {copiedId === msg.id ? (
-                        <Check className="w-3 h-3 text-emerald-400" />
-                      ) : (
-                        <Copy className="w-3 h-3" />
-                      )}
-                    </button>
+                    <div className="absolute top-2.5 right-2.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => handleSpeak(msg.id, msg.text)}
+                        className={`p-1 rounded transition-colors cursor-pointer ${
+                          speakingId === msg.id
+                            ? "text-cyan-400 bg-cyan-950/80"
+                            : "text-slate-400 hover:text-cyan-300 hover:bg-white/10"
+                        }`}
+                        title="Voice readout in selected language"
+                      >
+                        <Volume2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleCopy(msg.id, msg.text)}
+                        className="p-1 text-slate-400 hover:text-white rounded hover:bg-white/10 transition-colors cursor-pointer"
+                        title="Copy response"
+                      >
+                        {copiedId === msg.id ? (
+                          <Check className="w-3 h-3 text-emerald-400" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
+                      </button>
+                    </div>
                   )}
 
                   {/* Render formatted message */}

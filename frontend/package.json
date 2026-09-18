@@ -9,13 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.9.4",
+    "@clerk/themes": "^2.4.57",
     "@types/d3-geo": "^3.1.1",
+    "@types/nodemailer": "^8.0.2",
     "@types/react-simple-maps": "^3.0.6",
     "clsx": "^2.1.1",
     "d3-geo": "^3.1.1",
     "framer-motion": "^13.1.1",
     "lucide-react": "^1.37.0",
     "next": "16.3.3",
+    "nodemailer": "^10.0.10",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-simple-maps": "^3.0.0",

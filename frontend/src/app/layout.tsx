@@ -147,6 +147,10 @@ const jsonLd = {
 
 import MainContentWrapper from "@/components/MainContentWrapper";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
+import { SettingsProvider } from "@/lib/SettingsContext";
+import { NotificationProvider } from "@/lib/NotificationContext";
+import LiveNotificationToast from "@/components/notifications/LiveNotificationToast";
+import ClerkAuthProvider from "@/components/auth/ClerkAuthProvider";
 
 export default function RootLayout({
   children,
@@ -168,16 +172,23 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${manrope.variable} ${spaceGrotesk.variable} font-sans bg-[#05070D] text-slate-200 antialiased h-screen overflow-hidden flex flex-col lg:flex-row`}
       >
-        <NavProvider>
-          <Sidebar />
-          <div className="flex-1 flex flex-col min-w-0 h-full relative">
-            <TopNav />
-            <MainContentWrapper>{children}</MainContentWrapper>
-          </div>
-          <MarketMindCopilot />
-          <MobileBottomNav />
-          <PwaInstallPrompt />
-        </NavProvider>
+        <SettingsProvider>
+          <NotificationProvider>
+            <ClerkAuthProvider>
+              <NavProvider>
+                <LiveNotificationToast />
+                <Sidebar />
+                <div className="flex-1 flex flex-col min-w-0 h-full relative">
+                  <TopNav />
+                  <MainContentWrapper>{children}</MainContentWrapper>
+                </div>
+                <MarketMindCopilot />
+                <MobileBottomNav />
+                <PwaInstallPrompt />
+              </NavProvider>
+            </ClerkAuthProvider>
+          </NotificationProvider>
+        </SettingsProvider>
       </body>
     </html>
   );
