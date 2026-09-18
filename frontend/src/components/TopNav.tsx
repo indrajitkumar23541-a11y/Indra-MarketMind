@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { 
   Search, 
   Bell, 
@@ -15,14 +15,13 @@ import {
   LogIn, 
   ExternalLink,
   ShieldCheck,
-  AlertTriangle,
   Menu,
   ChevronDown,
-  User,
   LogOut,
   Settings as SettingsIcon,
   Zap,
   Sparkles,
+  Smartphone,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -30,6 +29,7 @@ import { useNav } from "@/lib/NavContext";
 import { useSettings } from "@/lib/SettingsContext";
 import { useMarketMindAuth } from "@/lib/AuthContext";
 import { useNotifications } from "@/lib/NotificationContext";
+import UniversalAppDownloadModal from "./UniversalAppDownloadModal";
 
 interface SearchResult {
   symbol: string;
@@ -43,13 +43,14 @@ interface SearchResult {
 
 export default function TopNav() {
   const { toggleMobileNav } = useNav();
-  const { settings, t, formatCurrency } = useSettings();
+  const { t, formatCurrency } = useSettings();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const [notifOpen, setNotifOpen] = useState(false);
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   const {
     notifications,
     unreadCount,
@@ -68,7 +69,7 @@ export default function TopNav() {
   const { user, isSignedIn, openSignIn, signOut } = useMarketMindAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  // Keyboard shortcut (Ctrl + / or Cmd + /)
+// Keyboard shortcut (Ctrl + / or Cmd + /)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "/") {
@@ -85,13 +86,33 @@ export default function TopNav() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Focus input when modal opens
+  // Debounced search query
+  const handleSearch = useCallback(async (query: string) => {
+    setSearchQuery(query);
+    setIsSearching(true);
+    try {
+      const res = await fetch(`/api/data/fetch/market/search?q=${encodeURIComponent(query)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSearchResults(data.results || []);
+      }
+    } catch (err) {
+      console.error("Search fetch error", err);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
+
+  // Focus input when modal opens and load initial items
   useEffect(() => {
     if (searchOpen) {
-      setTimeout(() => searchInputRef.current?.focus(), 50);
-      handleSearch("");
+      const timer = setTimeout(() => {
+        searchInputRef.current?.focus();
+        handleSearch("");
+      }, 50);
+      return () => clearTimeout(timer);
     }
-  }, [searchOpen]);
+  }, [searchOpen, handleSearch]);
 
   // Click outside listener for notifications and user menu
   useEffect(() => {
@@ -106,23 +127,6 @@ export default function TopNav() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  // Debounced search query
-  const handleSearch = async (query: string) => {
-    setSearchQuery(query);
-    setIsSearching(true);
-    try {
-      const res = await fetch(`/api/data/fetch/market/search?q=${encodeURIComponent(query)}`);
-      if (res.ok) {
-        const data = await res.json();
-        setSearchResults(data.results || []);
-      }
-    } catch (err) {
-      console.error("Search fetch error", err);
-    } finally {
-      setIsSearching(false);
-    }
-  };
 
   return (
     <>
@@ -178,6 +182,16 @@ export default function TopNav() {
             </span>
             <span>LIVE TERMINAL</span>
           </div>
+
+          {/* Universal App Download Hub Trigger */}
+          <button
+            onClick={() => setDownloadModalOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] cursor-pointer shrink-0 group"
+            title="Get App for Android, Laptop & Apple"
+          >
+            <Smartphone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+            <span className="font-space">Get App</span>
+          </button>
 
           {/* Notifications */}
           <div className="relative" ref={notifRef}>
@@ -489,7 +503,7 @@ export default function TopNav() {
                 </div>
               ) : (
                 <div className="p-8 text-center text-xs text-slate-400">
-                  No matches found for "{searchQuery}". Try typing <span className="text-cyan-400 font-semibold">RELIANCE</span>, <span className="text-cyan-400 font-semibold">TCS</span>, or <span className="text-cyan-400 font-semibold">NIFTY</span>.
+                  No matches found for &quot;{searchQuery}&quot;. Try typing <span className="text-cyan-400 font-semibold">RELIANCE</span>, <span className="text-cyan-400 font-semibold">TCS</span>, or <span className="text-cyan-400 font-semibold">NIFTY</span>.
                 </div>
               )}
             </div>
@@ -509,6 +523,12 @@ export default function TopNav() {
           </div>
         </div>
       )}
+
+      {/* Universal App Download Hub Modal */}
+      <UniversalAppDownloadModal
+        isOpen={downloadModalOpen}
+        onClose={() => setDownloadModalOpen(false)}
+      />
     </>
   );
 }

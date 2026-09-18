@@ -22,12 +22,16 @@ import {
   Zap,
   FlaskConical,
   X,
-  Brain
+  Brain,
+  Smartphone
 } from "lucide-react";
+import { useState } from "react";
+import UniversalAppDownloadModal from "./UniversalAppDownloadModal";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { isMobileNavOpen, closeMobileNav } = useNav();
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
   const { t } = useSettings();
 
   const mainLinks = [
@@ -169,6 +173,22 @@ export default function Sidebar() {
                   </Link>
                 );
               })}
+
+              <button
+                onClick={() => {
+                  if (isMobile) closeMobileNav();
+                  setDownloadModalOpen(true);
+                }}
+                className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-slate-400 hover:text-cyan-300 hover:bg-cyan-950/20 cursor-pointer group text-left"
+              >
+                <div className="flex items-center gap-3">
+                  <Smartphone className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+                  <span>Get App &amp; Desktop</span>
+                </div>
+                <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full font-bold font-mono">
+                  All Devices
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -214,6 +234,11 @@ export default function Sidebar() {
       >
         {renderNavContent(true)}
       </div>
+
+      <UniversalAppDownloadModal
+        isOpen={downloadModalOpen}
+        onClose={() => setDownloadModalOpen(false)}
+      />
     </>
   );
 }
