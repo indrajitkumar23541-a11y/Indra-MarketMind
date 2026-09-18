@@ -36,9 +36,13 @@ export const metadata: Metadata = {
   creator: "Indrajit Kumar",
   publisher: "Indrajit Kumar",
   keywords: [
+    "indramarketmind",
     "Indra-MarketMind",
     "Indra MarketMind",
     "Indra Market Mind",
+    "indramarketmind app",
+    "indramarketmind website",
+    "indra marketmind official",
     "indrajitkumar23541",
     "Indrajit Kumar",
     "AI Financial Terminal",
@@ -119,10 +123,16 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "Indra-MarketMind",
-  alternateName: ["Indra MarketMind", "Indra Market Mind", "MarketMind"],
+  alternateName: [
+    "indramarketmind",
+    "Indra MarketMind",
+    "Indra Market Mind",
+    "MarketMind",
+    "indramarketmind app",
+  ],
   url: "https://indra-marketmind.vercel.app",
   applicationCategory: "FinanceApplication",
-  operatingSystem: "Web",
+  operatingSystem: "Android, iOS, Windows, macOS, Linux, Web Browser",
   description:
     "Institutional-grade AI financial terminal created by Indrajit Kumar. Features real-time NLP sentiment analysis, hybrid ML price forecasting, and 7-factor institutional Fear & Greed index.",
   author: {
