@@ -1,4 +1,3 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -57,7 +56,7 @@ const SUSPICIOUS_PATTERNS = [
   /\bunion\s+select/i, // Basic SQLi attempt
 ];
 
-const baseMiddleware = async (req: NextRequest) => {
+export default async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const search = req.nextUrl.search;
 
@@ -75,8 +74,8 @@ const baseMiddleware = async (req: NextRequest) => {
     }
   }
 
-  // 2. Edge Rate Limiter for API Routes (skip Clerk auth proxy and static pages)
-  if (pathname.startsWith("/api/") && !pathname.startsWith("/__clerk")) {
+  // 2. Edge Rate Limiter for API Routes
+  if (pathname.startsWith("/api/")) {
     const forwardedFor = req.headers.get("x-forwarded-for");
     const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : req.headers.get("x-real-ip") || "127.0.0.1";
 
@@ -109,18 +108,7 @@ const baseMiddleware = async (req: NextRequest) => {
 
   // Proceed with standard Next.js lifecycle
   return NextResponse.next();
-};
-
-const hasClerk = Boolean(
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.startsWith("pk_")
-);
-
-export default hasClerk
-  ? clerkMiddleware(async (_auth, req: NextRequest) => {
-      return baseMiddleware(req);
-    })
-  : baseMiddleware;
+}
 
 export const config = {
   matcher: [
