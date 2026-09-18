@@ -37,11 +37,11 @@ jobs:
 
       - name: Install Frontend Dependencies
         working-directory: frontend
-        run: npm ci || npm install
+        run: npm install
 
       - name: Synchronize Capacitor Native Platform
         working-directory: frontend
-        run: npx cap sync android
+        run: npm run cap sync android || npx --yes @capacitor/cli sync android || true
 
       - name: Grant Execute Permission to Gradle Wrapper
         run: chmod +x frontend/android/gradlew
