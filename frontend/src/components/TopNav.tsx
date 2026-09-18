@@ -29,6 +29,7 @@ import { useNav } from "@/lib/NavContext";
 import { useSettings } from "@/lib/SettingsContext";
 import { useMarketMindAuth } from "@/lib/AuthContext";
 import { useNotifications } from "@/lib/NotificationContext";
+import { useAppStatus } from "@/lib/useAppStatus";
 import UniversalAppDownloadModal from "./UniversalAppDownloadModal";
 
 interface SearchResult {
@@ -44,6 +45,7 @@ interface SearchResult {
 export default function TopNav() {
   const { toggleMobileNav } = useNav();
   const { t, formatCurrency } = useSettings();
+  const { isAppDownloadedOrInstalled } = useAppStatus();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -194,18 +196,20 @@ export default function TopNav() {
             <span>LIVE TERMINAL</span>
           </div>
 
-          {/* Universal App Download Hub Trigger */}
-          <button
-            onClick={() => setDownloadModalOpen(true)}
-            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] cursor-pointer shrink-0 group"
-            title="Get App for Android, Laptop & Apple"
-          >
-            <Smartphone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
-            <span className="font-space">
-              <span className="sm:hidden text-[11px]">App</span>
-              <span className="hidden sm:inline">Get App</span>
-            </span>
-          </button>
+          {/* Universal App Download Hub Trigger (Hidden once downloaded or inside installed app) */}
+          {!isAppDownloadedOrInstalled && (
+            <button
+              onClick={() => setDownloadModalOpen(true)}
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] cursor-pointer shrink-0 group"
+              title="Get App for Android, Laptop & Apple"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
+              <span className="font-space">
+                <span className="sm:hidden text-[11px]">App</span>
+                <span className="hidden sm:inline">Get App</span>
+              </span>
+            </button>
+          )}
 
           {/* Notifications */}
           <div className="relative shrink-0" ref={notifRef}>

@@ -12,6 +12,7 @@ import {
   Sparkles,
   Apple,
 } from "lucide-react";
+import { useAppStatus } from "@/lib/useAppStatus";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -25,6 +26,7 @@ export default function UniversalAppDownloadModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { markAppAsDownloaded, isAppDownloadedOrInstalled } = useAppStatus();
   const [activeTab, setActiveTab] = useState<"android" | "desktop" | "apple">("android");
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isDesktopInstallable, setIsDesktopInstallable] = useState(false);
@@ -49,6 +51,7 @@ export default function UniversalAppDownloadModal({
       setIsInstalled(true);
       setIsDesktopInstallable(false);
       setDeferredPrompt(null);
+      markAppAsDownloaded();
     };
 
     if (typeof window !== "undefined") {
@@ -72,6 +75,7 @@ export default function UniversalAppDownloadModal({
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === "accepted") {
         setIsInstalled(true);
+        markAppAsDownloaded();
       }
       setDeferredPrompt(null);
     }
@@ -183,7 +187,10 @@ export default function UniversalAppDownloadModal({
             <a
               href={APK_DOWNLOAD_URL}
               download="Indra-MarketMind.apk"
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-black font-space font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all"
+              onClick={() => {
+                markAppAsDownloaded();
+              }}
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-black font-space font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Download Indra-MarketMind.apk</span>
@@ -287,24 +294,48 @@ export default function UniversalAppDownloadModal({
             <div className="text-[11px] text-slate-400 text-center">
               The icon will appear on your iPhone screen and run in full-screen standalone mode.
             </div>
+
+            <button
+              onClick={() => {
+                markAppAsDownloaded();
+                onClose();
+              }}
+              className="w-full py-2.5 px-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer"
+            >
+              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+              <span>I have added to Home Screen (Remove from Navbar)</span>
+            </button>
           </div>
         )}
 
         {/* Footer */}
-        <div className="mt-5 pt-3.5 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500">
+        <div className="mt-5 pt-3.5 border-t border-white/5 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>End-to-End Encrypted Terminal</span>
           </div>
-          <a
-            href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind"
-            target="_blank"
-            rel="noreferrer"
-            className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-mono"
-          >
-            <span>GitHub</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
+          <div className="flex items-center gap-3">
+            {!isAppDownloadedOrInstalled && (
+              <button
+                onClick={() => {
+                  markAppAsDownloaded();
+                  onClose();
+                }}
+                className="text-[10px] text-slate-400 hover:text-cyan-300 underline cursor-pointer"
+              >
+                Already have app? Hide button
+              </button>
+            )}
+            <a
+              href="https://github.com/indrajitkumar23541-a11y/Indra-MarketMind"
+              target="_blank"
+              rel="noreferrer"
+              className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-mono"
+            >
+              <span>GitHub</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

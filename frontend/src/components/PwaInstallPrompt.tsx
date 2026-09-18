@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Download, X, Smartphone, Sparkles, Check } from "lucide-react";
+import { useAppStatus } from "@/lib/useAppStatus";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -9,6 +10,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function PwaInstallPrompt() {
+  const { markAppAsDownloaded } = useAppStatus();
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
@@ -65,6 +67,7 @@ export default function PwaInstallPrompt() {
       setIsInstalled(true);
       setIsInstallable(false);
       setDeferredPrompt(null);
+      markAppAsDownloaded();
       console.log("Indra-MarketMind App successfully installed!");
     };
 
@@ -75,7 +78,7 @@ export default function PwaInstallPrompt() {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
-  }, []);
+  }, [markAppAsDownloaded]);
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -84,6 +87,7 @@ export default function PwaInstallPrompt() {
       if (outcome === "accepted") {
         setIsInstalled(true);
         setIsInstallable(false);
+        markAppAsDownloaded();
       }
       setDeferredPrompt(null);
     } else if (isIos) {

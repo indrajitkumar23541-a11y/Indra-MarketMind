@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useSettings, AppSettings } from "@/lib/SettingsContext";
 import { useMarketMindAuth } from "@/lib/AuthContext";
+import { useAppStatus } from "@/lib/useAppStatus";
 
 // Luxury Apple/iOS-Style Toggle Switch
 function ToggleSwitch({
@@ -87,6 +88,7 @@ export default function SettingsView() {
   };
 
   const { user, isSignedIn, openSignIn, signOut, isClerkConfigured } = useMarketMindAuth();
+  const { isAppDownloadedOrInstalled, resetAppDownloadedStatus, markAppAsDownloaded } = useAppStatus();
 
   const [activeTab, setActiveTab] = useState<
     "account" | "notifications" | "trading" | "copilot" | "appearance" | "about"
@@ -899,10 +901,34 @@ export default function SettingsView() {
                   <span>Offline Storage:</span>
                   <span className="font-mono text-slate-300">{cacheSize} cached</span>
                 </div>
+                <div className="flex items-center justify-between text-slate-300 pt-1 border-t border-white/5">
+                  <span>Top Navbar "Get App" Button:</span>
+                  <span className="font-mono text-cyan-300">
+                    {isAppDownloadedOrInstalled ? "Hidden (App Active)" : "Visible in Header"}
+                  </span>
+                </div>
               </div>
 
               {/* Actions */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                {isAppDownloadedOrInstalled ? (
+                  <button
+                    onClick={resetAppDownloadedStatus}
+                    className="flex items-center justify-center gap-2 p-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold cursor-pointer transition-all"
+                  >
+                    <Smartphone className="w-4 h-4" />
+                    <span>Re-show "Get App" in Navbar</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={markAppAsDownloaded}
+                    className="flex items-center justify-center gap-2 p-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold cursor-pointer transition-all"
+                  >
+                    <Smartphone className="w-4 h-4" />
+                    <span>Hide "Get App" from Navbar</span>
+                  </button>
+                )}
+
                 <button
                   onClick={handleClearCache}
                   className="flex items-center justify-center gap-2 p-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold cursor-pointer transition-all"
@@ -913,7 +939,7 @@ export default function SettingsView() {
 
                 <button
                   onClick={handleExport}
-                  className="flex items-center justify-center gap-2 p-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold cursor-pointer transition-all"
+                  className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/10 text-xs font-semibold cursor-pointer transition-all sm:col-span-2"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download Backup (JSON)</span>
