@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="mt-14 sm:mt-20 border-t border-cyan-500/15 bg-[#060913]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 md:p-10 text-slate-300 relative overflow-hidden shadow-[0_-15px_40px_rgba(0,0,0,0.8)]">
+      <footer className="w-full max-w-7xl mx-auto mt-14 sm:mt-20 border-t border-cyan-500/15 bg-[#060913]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 md:p-10 text-slate-300 relative overflow-hidden shadow-[0_-15px_40px_rgba(0,0,0,0.8)]">
         {/* Glowing Top Ambient Accent */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-24 bg-cyan-500/10 blur-3xl pointer-events-none rounded-full" />
@@ -239,7 +239,7 @@ export default function Footer() {
         {/* Bottom Bar: Copyright & Security Badges */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div className="text-center sm:text-left">
-            &copy; {new Date().getFullYear()}{" "}
+            &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span>{" "}
             <span className="font-space font-bold text-white">Indra-MarketMind</span>. Engineered with pride by{" "}
             <span className="text-cyan-300 font-semibold">Indrajit Kumar</span>. All rights reserved.
           </div>
