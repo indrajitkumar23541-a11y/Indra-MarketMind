@@ -130,40 +130,41 @@ export default function TopNav() {
 
   return (
     <>
-      <header className="h-16 sm:h-18 flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40 bg-[#0B1020]/95 backdrop-blur-md border-b border-white/5 flex-shrink-0">
+      <header className="h-16 sm:h-18 flex items-center justify-between px-2.5 sm:px-6 sticky top-0 z-40 bg-[#0B1020]/95 backdrop-blur-md border-b border-white/5 flex-shrink-0">
         
-        {/* Left: Mobile Drawer Trigger + Brand / Search */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-1 max-w-xl">
+        {/* Left: Mobile Drawer Trigger + Brand */}
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* Mobile Drawer Hamburger Button */}
           <button
             onClick={toggleMobileNav}
             aria-label="Open Navigation Drawer"
-            className="lg:hidden p-2 text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors cursor-pointer shrink-0"
+            className="lg:hidden p-1.5 sm:p-2 text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-colors cursor-pointer shrink-0"
           >
             <Menu className="w-5 h-5 text-cyan-400" />
           </button>
 
           {/* Mobile Logo Brand */}
-          <Link href="/" className="lg:hidden flex items-center gap-1.5 shrink-0 group mr-1">
+          <Link href="/" className="lg:hidden flex items-center gap-1.5 shrink-0 group">
             <img 
               src="/logo.png" 
               alt="Logo" 
-              className="w-7 h-7 rounded-lg object-cover border border-[#00F0FF]/40" 
+              className="w-7 h-7 rounded-lg object-cover border border-[#00F0FF]/40 shadow-sm shrink-0" 
             />
-            <span className="font-space font-bold text-xs sm:text-sm text-white hidden sm:inline">
+            <span className="font-space font-bold text-xs sm:text-sm text-white hidden md:inline">
               Indra-<span className="text-[#00F0FF]">MM</span>
             </span>
           </Link>
+        </div>
 
-          {/* Search Trigger */}
+        {/* Center / Desktop Search Bar (Hidden on phone screens to prevent clutter/overlap) */}
+        <div className="hidden sm:flex items-center flex-1 max-w-xs md:max-w-md lg:max-w-lg mx-3 md:mx-6">
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex items-center w-full max-w-[130px] xs:max-w-[200px] sm:w-64 md:w-80 bg-[#0F172A] hover:bg-[#131D35] border border-white/10 hover:border-cyan-500/30 rounded-xl py-1.5 sm:py-2 px-2.5 sm:px-3 text-sm text-slate-400 transition-all cursor-pointer group shadow-inner"
+            className="flex items-center w-full bg-[#0F172A] hover:bg-[#131D35] border border-white/10 hover:border-cyan-500/30 rounded-xl py-1.5 sm:py-2 px-3 text-sm text-slate-400 transition-all cursor-pointer group shadow-inner"
           >
-            <Search className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 mr-1.5 sm:mr-2.5 transition-colors shrink-0" />
+            <Search className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 mr-2.5 transition-colors shrink-0" />
             <span className="flex-1 text-left text-xs text-slate-400 group-hover:text-slate-300 truncate">
-              <span className="sm:hidden">Search...</span>
-              <span className="hidden sm:inline">{t("header.searchPlaceholder")}</span>
+              {t("header.searchPlaceholder")}
             </span>
             <span className="hidden md:inline px-1.5 py-0.5 rounded border border-white/10 bg-slate-800/80 text-[10px] text-slate-400 font-mono shrink-0 ml-1">
               Ctrl /
@@ -172,8 +173,18 @@ export default function TopNav() {
         </div>
 
         {/* Right Action Icons & Status */}
-        <div className="flex items-center gap-2 sm:gap-4 md:gap-5">
+        <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 shrink-0">
           
+          {/* Mobile Quick Search Button (Tap to open full search modal on phone) */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search markets and stocks"
+            className="sm:hidden p-1.5 text-slate-300 hover:text-cyan-400 rounded-lg hover:bg-white/5 active:bg-white/10 transition-colors cursor-pointer shrink-0"
+            title="Search"
+          >
+            <Search className="w-5 h-5 text-cyan-400/90" />
+          </button>
+
           {/* Live Market Pulse Indicator (Hidden on small mobile) */}
           <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold shrink-0">
             <span className="relative flex h-2 w-2">
@@ -186,23 +197,26 @@ export default function TopNav() {
           {/* Universal App Download Hub Trigger */}
           <button
             onClick={() => setDownloadModalOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] cursor-pointer shrink-0 group"
+            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] cursor-pointer shrink-0 group"
             title="Get App for Android, Laptop & Apple"
           >
-            <Smartphone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-            <span className="font-space">Get App</span>
+            <Smartphone className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
+            <span className="font-space">
+              <span className="sm:hidden text-[11px]">App</span>
+              <span className="hidden sm:inline">Get App</span>
+            </span>
           </button>
 
           {/* Notifications */}
-          <div className="relative" ref={notifRef}>
+          <div className="relative shrink-0" ref={notifRef}>
             <button
               onClick={() => setNotifOpen(!notifOpen)}
-              className="relative p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+              className="relative p-1.5 sm:p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors cursor-pointer shrink-0"
               title="Notifications"
             >
               <Bell className="w-5 h-5" />
               {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-[#00F0FF] rounded-full flex items-center justify-center text-[10px] font-bold text-black border-2 border-[#0B1020] animate-pulse">
+                <span className="absolute top-1 right-1 w-4 h-4 bg-[#00F0FF] rounded-full flex items-center justify-center text-[10px] font-bold text-black border-2 border-[#0B1020] animate-pulse">
                   {unreadCount}
                 </span>
               )}
@@ -344,22 +358,22 @@ export default function TopNav() {
             )}
           </div>
 
-          <div className="h-5 sm:h-6 w-px bg-white/10"></div>
+          <div className="h-4 sm:h-6 w-px bg-white/10 shrink-0"></div>
 
           {/* Dynamic User Profile or Sign In Button */}
           {!isSignedIn ? (
             <button
               onClick={openSignIn}
-              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-cyan-400/50 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 text-xs font-semibold shadow-[0_0_15px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all cursor-pointer shrink-0"
+              className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-cyan-400/50 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 text-xs font-semibold shadow-[0_0_15px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all cursor-pointer shrink-0"
             >
-              <LogIn className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="font-space font-bold">Sign In</span>
+              <LogIn className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+              <span className="font-space font-bold whitespace-nowrap text-[11px] sm:text-xs">Sign In</span>
             </button>
           ) : (
-            <div className="relative" ref={userMenuRef}>
+            <div className="relative shrink-0" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
+                className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
               >
                 {user?.imageUrl ? (
                   <img
@@ -372,10 +386,10 @@ export default function TopNav() {
                     {user?.initials || "U"}
                   </div>
                 )}
-                <span className="hidden xs:inline font-space truncate max-w-[120px]">
+                <span className="hidden sm:inline font-space truncate max-w-[120px]">
                   {user?.firstName || user?.fullName || "Member"}
                 </span>
-                <ChevronDown className="w-3 h-3 text-slate-400 hidden xs:block" />
+                <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:block" />
               </button>
 
               {/* User Dropdown */}
@@ -422,7 +436,7 @@ export default function TopNav() {
 
       {/* Global Interactive Search Modal */}
       {searchOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-14 sm:pt-20 px-3 sm:px-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
           <div className="w-full max-w-2xl rounded-2xl bg-[#0A0E1A] border border-cyan-500/30 shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden">
             
             {/* Modal Input Bar */}
