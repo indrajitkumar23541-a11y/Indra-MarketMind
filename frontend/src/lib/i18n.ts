@@ -7,6 +7,53 @@ export interface Translations {
 }
 
 export const TRANSLATIONS: Translations = {
+  // Mobile Bottom Navigation (Ultra-compact, single-word)
+  "nav.bottom.dashboard": {
+    en: "Dashboard",
+    hi: "डैशबोर्ड",
+    hinglish: "Dashboard",
+    "en-IN": "Dashboard",
+    es: "Panel",
+    ja: "ホーム",
+    de: "Übersicht",
+  },
+  "nav.bottom.feed": {
+    en: "Feed",
+    hi: "फीड",
+    hinglish: "Feed",
+    "en-IN": "Feed",
+    es: "Noticias",
+    ja: "速報",
+    de: "Feed",
+  },
+  "nav.bottom.screener": {
+    en: "Screener",
+    hi: "स्क्रीनर",
+    hinglish: "Screener",
+    "en-IN": "Screener",
+    es: "Filtro",
+    ja: "スクリーナー",
+    de: "Screener",
+  },
+  "nav.bottom.forecast": {
+    en: "Forecast",
+    hi: "पूर्वानुमान",
+    hinglish: "Forecast",
+    "en-IN": "Forecast",
+    es: "Pronóstico",
+    ja: "AI予測",
+    de: "Prognose",
+  },
+  "nav.bottom.copilot": {
+    en: "Copilot",
+    hi: "कॉपायलट",
+    hinglish: "Copilot",
+    "en-IN": "Copilot",
+    es: "Copiloto",
+    ja: "AI相談",
+    de: "Copilot",
+  },
+
   // Navigation
   "nav.dashboard": {
     en: "Dashboard",
