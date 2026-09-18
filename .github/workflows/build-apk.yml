@@ -70,16 +70,6 @@ jobs:
           name: gradle-build-log
           path: frontend/android/gradle-build.log
 
-      - name: Publish Failure Log to Release for Inspection
-        if: failure()
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: android-build-debug
-          name: "Android Build Debug Log"
-          body_path: frontend/android/gradle-build.log
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Copy & Rename APK
         run: |
           mkdir -p output_apk
