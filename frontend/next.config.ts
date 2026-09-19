@@ -29,7 +29,9 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://*.clerk.com https://challenges.cloudflare.com https://*.cloudflare.com https://accounts.google.com https://apis.google.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://*.clerk.accounts.dev https://*.clerk.com https://challenges.cloudflare.com https://*.cloudflare.com https://accounts.google.com https://apis.google.com",
+      "worker-src 'self' blob: https://*.clerk.accounts.dev",
+      "child-src 'self' blob: https://*.clerk.accounts.dev https://accounts.google.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: blob: https://img.clerk.com https://unavatar.io https://*.unavatar.io https://api.dicebear.com https://*.googleusercontent.com https://*.google.com https://*.gravatar.com https://*.wp.com https://images.unsplash.com https://*.yahoo.com https://*.yimg.com",
