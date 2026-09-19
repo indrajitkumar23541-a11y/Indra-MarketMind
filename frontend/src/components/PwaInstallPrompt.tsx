@@ -19,18 +19,16 @@ export default function PwaInstallPrompt() {
   const [showIosGuide, setShowIosGuide] = useState(false);
 
   useEffect(() => {
-    // 1. Register Service Worker
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .then((reg) => {
-            console.log("Indra-MarketMind Service Worker registered:", reg.scope);
-          })
-          .catch((err) => {
-            console.error("Service Worker registration failed:", err);
-          });
-      });
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((reg) => {
+          reg.update();
+          console.log("Indra-MarketMind Service Worker v5 active:", reg.scope);
+        })
+        .catch((err) => {
+          console.error("Service Worker registration failed:", err);
+        });
     }
 
     // 2. Check if already running in standalone (installed) mode

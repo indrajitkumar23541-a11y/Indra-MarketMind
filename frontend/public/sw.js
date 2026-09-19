@@ -1,5 +1,5 @@
-// Indra-MarketMind Institutional Service Worker
-const CACHE_NAME = "indra-marketmind-v3";
+// Indra-MarketMind Institutional Service Worker v5
+const CACHE_NAME = "indra-marketmind-v5";
 const STATIC_ASSETS = [
   "/",
   "/manifest.webmanifest",
@@ -19,13 +19,14 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// Activate Event
+// Activate Event - Purge all previous caches immediately
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
+            console.log("[SW] Purging outdated cache:", cache);
             return caches.delete(cache);
           }
         })
@@ -35,12 +36,19 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch Event - Network First with Cache Fallback for dynamic data, Cache First for static
+// Fetch Event
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Skip non-GET requests and browser extensions
-  if (event.request.method !== "GET" || !url.protocol.startsWith("http")) {
+  // CRITICAL: NEVER intercept cross-origin requests!
+  // External services (Clerk, Google OAuth, Cloudflare Turnstile, Unavatar, Yahoo Finance)
+  // MUST be fetched directly by the browser to prevent CSP, CORS, and cross-world worker failures.
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // Skip non-GET requests
+  if (event.request.method !== "GET") {
     return;
   }
 
@@ -81,23 +89,26 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // HTML pages: Network first, fallback to cached
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
+  // HTML / Page Navigation: Network first, fallback to cached
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) return cachedResponse;
+            return caches.match("/");
           });
-        }
-        return networkResponse;
-      })
-      .catch(() => {
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
-          return caches.match("/");
-        });
-      })
-  );
+        })
+    );
+    return;
+  }
 });
