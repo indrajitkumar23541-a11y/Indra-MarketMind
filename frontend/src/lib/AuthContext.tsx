@@ -26,6 +26,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   simulateLogin: (email: string, name?: string, imageUrl?: string) => void;
   setSessionUser: (user: MarketMindUser | null) => void;
+  updateUser: (updates: Partial<MarketMindUser>) => void;
   registerSignOutHandler: (handler: () => Promise<void>) => void;
 }
 
@@ -163,6 +164,19 @@ export function AuthProvider({
     }
   }, []);
 
+  const updateUser = React.useCallback((updates: Partial<MarketMindUser>) => {
+    setUser((prev) => {
+      if (!prev) return null;
+      const updated = { ...prev, ...updates };
+      try {
+        localStorage.setItem(LOCAL_STORAGE_AUTH_KEY, JSON.stringify(updated));
+      } catch {
+        // ignore
+      }
+      return updated;
+    });
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -178,6 +192,7 @@ export function AuthProvider({
         signOut,
         simulateLogin,
         setSessionUser,
+        updateUser,
         registerSignOutHandler,
       }}
     >

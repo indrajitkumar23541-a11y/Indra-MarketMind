@@ -87,7 +87,7 @@ export default function SettingsView() {
     updateSettings(newSettings);
   };
 
-  const { user, isSignedIn, openSignIn, signOut, isClerkConfigured } = useMarketMindAuth();
+  const { user, isSignedIn, openSignIn, signOut, isClerkConfigured, updateUser } = useMarketMindAuth();
   const { isAppDownloadedOrInstalled, resetAppDownloadedStatus, markAppAsDownloaded } = useAppStatus();
 
   const [activeTab, setActiveTab] = useState<
@@ -95,6 +95,7 @@ export default function SettingsView() {
   >("account");
   const [showToast, setShowToast] = useState(false);
   const [cacheSize, setCacheSize] = useState("142.8 KB");
+  const [settingsImgError, setSettingsImgError] = useState(false);
 
   const handleSave = () => {
     saveSettings();
@@ -139,10 +140,11 @@ export default function SettingsView() {
       {isSignedIn && user && (
         <div className="p-4 sm:p-5 rounded-2xl bg-[#0A101E]/90 border border-cyan-500/30 backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-3.5">
-            {user.imageUrl ? (
+            {user.imageUrl && !settingsImgError ? (
               <img
                 src={user.imageUrl}
                 alt={user.fullName}
+                onError={() => setSettingsImgError(true)}
                 className="w-12 h-12 rounded-2xl object-cover border-2 border-cyan-400/50 shadow-[0_0_15px_rgba(0,240,255,0.4)] shrink-0"
               />
             ) : (
@@ -289,6 +291,38 @@ export default function SettingsView() {
                     }}
                     className="w-full bg-[#0D1424] border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 disabled:opacity-60 disabled:cursor-pointer"
                   />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Profile Avatar Picture URL (Gmail / Google / Custom Photo)
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      disabled={!isSignedIn}
+                      placeholder={isSignedIn ? "https://lh3.googleusercontent.com/... or https://unavatar.io/..." : "Not signed in - Click to login"}
+                      value={user?.imageUrl || ""}
+                      onChange={(e) => {
+                        setSettingsImgError(false);
+                        updateUser({ imageUrl: e.target.value });
+                      }}
+                      className="flex-1 bg-[#0D1424] border border-white/10 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 disabled:opacity-60 font-mono"
+                    />
+                    {user?.email && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSettingsImgError(false);
+                          updateUser({ imageUrl: `https://unavatar.io/${encodeURIComponent(user.email)}` });
+                          handleSave();
+                        }}
+                        className="px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold whitespace-nowrap cursor-pointer transition-all"
+                      >
+                        Sync Gmail Photo
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="sm:col-span-2">

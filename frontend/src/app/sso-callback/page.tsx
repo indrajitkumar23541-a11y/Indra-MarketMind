@@ -1,11 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthenticateWithRedirectCallback } from "@clerk/nextjs";
 
 export const dynamic = "force-dynamic";
 
 export default function SSOCallback() {
+  useEffect(() => {
+    // Safety fallback: if Clerk hasn't redirected within 6 seconds, return to home
+    const t = setTimeout(() => {
+      window.location.href = "/";
+    }, 6000);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#05070D] flex flex-col items-center justify-center p-4">
       <div className="flex flex-col items-center gap-3 text-white text-center max-w-sm mb-6">
@@ -23,7 +31,6 @@ export default function SSOCallback() {
       <AuthenticateWithRedirectCallback
         signInForceRedirectUrl="/"
         signUpForceRedirectUrl="/"
-        continueSignUpUrl="/sso-callback"
       />
     </div>
   );

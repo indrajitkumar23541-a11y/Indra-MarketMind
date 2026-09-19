@@ -43,6 +43,28 @@ interface SearchResult {
   percent_change?: number;
 }
 
+function UserAvatarBadge({ user, size = "md" }: { user: MarketMindUser; size?: "sm" | "md" }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const sizeClasses = size === "sm" ? "w-6 h-6 text-[10px]" : "w-7 h-7 sm:w-8 sm:h-8 text-xs";
+
+  if (user.imageUrl && !imgFailed) {
+    return (
+      <img
+        src={user.imageUrl}
+        alt={user.fullName || "Member"}
+        onError={() => setImgFailed(true)}
+        className={cn(sizeClasses, "rounded-full object-cover border border-cyan-400/70 shadow-sm shrink-0")}
+      />
+    );
+  }
+
+  return (
+    <div className={cn(sizeClasses, "rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold shrink-0 shadow-sm")}>
+      {user.initials || user.fullName?.[0]?.toUpperCase() || "U"}
+    </div>
+  );
+}
+
 function ClerkHeaderUserSection({
   onOpenSignIn,
   fallbackUser,
@@ -84,17 +106,7 @@ function ClerkHeaderUserSection({
           onClick={() => setUserMenuOpen(!userMenuOpen)}
           className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
         >
-          {fallbackUser?.imageUrl ? (
-            <img
-              src={fallbackUser.imageUrl}
-              alt={fallbackUser.fullName}
-              className="w-6 h-6 rounded-full object-cover border border-cyan-400/60 shrink-0"
-            />
-          ) : (
-            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold text-[10px] shrink-0 shadow-sm">
-              {fallbackUser?.initials || "U"}
-            </div>
-          )}
+          <UserAvatarBadge user={fallbackUser} size="sm" />
           <span className="hidden sm:inline font-space truncate max-w-[120px]">
             {fallbackUser?.firstName || fallbackUser?.fullName || "Member"}
           </span>
@@ -496,17 +508,7 @@ export default function TopNav() {
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
               >
-                {user?.imageUrl ? (
-                  <img
-                    src={user.imageUrl}
-                    alt={user.fullName}
-                    className="w-6 h-6 rounded-full object-cover border border-cyan-400/60 shrink-0"
-                  />
-                ) : (
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold text-[10px] shrink-0 shadow-sm">
-                    {user?.initials || "U"}
-                  </div>
-                )}
+                {user ? <UserAvatarBadge user={user} size="sm" /> : null}
                 <span className="hidden sm:inline font-space truncate max-w-[120px]">
                   {user?.firstName || user?.fullName || "Member"}
                 </span>
