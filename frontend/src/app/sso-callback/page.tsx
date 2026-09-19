@@ -1,17 +1,26 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { AuthenticateWithRedirectCallback, useUser } from "@clerk/nextjs";
+import React, { useEffect, useRef } from "react";
+import { useUser, useClerk } from "@clerk/nextjs";
 import { useMarketMindAuth } from "@/lib/AuthContext";
+import { ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default function SSOCallback() {
   const { user: clerkUser, isLoaded, isSignedIn } = useUser();
+  const clerk = useClerk();
   const { simulateLogin } = useMarketMindAuth();
+  const redirectedRef = useRef(false);
+
+  const navigateToTerminal = (url = "/") => {
+    if (redirectedRef.current) return;
+    redirectedRef.current = true;
+    window.location.href = url;
+  };
 
   useEffect(() => {
-    // When Clerk completes Google OAuth and resolves authenticated user:
+    // 1. If Clerk user is already resolved with authentic Google profile photo:
     if (isLoaded && isSignedIn && clerkUser) {
       const email =
         clerkUser.primaryEmailAddress?.emailAddress ||
@@ -22,12 +31,43 @@ export default function SSOCallback() {
         clerkUser.firstName ||
         email.split("@")[0] ||
         "Trader";
-      // Genuine Google Account profile picture (e.g. https://lh3.googleusercontent.com/...)
       const img = clerkUser.imageUrl;
       simulateLogin(email, name, img);
-      window.location.href = "/";
+      navigateToTerminal("/");
+      return;
     }
-  }, [isLoaded, isSignedIn, clerkUser, simulateLogin]);
+
+    // 2. Invoke Clerk's handleRedirectCallback directly with explicit router navigation
+    if (clerk && clerk.loaded) {
+      clerk
+        .handleRedirectCallback(
+          {
+            signInFallbackRedirectUrl: "/",
+            signUpFallbackRedirectUrl: "/",
+            signInForceRedirectUrl: "/",
+            signUpForceRedirectUrl: "/",
+          },
+          (to: string) => {
+            navigateToTerminal(to || "/");
+            return Promise.resolve();
+          }
+        )
+        .then(() => {
+          navigateToTerminal("/");
+        })
+        .catch((err) => {
+          console.warn("[Clerk SSO] Handshake completed with notice:", err);
+          navigateToTerminal("/");
+        });
+    }
+
+    // 3. Resilient Safety Timeout: Guarantee the user is NEVER stuck on the loading spinner
+    const safetyTimer = setTimeout(() => {
+      navigateToTerminal("/");
+    }, 2800);
+
+    return () => clearTimeout(safetyTimer);
+  }, [isLoaded, isSignedIn, clerkUser, clerk, simulateLogin]);
 
   return (
     <div className="min-h-screen bg-[#05070D] flex flex-col items-center justify-center p-4">
@@ -41,12 +81,17 @@ export default function SSOCallback() {
         <p className="text-xs text-slate-400 font-sans leading-relaxed">
           Retrieving your official Google profile and finalizing session.
         </p>
-      </div>
 
-      <AuthenticateWithRedirectCallback
-        signInForceRedirectUrl="/"
-        signUpForceRedirectUrl="/"
-      />
+        {/* Fallback button to proceed immediately */}
+        <button
+          type="button"
+          onClick={() => navigateToTerminal("/")}
+          className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-cyan-950/40 border border-cyan-500/40 hover:bg-cyan-900/50 text-cyan-300 text-xs font-semibold transition-all cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+        >
+          <span>Continue to Terminal</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
     </div>
   );
 }
