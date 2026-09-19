@@ -123,11 +123,6 @@ export async function recordAndNotifyNewUser(payload: {
     }
 
     // 2. Email Notification to indrajitkumar23541@gmail.com
-    const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
-    const smtpPort = parseInt(process.env.SMTP_PORT || "587", 10);
-    const smtpUser = process.env.SMTP_USER || adminEmail;
-    const smtpPass = process.env.SMTP_PASS;
-
     const emailSubject = `🚀 New User Joined Indra-MarketMind: ${payload.name} (${payload.email})`;
     const emailHtml = `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #05070D; color: #FFFFFF; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; border: 1px solid #00F0FF33;">
@@ -169,7 +164,39 @@ export async function recordAndNotifyNewUser(payload: {
       </div>
     `;
 
-    if (smtpPass) {
+    // Attempt A: Resend API (HTTP REST, zero SMTP config required)
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (resendApiKey) {
+      try {
+        const resendRes = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Indra-MarketMind <onboarding@resend.dev>",
+            to: [adminEmail],
+            subject: emailSubject,
+            html: emailHtml,
+          }),
+        });
+        if (resendRes.ok) {
+          emailSent = true;
+          emailStatus = "delivered (via Resend)";
+        }
+      } catch (resendErr) {
+        console.warn("[AdminNotifier] Resend dispatch error:", resendErr);
+      }
+    }
+
+    // Attempt B: Gmail SMTP via Nodemailer (Requires Gmail 16-character App Password)
+    const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+    const smtpPort = parseInt(process.env.SMTP_PORT || "587", 10);
+    const smtpUser = process.env.SMTP_USER || adminEmail;
+    const smtpPass = process.env.SMTP_PASS;
+
+    if (!emailSent && smtpPass) {
       try {
         const transporter = nodemailer.createTransport({
           host: smtpHost,
@@ -189,13 +216,13 @@ export async function recordAndNotifyNewUser(payload: {
         });
 
         emailSent = true;
-        emailStatus = "delivered";
+        emailStatus = "delivered (via Gmail SMTP)";
       } catch (mailErr: any) {
         console.warn("[AdminNotifier] SMTP send failed:", mailErr?.message || mailErr);
         emailStatus = `failed: ${mailErr?.message || "SMTP error"}`;
       }
-    } else {
-      emailStatus = "queued (SMTP_PASS pending in .env.local; logged and queued)";
+    } else if (!emailSent) {
+      emailStatus = "pending_credentials (Set SMTP_PASS or RESEND_API_KEY in Vercel to activate direct Gmail delivery)";
       console.log(`[AdminNotifier] Registration Alert Queued for ${adminEmail}:`, {
         name: payload.name,
         email: payload.email,
