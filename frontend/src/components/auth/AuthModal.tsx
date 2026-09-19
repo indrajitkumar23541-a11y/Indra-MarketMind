@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useMarketMindAuth } from "@/lib/AuthContext";
 import { useClerk } from "@clerk/nextjs";
 import { X, Loader2, Phone } from "lucide-react";
@@ -29,6 +30,7 @@ export default function AuthModal() {
 }
 
 function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
+  const router = useRouter();
   const {
     closeAuthModal,
     simulateLogin,
@@ -40,6 +42,14 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingType, setLoadingType] = useState<"google" | "apple" | "phone" | "email" | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Pre-warm routes in browser memory cache for instant transitions
+  useEffect(() => {
+    try {
+      router.prefetch("/sso-callback");
+      router.prefetch("/");
+    } catch {}
+  }, [router]);
 
   const handleClose = () => {
     setEmailInput("");

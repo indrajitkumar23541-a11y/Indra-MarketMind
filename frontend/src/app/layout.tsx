@@ -170,6 +170,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        {/* Auth & CDN Handshake Preconnects for Instant Google Sign-In */}
+        <link rel="preconnect" href="https://expert-racer-2057.clerk.accounts.dev" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://expert-racer-2057.clerk.accounts.dev" />
+        <link rel="preconnect" href="https://accounts.google.com" />
+        <link rel="dns-prefetch" href="https://accounts.google.com" />
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
         <meta
           name="google-site-verification"
           content="I3W6dmeLScyhngNv9VskrtrJlR2NnLngOXJGHySNtFo"

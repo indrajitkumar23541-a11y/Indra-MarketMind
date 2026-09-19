@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { HandleSSOCallback } from "@clerk/react";
 import { useUser } from "@clerk/nextjs";
 import { useMarketMindAuth } from "@/lib/AuthContext";
@@ -9,12 +10,24 @@ import { ArrowRight } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export default function SSOCallback() {
+  const router = useRouter();
   const { user: clerkUser, isLoaded, isSignedIn } = useUser();
   const { simulateLogin } = useMarketMindAuth();
   const [showManualProceed, setShowManualProceed] = useState(false);
 
   const navigateToTerminal = (url = "/") => {
-    window.location.href = url;
+    try {
+      if (url.startsWith("http") && !url.startsWith(window.location.origin)) {
+        window.location.href = url;
+      } else {
+        const localPath = url.startsWith(window.location.origin)
+          ? url.slice(window.location.origin.length)
+          : url;
+        router.replace(localPath || "/");
+      }
+    } catch {
+      window.location.href = url;
+    }
   };
 
   // If user is already loaded and authenticated, sync to local state immediately
