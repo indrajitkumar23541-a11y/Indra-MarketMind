@@ -27,10 +27,11 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useNav } from "@/lib/NavContext";
 import { useSettings } from "@/lib/SettingsContext";
-import { useMarketMindAuth } from "@/lib/AuthContext";
+import { useMarketMindAuth, MarketMindUser } from "@/lib/AuthContext";
 import { useNotifications } from "@/lib/NotificationContext";
 import { useAppStatus } from "@/lib/useAppStatus";
 import UniversalAppDownloadModal from "./UniversalAppDownloadModal";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 interface SearchResult {
   symbol: string;
@@ -40,6 +41,113 @@ interface SearchResult {
   price?: number;
   change?: number;
   percent_change?: number;
+}
+
+function ClerkHeaderUserSection({
+  onOpenSignIn,
+  fallbackUser,
+  userMenuRef,
+  userMenuOpen,
+  setUserMenuOpen,
+  signOut,
+}: {
+  onOpenSignIn: () => void;
+  fallbackUser: MarketMindUser | null;
+  userMenuRef: React.RefObject<HTMLDivElement | null>;
+  userMenuOpen: boolean;
+  setUserMenuOpen: (val: boolean) => void;
+  signOut: () => void;
+}) {
+  const { user: clerkUser, isSignedIn, isLoaded } = useUser();
+
+  if (isLoaded && isSignedIn && clerkUser) {
+    return (
+      <div className="flex items-center shrink-0">
+        <UserButton
+          appearance={{
+            elements: {
+              userButtonAvatarBox:
+                "w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-cyan-400/80 shadow-[0_0_12px_rgba(0,240,255,0.4)] hover:scale-105 transition-transform",
+              userButtonPopoverCard:
+                "bg-[#090E1A] border border-cyan-500/30 text-white shadow-2xl",
+            },
+          }}
+        />
+      </div>
+    );
+  }
+
+  if (fallbackUser) {
+    return (
+      <div className="relative shrink-0" ref={userMenuRef}>
+        <button
+          onClick={() => setUserMenuOpen(!userMenuOpen)}
+          className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold transition-all hover:shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer shrink-0"
+        >
+          {fallbackUser?.imageUrl ? (
+            <img
+              src={fallbackUser.imageUrl}
+              alt={fallbackUser.fullName}
+              className="w-6 h-6 rounded-full object-cover border border-cyan-400/60 shrink-0"
+            />
+          ) : (
+            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold text-[10px] shrink-0 shadow-sm">
+              {fallbackUser?.initials || "U"}
+            </div>
+          )}
+          <span className="hidden sm:inline font-space truncate max-w-[120px]">
+            {fallbackUser?.firstName || fallbackUser?.fullName || "Member"}
+          </span>
+          <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:block" />
+        </button>
+        {userMenuOpen && (
+          <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#0A0E1A] border border-cyan-500/30 shadow-[0_15px_40px_rgba(0,0,0,0.85)] p-2 z-50 text-xs space-y-1 animate-in fade-in zoom-in-95 duration-100">
+            <div className="px-2.5 py-2 border-b border-white/10">
+              <div className="font-space font-bold text-white truncate">
+                {fallbackUser?.fullName || "Member"}
+              </div>
+              {fallbackUser?.email && (
+                <div className="text-[10px] text-slate-400 font-mono truncate">
+                  {fallbackUser.email}
+                </div>
+              )}
+              <span className="mt-1.5 inline-block text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-mono font-bold">
+                ACTIVE MEMBER
+              </span>
+            </div>
+            <Link
+              href="/settings"
+              onClick={() => setUserMenuOpen(false)}
+              className="flex items-center gap-2 px-2.5 py-2 rounded-lg hover:bg-white/5 text-slate-300 hover:text-white transition-colors"
+            >
+              <SettingsIcon className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Settings & Preferences</span>
+            </Link>
+            <button
+              onClick={() => {
+                setUserMenuOpen(false);
+                signOut();
+              }}
+              className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg hover:bg-red-500/10 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={onOpenSignIn}
+      className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-cyan-400/50 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 text-xs font-semibold shadow-[0_0_15px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all cursor-pointer shrink-0"
+    >
+      <LogIn className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+      <span className="font-space font-bold whitespace-nowrap text-[11px] sm:text-xs">Sign In</span>
+    </button>
+  );
 }
 
 export default function TopNav() {
@@ -68,7 +176,7 @@ export default function TopNav() {
   const notifRef = useRef<HTMLDivElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const { user, isSignedIn, openSignIn, signOut } = useMarketMindAuth();
+  const { user, isSignedIn, openSignIn, signOut, isClerkConfigured } = useMarketMindAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
 // Keyboard shortcut (Ctrl + / or Cmd + /)
@@ -365,7 +473,16 @@ export default function TopNav() {
           <div className="h-4 sm:h-6 w-px bg-white/10 shrink-0"></div>
 
           {/* Dynamic User Profile or Sign In Button */}
-          {!isSignedIn ? (
+          {isClerkConfigured ? (
+            <ClerkHeaderUserSection
+              onOpenSignIn={openSignIn}
+              fallbackUser={user}
+              userMenuRef={userMenuRef}
+              userMenuOpen={userMenuOpen}
+              setUserMenuOpen={setUserMenuOpen}
+              signOut={signOut}
+            />
+          ) : !isSignedIn ? (
             <button
               onClick={openSignIn}
               className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-cyan-400/50 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 hover:from-cyan-500/30 hover:to-indigo-500/30 text-cyan-300 text-xs font-semibold shadow-[0_0_15px_rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95 transition-all cursor-pointer shrink-0"
@@ -383,10 +500,10 @@ export default function TopNav() {
                   <img
                     src={user.imageUrl}
                     alt={user.fullName}
-                    className="w-5 h-5 rounded-md object-cover border border-cyan-400/40 shrink-0"
+                    className="w-6 h-6 rounded-full object-cover border border-cyan-400/60 shrink-0"
                   />
                 ) : (
-                  <div className="w-5 h-5 rounded-md bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold text-[10px] shrink-0 shadow-sm">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold text-[10px] shrink-0 shadow-sm">
                     {user?.initials || "U"}
                   </div>
                 )}

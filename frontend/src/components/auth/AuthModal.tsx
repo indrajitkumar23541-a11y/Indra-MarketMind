@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useMarketMindAuth } from "@/lib/AuthContext";
 import { useClerk } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import {
   X,
   Sparkles,
@@ -109,13 +110,17 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
     setLoadingType("google");
 
     try {
-      if (isClerkConfigured && clerk?.client) {
-        // Use Clerk's native Google OAuth redirect
-        await clerk.client.signIn.authenticateWithRedirect({
-          strategy: "oauth_google",
-          redirectUrl: "/sso-callback",
-          redirectUrlComplete: "/",
+      if (isClerkConfigured && clerk) {
+        handleCloseModal();
+        clerk.openSignIn({
+          appearance: {
+            theme: dark,
+            variables: {
+              colorPrimary: "#00F0FF",
+            },
+          },
         });
+        return;
       } else {
         // Resilient fallback simulation
         setTimeout(() => {
@@ -125,23 +130,21 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
         }, 500);
       }
     } catch (err: unknown) {
-      console.warn("Google sign in redirect error:", err);
-      // If user isn't registered yet, trigger sign-up redirect
+      console.warn("Google sign in error:", err);
+      // Fallback to direct redirect if modal is blocked
       try {
         if (clerk?.client) {
-          await clerk.client.signUp.authenticateWithRedirect({
+          await clerk.client.signIn.authenticateWithRedirect({
             strategy: "oauth_google",
             redirectUrl: "/sso-callback",
             redirectUrlComplete: "/",
           });
           return;
         }
-      } catch (signupErr: unknown) {
-        const errObj = err as ClerkErrorLike;
-        const signupErrObj = signupErr as ClerkErrorLike;
+      } catch (redirectErr: unknown) {
+        const errObj = redirectErr as ClerkErrorLike;
         setErrorMessage(
-          signupErrObj?.errors?.[0]?.longMessage ||
-          signupErrObj?.errors?.[0]?.message ||
+          errObj?.errors?.[0]?.longMessage ||
           errObj?.errors?.[0]?.message ||
           "Google login could not be initiated. Please try with Phone or Email."
         );
