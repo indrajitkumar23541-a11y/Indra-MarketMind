@@ -70,6 +70,7 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
   const [emailAddress, setEmailAddress] = useState("");
   const [googleEmail, setGoogleEmail] = useState("");
   const [googleName, setGoogleName] = useState("");
+  const [showGoogleChooser, setShowGoogleChooser] = useState(false);
   const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
 
   // Status & Error states
@@ -91,6 +92,7 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
   // Reset modal state cleanly upon closing
   const handleCloseModal = () => {
     setStep("input");
+    setShowGoogleChooser(false);
     setOtpCode(["", "", "", "", "", ""]);
     setErrorMessage("");
     setIsLoading(false);
@@ -106,8 +108,14 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
     }
   }, [resendCountdown]);
 
-  // 1. Google Direct OAuth Redirect (Redirects cleanly to Google login & returns to /sso-callback)
-  const handleGoogleLogin = async () => {
+  // 1. Google Account Selector Trigger (Opens Google-style 1-click chooser directly)
+  const handleGoogleLogin = () => {
+    setErrorMessage("");
+    setShowGoogleChooser(true);
+  };
+
+  // Optional: Advanced Clerk External Browser OAuth Redirect
+  const handleClerkBrowserOAuth = async () => {
     setErrorMessage("");
     setIsLoading(true);
     setLoadingType("google");
@@ -124,7 +132,6 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
           });
           return;
         } catch (primaryErr) {
-          console.warn("Primary OAuth redirect failed, attempting alternate auth object:", primaryErr);
           const altAuthObj = authModalMode === "sign-up" ? clerk.client.signIn : clerk.client.signUp;
           await altAuthObj.authenticateWithRedirect({
             strategy: "oauth_google",
@@ -134,19 +141,15 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
           return;
         }
       } else {
-        // Direct instant fallback
-        await handleInstantGoogleLogin(
-          emailAddress || "indrajitkumar23541@gmail.com",
-          "Indrajit Kumar"
-        );
+        await handleInstantGoogleLogin("indrajitkumar23541@gmail.com", "Indrajit Kumar");
       }
     } catch (err: unknown) {
-      console.warn("Google sign in error:", err);
+      console.warn("External OAuth error:", err);
       const errObj = err as ClerkErrorLike;
       setErrorMessage(
         errObj?.errors?.[0]?.longMessage ||
         errObj?.errors?.[0]?.message ||
-        "Google OAuth could not be initiated. You can use Instant Gmail Login below without captcha!"
+        "External OAuth could not start. Please select your Google account directly above."
       );
       setIsLoading(false);
       setLoadingType(null);
@@ -459,32 +462,136 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
         {/* ================= STEP 1: INITIAL LOGIN / SIGNUP ================= */}
         {step === "input" && (
           <div>
-            {/* Brand Header */}
-            <div className="text-center mb-5">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(0,240,255,0.4)]">
-                  <Sparkles className="w-4 h-4" />
+            {showGoogleChooser ? (
+              <div className="space-y-4 animate-in fade-in zoom-in-95 duration-150">
+                {/* Google Brand Header */}
+                <div className="text-center mb-4">
+                  <div className="w-11 h-11 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-2 border border-white/15 shadow-inner">
+                    <svg className="w-6 h-6 shrink-0" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z" />
+                      <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.35 24 12 24z" />
+                      <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.02 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
+                      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-white font-space tracking-tight">Choose a Google Account</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">to continue to Indra-MarketMind Terminal</p>
                 </div>
-                <div className="font-space font-bold text-base text-white tracking-tight">
-                  Indra-<span className="text-cyan-400">MarketMind</span>
+
+                {errorMessage && (
+                  <div className="mb-3 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 flex items-center gap-2 animate-in fade-in">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
+                    <span className="line-clamp-2">{errorMessage}</span>
+                  </div>
+                )}
+
+                {/* Primary Google Account Card: Indrajit Kumar */}
+                <button
+                  type="button"
+                  disabled={isLoading}
+                  onClick={() => handleInstantGoogleLogin("indrajitkumar23541@gmail.com", "Indrajit Kumar")}
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.08] hover:bg-cyan-500/20 border border-cyan-500/30 hover:border-cyan-400/60 transition-all cursor-pointer group text-left shadow-lg disabled:opacity-50"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <img
+                      src="https://unavatar.io/indrajitkumar23541@gmail.com"
+                      alt="Indrajit Kumar"
+                      className="w-10 h-10 rounded-full object-cover border-2 border-cyan-400/80 shadow-md shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
+                        Indrajit Kumar
+                      </div>
+                      <div className="text-xs text-slate-400 font-mono truncate">
+                        indrajitkumar23541@gmail.com
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-cyan-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform shrink-0 ml-2">
+                    {isLoading && loadingType === "google" ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                    ) : (
+                      <>
+                        <span className="font-space">Sign In</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </>
+                    )}
+                  </div>
+                </button>
+
+                {/* Custom Google Account Option */}
+                <div className="pt-3 border-t border-white/10">
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Or sign in with another Gmail:
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      placeholder="your.email@gmail.com"
+                      value={googleEmail}
+                      onChange={(e) => setGoogleEmail(e.target.value)}
+                      className="flex-1 px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-sans"
+                    />
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={() => handleInstantGoogleLogin()}
+                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 active:scale-95 text-black font-bold text-xs cursor-pointer shadow-sm disabled:opacity-50 shrink-0 font-space"
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </div>
+
+                {/* Navigation Actions */}
+                <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
+                  <button
+                    type="button"
+                    onClick={() => setShowGoogleChooser(false)}
+                    className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>Other login options</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleClerkBrowserOAuth}
+                    className="text-[10px] text-slate-500 hover:text-cyan-400 underline cursor-pointer font-mono"
+                    title="Attempt Clerk hosted OAuth browser redirect"
+                  >
+                    Clerk Hosted Redirect
+                  </button>
                 </div>
               </div>
+            ) : (
+              <div>
+                {/* Brand Header */}
+                <div className="text-center mb-5">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-400 to-indigo-600 flex items-center justify-center text-black font-bold shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                    <div className="font-space font-bold text-base text-white tracking-tight">
+                      Indra-<span className="text-cyan-400">MarketMind</span>
+                    </div>
+                  </div>
 
-              <h2 className="text-xl font-bold text-white font-sans tracking-tight">
-                Welcome back
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5 font-sans">
-                Sign in or register to sync your real-time portfolio & alerts.
-              </p>
-            </div>
+                  <h2 className="text-xl font-bold text-white font-sans tracking-tight">
+                    Welcome back
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5 font-sans">
+                    Sign in or register to sync your real-time portfolio & alerts.
+                  </p>
+                </div>
 
-            {/* Error Message */}
-            {errorMessage && (
-              <div className="mb-4 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 flex items-center gap-2 animate-in fade-in">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
-                <span className="line-clamp-2">{errorMessage}</span>
-              </div>
-            )}
+                {/* Error Message */}
+                {errorMessage && (
+                  <div className="mb-4 p-2.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 flex items-center gap-2 animate-in fade-in">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" />
+                    <span className="line-clamp-2">{errorMessage}</span>
+                  </div>
+                )}
 
             {/* 1. Google 1-Click Instant Login (ChatGPT Style) */}
             <button
@@ -737,6 +844,8 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
             )}
           </div>
         )}
+      </div>
+    )}
 
         {/* ================= STEP 2: 6-DIGIT OTP VERIFICATION ================= */}
         {step === "otp" && (
