@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMarketMindAuth } from "@/lib/AuthContext";
 import { useClerk } from "@clerk/nextjs";
 import {
@@ -11,7 +11,7 @@ import {
   Mail,
   ArrowRight,
   ArrowLeft,
-  CheckCircle2,
+  UserCheck,
 } from "lucide-react";
 
 type ClerkInstance = ReturnType<typeof useClerk> | null;
@@ -45,6 +45,12 @@ export default function AuthModal() {
   return <FallbackModal />;
 }
 
+interface DetectedAccount {
+  name: string;
+  email: string;
+  avatarUrl: string;
+}
+
 function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
   const {
     closeAuthModal,
@@ -53,13 +59,49 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
     authModalMode,
   } = useMarketMindAuth();
 
-  // Mode: "main" (default quick view) or "google_chooser" (choose account)
-  const [view, setView] = useState<"main" | "google_chooser">("main");
+  // Mode: "main" (default view) or "google_manual" (custom Google account prompt)
+  const [view, setView] = useState<"main" | "google_manual">("main");
   const [emailInput, setEmailInput] = useState("");
   const [googleCustomEmail, setGoogleCustomEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [loadingType, setLoadingType] = useState<"google" | "email" | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Device auto-detection: checks if THIS phone/laptop already has a user saved
+  const [detectedAccount, setDetectedAccount] = useState<DetectedAccount | null>(null);
+
+  useEffect(() => {
+    try {
+      // 1. Check if an account was previously active on THIS specific device
+      const savedSession = localStorage.getItem("marketmind_user_session");
+      if (savedSession) {
+        const parsed = JSON.parse(savedSession);
+        if (parsed?.email) {
+          setDetectedAccount({
+            name: parsed.fullName || parsed.firstName || parsed.email.split("@")[0],
+            email: parsed.email,
+            avatarUrl: parsed.imageUrl || `https://unavatar.io/${encodeURIComponent(parsed.email)}`,
+          });
+          return;
+        }
+      }
+
+      // 2. Check local settings storage
+      const savedSettings = localStorage.getItem("indra_settings_v3");
+      if (savedSettings) {
+        const s = JSON.parse(savedSettings);
+        if (s?.email) {
+          setDetectedAccount({
+            name: s.displayName || s.email.split("@")[0],
+            email: s.email,
+            avatarUrl: `https://unavatar.io/${encodeURIComponent(s.email)}`,
+          });
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   const handleClose = () => {
     setView("main");
@@ -120,46 +162,31 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
     }
   };
 
-  // Optional: Clerk External Browser OAuth Redirect
-  const handleClerkOAuth = async () => {
-    if (!isClerkConfigured || !clerk?.client) {
-      executeLogin("indrajitkumar23541@gmail.com", "Indrajit Kumar", "google");
-      return;
-    }
-
+  // Google Sign-In Action (Triggers native Google OAuth or fallback account prompt)
+  const handleGoogleSignIn = async () => {
+    setErrorMessage("");
     setIsLoading(true);
     setLoadingType("google");
-    setErrorMessage("");
 
-    try {
-      const redirectUrl = `${window.location.origin}/sso-callback`;
-      const primaryAuth = authModalMode === "sign-up" ? clerk.client.signUp : clerk.client.signIn;
+    if (isClerkConfigured && clerk?.client) {
       try {
+        const redirectUrl = `${window.location.origin}/sso-callback`;
+        const primaryAuth = authModalMode === "sign-up" ? clerk.client.signUp : clerk.client.signIn;
         await primaryAuth.authenticateWithRedirect({
           strategy: "oauth_google",
           redirectUrl,
           redirectUrlComplete: "/",
         });
-      } catch {
-        const altAuth = authModalMode === "sign-up" ? clerk.client.signIn : clerk.client.signUp;
-        await altAuth.authenticateWithRedirect({
-          strategy: "oauth_google",
-          redirectUrl,
-          redirectUrlComplete: "/",
-        });
+        return;
+      } catch (err: unknown) {
+        console.warn("Clerk OAuth redirect error:", err);
+        // If native redirect fails on preview domain, open quick Google prompt
+        setView("google_manual");
+        setIsLoading(false);
+        setLoadingType(null);
       }
-    } catch (err: unknown) {
-      console.warn("Clerk OAuth redirect error:", err);
-      const errObj = err as ClerkErrorLike;
-      setErrorMessage(
-        errObj?.errors?.[0]?.message ||
-        "Could not launch external redirect. Signing in with instant profile."
-      );
-      // Fallback cleanly to instant login
-      setTimeout(() => {
-        executeLogin("indrajitkumar23541@gmail.com", "Indrajit Kumar", "google");
-      }, 500);
-    } finally {
+    } else {
+      setView("google_manual");
       setIsLoading(false);
       setLoadingType(null);
     }
@@ -181,8 +208,8 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
           <X className="w-5 h-5" />
         </button>
 
-        {/* VIEW 1: GOOGLE ACCOUNT CHOOSER */}
-        {view === "google_chooser" ? (
+        {/* VIEW: CUSTOM GOOGLE INPUT FALLBACK */}
+        {view === "google_manual" ? (
           <div className="space-y-4 animate-in fade-in zoom-in-95 duration-150">
             {/* Google Brand Header */}
             <div className="text-center mb-4">
@@ -195,10 +222,10 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
                 </svg>
               </div>
               <h3 className="text-lg font-bold text-white font-space tracking-tight">
-                Choose a Google Account
+                Sign In with Google
               </h3>
               <p className="text-xs text-slate-400 mt-0.5 font-sans">
-                to sign in to Indra-MarketMind Terminal
+                Enter your Gmail address to connect your Google profile
               </p>
             </div>
 
@@ -209,66 +236,44 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
               </div>
             )}
 
-            {/* Primary Account Card */}
-            <button
-              type="button"
-              disabled={isLoading}
-              onClick={() => executeLogin("indrajitkumar23541@gmail.com", "Indrajit Kumar", "google")}
-              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.07] hover:bg-cyan-500/15 border border-cyan-500/30 hover:border-cyan-400/60 transition-all cursor-pointer group text-left shadow-lg disabled:opacity-50"
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                executeLogin(googleCustomEmail, undefined, "google");
+              }}
+              className="space-y-3"
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <img
-                  src="https://unavatar.io/indrajitkumar23541@gmail.com"
-                  alt="Indrajit Kumar"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-cyan-400/80 shadow-md shrink-0"
+              <div>
+                <input
+                  type="email"
+                  required
+                  autoFocus
+                  placeholder="your.name@gmail.com"
+                  value={googleCustomEmail}
+                  onChange={(e) => setGoogleCustomEmail(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-sans transition-colors"
                 />
-                <div className="min-w-0">
-                  <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
-                    Indrajit Kumar
-                  </div>
-                  <div className="text-xs text-slate-400 font-mono truncate">
-                    indrajitkumar23541@gmail.com
-                  </div>
-                </div>
               </div>
 
-              <div className="text-xs text-cyan-400 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform shrink-0 ml-2">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 active:scale-95 text-black font-bold text-xs cursor-pointer shadow-[0_0_20px_rgba(0,240,255,0.35)] disabled:opacity-50 font-space flex items-center justify-center gap-2"
+              >
                 {isLoading && loadingType === "google" ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Connecting Profile...</span>
+                  </>
                 ) : (
                   <>
-                    <span className="font-space">Sign In</span>
+                    <span>Continue with Gmail</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </>
                 )}
-              </div>
-            </button>
+              </button>
+            </form>
 
-            {/* Another Account Form */}
-            <div className="pt-3 border-t border-white/10">
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Or sign in with another Google account:
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="your.email@gmail.com"
-                  value={googleCustomEmail}
-                  onChange={(e) => setGoogleCustomEmail(e.target.value)}
-                  className="flex-1 px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-sans"
-                />
-                <button
-                  type="button"
-                  disabled={isLoading}
-                  onClick={() => executeLogin(googleCustomEmail, undefined, "google")}
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 active:scale-95 text-black font-bold text-xs cursor-pointer shadow-sm disabled:opacity-50 shrink-0 font-space"
-                >
-                  Continue
-                </button>
-              </div>
-            </div>
-
-            {/* Back Button */}
             <div className="pt-2 text-center">
               <button
                 type="button"
@@ -281,20 +286,20 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
             </div>
           </div>
         ) : (
-          /* VIEW 2: FRESH CLEAN MAIN VIEW */
+          /* VIEW: FRESH CLEAN MAIN VIEW */
           <div className="animate-in fade-in duration-150">
             {/* Brand Header */}
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium mb-3">
+            <div className="text-center mb-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium mb-2.5">
                 <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                 <span>AI Financial Terminal</span>
               </div>
 
               <h2 className="text-2xl font-bold text-white font-space tracking-tight">
-                {authModalMode === "sign-up" ? "Create Account" : "Welcome Back"}
+                {authModalMode === "sign-up" ? "Get Started" : "Welcome Back"}
               </h2>
               <p className="text-xs text-slate-400 mt-1 font-sans">
-                Access real-time market sentiment &amp; predictive AI models.
+                Real-time sentiment, predictive models &amp; portfolio sync.
               </p>
             </div>
 
@@ -306,61 +311,76 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
               </div>
             )}
 
-            {/* 1. Quick 1-Tap Login Card (Indrajit Kumar Profile) */}
-            <div className="mb-3">
+            {/* 1. AUTO-DETECTED ACCOUNT CARD (Only appears if previously saved on THIS device) */}
+            {detectedAccount && (
+              <div className="mb-3.5 animate-in fade-in">
+                <div className="text-[11px] font-mono text-cyan-300 mb-1.5 flex items-center gap-1.5 px-0.5">
+                  <UserCheck className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Detected on this device:</span>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isLoading}
+                  onClick={() => executeLogin(detectedAccount.email, detectedAccount.name, "google")}
+                  className="w-full flex items-center justify-between p-3 rounded-2xl bg-cyan-950/30 hover:bg-cyan-900/40 border border-cyan-400/50 hover:border-cyan-300 transition-all cursor-pointer group text-left shadow-[0_0_15px_rgba(0,240,255,0.15)] disabled:opacity-50"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="relative shrink-0">
+                      <img
+                        src={detectedAccount.avatarUrl}
+                        alt={detectedAccount.name}
+                        className="w-10 h-10 rounded-full object-cover border-2 border-cyan-400/80 shadow-md"
+                      />
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0A0E1A]" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
+                        {detectedAccount.name}
+                      </div>
+                      <div className="text-xs text-slate-400 font-mono truncate">
+                        {detectedAccount.email}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-cyan-300 font-bold flex items-center gap-1 shrink-0 ml-2 group-hover:translate-x-1 transition-transform">
+                    {isLoading && loadingType === "google" ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                    ) : (
+                      <>
+                        <span className="font-space">1-Tap Sign In</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </>
+                    )}
+                  </div>
+                </button>
+              </div>
+            )}
+
+            {/* 2. OFFICIAL GOOGLE BUTTON (For any user / new device) */}
+            <div className="space-y-3">
               <button
                 type="button"
                 disabled={isLoading}
-                onClick={() => executeLogin("indrajitkumar23541@gmail.com", "Indrajit Kumar", "google")}
-                className="w-full flex items-center justify-between p-3 rounded-2xl bg-white/[0.06] hover:bg-cyan-500/15 border border-cyan-500/30 hover:border-cyan-400/60 transition-all cursor-pointer group text-left shadow-lg disabled:opacity-50"
+                onClick={handleGoogleSignIn}
+                className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-semibold text-xs sm:text-sm transition-all cursor-pointer shadow-[0_4px_20px_rgba(255,255,255,0.12)] active:scale-[0.98] disabled:opacity-50 group"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="relative shrink-0">
-                    <img
-                      src="https://unavatar.io/indrajitkumar23541@gmail.com"
-                      alt="Indrajit Kumar"
-                      className="w-10 h-10 rounded-full object-cover border-2 border-cyan-400/80 shadow-md"
-                    />
-                    <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-[#0A0E1A]" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
-                      Indrajit Kumar
-                    </div>
-                    <div className="text-xs text-slate-400 font-mono truncate">
-                      indrajitkumar23541@gmail.com
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-xs text-cyan-400 font-bold flex items-center gap-1.5 shrink-0 ml-2 group-hover:translate-x-1 transition-transform">
-                  {isLoading && loadingType === "google" ? (
-                    <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
-                  ) : (
-                    <>
-                      <span className="font-space">1-Tap Sign In</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </>
-                  )}
-                </div>
+                {isLoading && loadingType === "google" && !detectedAccount ? (
+                  <Loader2 className="w-4 h-4 animate-spin text-slate-800" />
+                ) : (
+                  <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z" />
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.35 24 12 24z" />
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.02 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
+                  </svg>
+                )}
+                <span>
+                  {detectedAccount ? "Sign in with another Google account" : "Continue with Google"}
+                </span>
               </button>
             </div>
-
-            {/* 2. Choose Another Google Account Button */}
-            <button
-              type="button"
-              disabled={isLoading}
-              onClick={() => setView("google_chooser")}
-              className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer active:scale-[0.98] disabled:opacity-50"
-            >
-              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z" />
-                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.35 24 12 24z" />
-                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.02 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
-                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
-              </svg>
-              <span>Continue with another Google account</span>
-            </button>
 
             {/* Divider */}
             <div className="relative flex items-center justify-center my-4">
@@ -371,7 +391,7 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
               <div className="border-t border-white/10 w-full" />
             </div>
 
-            {/* 3. Clean Direct Email Form */}
+            {/* 3. Direct Email Form */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -412,7 +432,7 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
           </div>
         )}
 
-        {/* Clean Institutional Security Footer */}
+        {/* Institutional Security Footer */}
         <div className="mt-5 pt-3.5 border-t border-white/5 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
           <span>256-Bit SSL Encrypted • Instant Terminal Access</span>
