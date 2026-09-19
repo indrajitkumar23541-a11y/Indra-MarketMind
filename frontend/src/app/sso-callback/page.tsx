@@ -47,14 +47,35 @@ export default function SSOCallback() {
     <div className="min-h-screen bg-[#05070D] flex flex-col items-center justify-center p-4">
       {/* Clerk's official SSO state handler: automatically handles sign-in, transfer to sign-up, and finalization */}
       <HandleSSOCallback
-        navigateToApp={() => {
-          navigateToTerminal("/");
+        navigateToApp={(...args: unknown[]) => {
+          const first = args[0] as { decorateUrl?: (url: string) => string } | string | undefined;
+          let target = "/";
+          if (typeof first === "string") {
+            target = first;
+          } else if (first && typeof first.decorateUrl === "function") {
+            target = first.decorateUrl("/");
+          }
+          navigateToTerminal(target);
         }}
-        navigateToSignIn={() => {
-          navigateToTerminal("/");
+        navigateToSignIn={(...args: unknown[]) => {
+          const first = args[0] as { decorateUrl?: (url: string) => string } | string | undefined;
+          let target = "/";
+          if (typeof first === "string") {
+            target = first;
+          } else if (first && typeof first.decorateUrl === "function") {
+            target = first.decorateUrl("/");
+          }
+          navigateToTerminal(target);
         }}
-        navigateToSignUp={() => {
-          navigateToTerminal("/");
+        navigateToSignUp={(...args: unknown[]) => {
+          const first = args[0] as { decorateUrl?: (url: string) => string } | string | undefined;
+          let target = "/";
+          if (typeof first === "string") {
+            target = first;
+          } else if (first && typeof first.decorateUrl === "function") {
+            target = first.decorateUrl("/");
+          }
+          navigateToTerminal(target);
         }}
       />
 
