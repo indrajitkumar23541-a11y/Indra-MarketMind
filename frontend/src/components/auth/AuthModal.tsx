@@ -3,14 +3,7 @@
 import React, { useState } from "react";
 import { useMarketMindAuth } from "@/lib/AuthContext";
 import { useClerk } from "@clerk/nextjs";
-import {
-  X,
-  Sparkles,
-  ShieldCheck,
-  Loader2,
-  Mail,
-  ArrowRight,
-} from "lucide-react";
+import { X, Loader2, Phone } from "lucide-react";
 
 type ClerkInstance = ReturnType<typeof useClerk> | null;
 
@@ -45,7 +38,7 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
 
   const [emailInput, setEmailInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingType, setLoadingType] = useState<"google" | "email" | null>(null);
+  const [loadingType, setLoadingType] = useState<"google" | "apple" | "phone" | "email" | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleClose = () => {
@@ -56,7 +49,7 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
     closeAuthModal();
   };
 
-  // Official Google OAuth Sign-In (Retrieves genuine Google profile & photo)
+  // 1. Google OAuth: Triggers native Google account chooser (all Gmails on device)
   const handleGoogleSignIn = async () => {
     setErrorMessage("");
     setIsLoading(true);
@@ -64,7 +57,6 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
 
     if (isClerkConfigured && clerk) {
       try {
-        // Attempt 1: Clerk OAuth redirect via standard Google OAuth flow
         if (clerk.client) {
           const redirectUrl = `${window.location.origin}/sso-callback`;
           const primaryAuth = authModalMode === "sign-up" ? clerk.client.signUp : clerk.client.signIn;
@@ -76,10 +68,10 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
           return;
         }
       } catch (err: unknown) {
-        console.warn("Clerk OAuth redirect error, attempting modal popup:", err);
+        console.warn("Clerk OAuth redirect error, attempting popup modal:", err);
       }
 
-      // Attempt 2: Clerk's native modal popup overlay
+      // Popup fallback
       try {
         handleClose();
         clerk.openSignIn({
@@ -92,12 +84,64 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
       }
     }
 
-    setErrorMessage("Could not connect to Google authentication. Please try again or continue with email.");
+    setErrorMessage("Could not initialize Google authentication. Please try email login.");
     setIsLoading(false);
     setLoadingType(null);
   };
 
-  // Direct Email Sign-In (Dynamic profile without hardcoded credentials)
+  // 2. Apple OAuth
+  const handleAppleSignIn = async () => {
+    setErrorMessage("");
+    setIsLoading(true);
+    setLoadingType("apple");
+
+    if (isClerkConfigured && clerk) {
+      try {
+        if (clerk.client) {
+          const redirectUrl = `${window.location.origin}/sso-callback`;
+          const primaryAuth = authModalMode === "sign-up" ? clerk.client.signUp : clerk.client.signIn;
+          await primaryAuth.authenticateWithRedirect({
+            strategy: "oauth_apple",
+            redirectUrl,
+            redirectUrlComplete: "/",
+          });
+          return;
+        }
+      } catch (err: unknown) {
+        console.warn("Clerk Apple OAuth error:", err);
+      }
+
+      try {
+        handleClose();
+        clerk.openSignIn({
+          fallbackRedirectUrl: "/",
+          signUpFallbackRedirectUrl: "/",
+        });
+        return;
+      } catch (e2) {
+        console.error("Clerk openSignIn error:", e2);
+      }
+    }
+
+    setErrorMessage("Apple Sign-In is not configured yet. Please continue with Google or Email.");
+    setIsLoading(false);
+    setLoadingType(null);
+  };
+
+  // 3. Phone Sign-In
+  const handlePhoneSignIn = async () => {
+    if (isClerkConfigured && clerk) {
+      handleClose();
+      clerk.openSignIn({
+        fallbackRedirectUrl: "/",
+        signUpFallbackRedirectUrl: "/",
+      });
+    } else {
+      setErrorMessage("Phone login requires Clerk connection. Please use Google or Email.");
+    }
+  };
+
+  // 4. Email Sign-In
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanEmail = emailInput.trim().toLowerCase();
@@ -124,7 +168,7 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
       }
     }
 
-    // Direct session fallback with dynamic avatar derived from the user's name
+    // Direct fallback for local development
     const resolvedName = cleanEmail
       .split("@")[0]
       .split(/[._-]/)
@@ -157,33 +201,25 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-150">
-      {/* Interactive Modal Card */}
-      <div className="relative w-full max-w-[420px] rounded-3xl bg-[#0A0E1A] border border-cyan-500/25 p-6 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.95)] text-white overflow-hidden">
-        {/* Top Glowing Accent Line */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-indigo-500 to-cyan-400" />
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
+      {/* ChatGPT-Style Sleek Dark Modal Card */}
+      <div className="relative w-full max-w-[390px] sm:max-w-[400px] rounded-[28px] bg-[#18181b] border border-white/10 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.85)] text-white overflow-hidden">
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer z-10"
+          className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer z-10"
           aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
-        {/* Header Section */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium mb-2.5">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>AI Financial Intelligence Terminal</span>
-          </div>
-
-          <h2 className="text-2xl font-bold text-white font-space tracking-tight">
-            {authModalMode === "sign-up" ? "Create Account" : "Welcome Back"}
+        {/* Title & Subtitle */}
+        <div className="text-center mb-6 pt-1">
+          <h2 className="text-2xl sm:text-[26px] font-bold text-white tracking-tight font-space">
+            Log in or sign up
           </h2>
-          <p className="text-xs text-slate-400 mt-1 font-sans">
-            Sign in with Google to sync your real-time terminal &amp; portfolio.
+          <p className="text-xs sm:text-sm text-slate-400 mt-1.5 leading-relaxed font-sans max-w-[280px] mx-auto">
+            You&apos;ll get smarter responses and can access real-time financial intelligence.
           </p>
         </div>
 
@@ -195,18 +231,19 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
           </div>
         )}
 
-        {/* 1. Official Google OAuth Sign-In Button */}
-        <div className="mb-4">
+        {/* Action Buttons (ChatGPT Style Rounded Pills) */}
+        <div className="space-y-2.5">
+          {/* 1. Continue with Google */}
           <button
             type="button"
             disabled={isLoading}
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm transition-all cursor-pointer shadow-[0_4px_20px_rgba(255,255,255,0.15)] active:scale-[0.98] disabled:opacity-60 group"
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-full bg-[#27272a] hover:bg-[#323238] border border-white/10 hover:border-white/20 text-white font-semibold text-sm transition-all cursor-pointer shadow-sm active:scale-[0.99] disabled:opacity-60"
           >
             {isLoading && loadingType === "google" ? (
-              <Loader2 className="w-5 h-5 animate-spin text-slate-900" />
+              <Loader2 className="w-4 h-4 animate-spin text-white" />
             ) : (
-              <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
                   d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
@@ -225,57 +262,79 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
                 />
               </svg>
             )}
-            <span className="font-space font-bold">Continue with Google</span>
+            <span>Continue with Google</span>
+          </button>
+
+          {/* 2. Continue with Apple */}
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={handleAppleSignIn}
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-full bg-[#27272a] hover:bg-[#323238] border border-white/10 hover:border-white/20 text-white font-semibold text-sm transition-all cursor-pointer shadow-sm active:scale-[0.99] disabled:opacity-60"
+          >
+            {isLoading && loadingType === "apple" ? (
+              <Loader2 className="w-4 h-4 animate-spin text-white" />
+            ) : (
+              <svg className="w-4 h-4 shrink-0 fill-white" viewBox="0 0 24 24">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.87-.9.04-2 .6-2.65 1.36-.58.67-1.09 1.74-.95 2.78 1.01.08 2.05-.52 2.68-1.27z" />
+              </svg>
+            )}
+            <span>Continue with Apple</span>
+          </button>
+
+          {/* 3. Continue with phone */}
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={handlePhoneSignIn}
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-full bg-[#27272a] hover:bg-[#323238] border border-white/10 hover:border-white/20 text-white font-semibold text-sm transition-all cursor-pointer shadow-sm active:scale-[0.99] disabled:opacity-60"
+          >
+            {isLoading && loadingType === "phone" ? (
+              <Loader2 className="w-4 h-4 animate-spin text-white" />
+            ) : (
+              <Phone className="w-4 h-4 text-white shrink-0" />
+            )}
+            <span>Continue with phone</span>
           </button>
         </div>
 
-        {/* Divider */}
+        {/* Divider: OR */}
         <div className="relative flex items-center justify-center my-4">
           <div className="border-t border-white/10 w-full" />
-          <span className="bg-[#0A0E1A] px-3 text-[11px] text-slate-500 uppercase tracking-wider font-mono">
-            or sign in with email
+          <span className="bg-[#18181b] px-3 text-[11px] text-slate-400 font-bold uppercase tracking-wider font-mono">
+            OR
           </span>
           <div className="border-t border-white/10 w-full" />
         </div>
 
-        {/* 2. Direct Email Form */}
+        {/* Email Form */}
         <form onSubmit={handleEmailSignIn} className="space-y-3">
-          <div className="relative">
-            <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="email"
-              required
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              placeholder="name@example.com"
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-black/50 border border-white/10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors font-sans"
-            />
-          </div>
+          <input
+            type="email"
+            required
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
+            placeholder="Email address"
+            className="w-full py-3 px-4 rounded-full bg-[#27272a] border border-white/10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all font-sans"
+          />
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 active:scale-95 text-black font-space font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-[0_0_20px_rgba(0,240,255,0.35)] disabled:opacity-50"
+            className="w-full py-3 px-4 rounded-full bg-white hover:bg-slate-200 text-black font-semibold text-sm transition-all cursor-pointer shadow-md active:scale-[0.99] disabled:opacity-60 font-space flex items-center justify-center"
           >
             {isLoading && loadingType === "email" ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Signing In...</span>
-              </>
+              <Loader2 className="w-4 h-4 animate-spin text-black" />
             ) : (
-              <>
-                <span>Continue with Email</span>
-                <ArrowRight className="w-4 h-4" />
-              </>
+              <span>Continue</span>
             )}
           </button>
         </form>
 
-        {/* Security Footer */}
-        <div className="mt-6 pt-3.5 border-t border-white/5 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <span>256-Bit SSL Encrypted • Instant Terminal Access</span>
-        </div>
+        {/* Footer */}
+        <p className="text-[11px] text-slate-500 text-center mt-5 leading-relaxed font-sans">
+          By continuing, you agree to our Terms &amp; Privacy Policy.
+        </p>
       </div>
     </div>
   );
