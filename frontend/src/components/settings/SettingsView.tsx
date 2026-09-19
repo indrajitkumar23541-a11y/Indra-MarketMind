@@ -28,6 +28,7 @@ import {
 import { useSettings, AppSettings } from "@/lib/SettingsContext";
 import { useMarketMindAuth } from "@/lib/AuthContext";
 import { useAppStatus } from "@/lib/useAppStatus";
+import { useUser } from "@clerk/nextjs";
 
 // Luxury Apple/iOS-Style Toggle Switch
 function ToggleSwitch({
@@ -88,6 +89,7 @@ export default function SettingsView() {
   };
 
   const { user, isSignedIn, openSignIn, signOut, isClerkConfigured, updateUser } = useMarketMindAuth();
+  const { user: clerkUser } = useUser();
   const { isAppDownloadedOrInstalled, resetAppDownloadedStatus, markAppAsDownloaded } = useAppStatus();
 
   const [activeTab, setActiveTab] = useState<
@@ -301,7 +303,7 @@ export default function SettingsView() {
                     <input
                       type="url"
                       disabled={!isSignedIn}
-                      placeholder={isSignedIn ? "https://lh3.googleusercontent.com/... or https://unavatar.io/..." : "Not signed in - Click to login"}
+                      placeholder={isSignedIn ? "https://lh3.googleusercontent.com/..." : "Not signed in - Click to login"}
                       value={user?.imageUrl || ""}
                       onChange={(e) => {
                         setSettingsImgError(false);
@@ -309,17 +311,20 @@ export default function SettingsView() {
                       }}
                       className="flex-1 bg-[#0D1424] border border-white/10 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400/50 disabled:opacity-60 font-mono"
                     />
-                    {user?.email && (
+                    {isSignedIn && (
                       <button
                         type="button"
                         onClick={() => {
                           setSettingsImgError(false);
-                          updateUser({ imageUrl: `https://unavatar.io/${encodeURIComponent(user.email)}` });
+                          const resolvedPhoto =
+                            clerkUser?.imageUrl ||
+                            `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user?.fullName || "User")}&backgroundColor=00f0ff,4f46e5&textColor=ffffff`;
+                          updateUser({ imageUrl: resolvedPhoto });
                           handleSave();
                         }}
                         className="px-3 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-900/30 text-cyan-300 text-xs font-semibold whitespace-nowrap cursor-pointer transition-all"
                       >
-                        Sync Gmail Photo
+                        Reset to Google Photo
                       </button>
                     )}
                   </div>

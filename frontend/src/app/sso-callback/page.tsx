@@ -11,35 +11,22 @@ export default function SSOCallback() {
   const { simulateLogin } = useMarketMindAuth();
 
   useEffect(() => {
-    // 1. If Clerk successfully resolved the user from Google OAuth
+    // When Clerk completes Google OAuth and resolves authenticated user:
     if (isLoaded && isSignedIn && clerkUser) {
-      const email = clerkUser.primaryEmailAddress?.emailAddress || "indrajitkumar23541@gmail.com";
-      const name = clerkUser.fullName || clerkUser.firstName || "Indrajit Kumar";
-      const img = clerkUser.imageUrl || `https://unavatar.io/${encodeURIComponent(email)}`;
+      const email =
+        clerkUser.primaryEmailAddress?.emailAddress ||
+        clerkUser.emailAddresses[0]?.emailAddress ||
+        "";
+      const name =
+        clerkUser.fullName ||
+        clerkUser.firstName ||
+        email.split("@")[0] ||
+        "Trader";
+      // Genuine Google Account profile picture (e.g. https://lh3.googleusercontent.com/...)
+      const img = clerkUser.imageUrl;
       simulateLogin(email, name, img);
       window.location.href = "/";
-      return;
     }
-
-    // 2. Safety fallback: If cross-site cookies from accounts.dev are blocked by browser privacy
-    // restrictions on vercel.app, guarantee the authenticated Google session is NEVER dropped!
-    const t = setTimeout(() => {
-      try {
-        const storedUser = localStorage.getItem("marketmind_user_session");
-        if (!storedUser) {
-          simulateLogin(
-            "indrajitkumar23541@gmail.com",
-            "Indrajit Kumar",
-            "https://unavatar.io/indrajitkumar23541@gmail.com"
-          );
-        }
-      } catch {
-        // ignore
-      }
-      window.location.href = "/";
-    }, 1500);
-
-    return () => clearTimeout(t);
   }, [isLoaded, isSignedIn, clerkUser, simulateLogin]);
 
   return (
@@ -52,7 +39,7 @@ export default function SSOCallback() {
           Syncing Google Profile...
         </h3>
         <p className="text-xs text-slate-400 font-sans leading-relaxed">
-          Finalizing encrypted terminal session.
+          Retrieving your official Google profile and finalizing session.
         </p>
       </div>
 

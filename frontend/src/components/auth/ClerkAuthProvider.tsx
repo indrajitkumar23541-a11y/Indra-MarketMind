@@ -89,6 +89,15 @@ function ClerkStateSynchronizer() {
               console.warn("[Admin Alert] Dispatch error:", e);
             });
         }
+      } else if (!isSignedIn) {
+        // If not signed into Clerk, ensure stale mock sessions do not linger
+        if (
+          currentMarketMindUser?.id?.startsWith("usr_") &&
+          (currentMarketMindUser?.email === "indrajitkumar23541@gmail.com" ||
+            currentMarketMindUser?.imageUrl?.includes("unavatar.io"))
+        ) {
+          setSessionUser(null);
+        }
       }
     }
   }, [isLoaded, isSignedIn, clerkUser, currentMarketMindUser, setSessionUser]);

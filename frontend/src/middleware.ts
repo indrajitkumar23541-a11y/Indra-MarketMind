@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
 interface RateLimitBucket {
   count: number;
@@ -56,7 +57,7 @@ const SUSPICIOUS_PATTERNS = [
   /\bunion\s+select/i, // Basic SQLi attempt
 ];
 
-export default async function middleware(req: NextRequest) {
+export default clerkMiddleware(async (_auth, req) => {
   const pathname = req.nextUrl.pathname;
   const search = req.nextUrl.search;
 
@@ -108,7 +109,7 @@ export default async function middleware(req: NextRequest) {
 
   // Proceed with standard Next.js lifecycle
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [

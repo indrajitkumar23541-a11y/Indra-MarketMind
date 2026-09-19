@@ -53,8 +53,14 @@ export function AuthProvider({
       const savedSession = localStorage.getItem(LOCAL_STORAGE_AUTH_KEY);
       if (savedSession) {
         const parsed = JSON.parse(savedSession);
-        // Clear any old hardcoded default mock session
-        if (parsed && parsed.email === "indrajit.quant@marketmind.ai" && parsed.id?.startsWith("usr_")) {
+        // Clear any old hardcoded default mock session or unavatar cached profile
+        const isStaleMockSession =
+          parsed &&
+          (parsed.email === "indrajit.quant@marketmind.ai" ||
+            parsed.imageUrl?.includes("unavatar.io") ||
+            (parsed.id?.startsWith("usr_") && parsed.email === "indrajitkumar23541@gmail.com"));
+
+        if (isStaleMockSession) {
           try {
             localStorage.removeItem(LOCAL_STORAGE_AUTH_KEY);
           } catch {}
