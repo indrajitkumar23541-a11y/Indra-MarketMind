@@ -24,7 +24,7 @@ export default function PwaInstallPrompt() {
         .register("/sw.js")
         .then((reg) => {
           reg.update();
-          console.log("Indra-MarketMind Service Worker v6 active:", reg.scope);
+          console.log("Indra-MarketMind Service Worker v7 active:", reg.scope);
         })
         .catch((err) => {
           console.error("Service Worker registration failed:", err);

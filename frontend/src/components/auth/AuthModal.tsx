@@ -64,6 +64,8 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
             strategy: "oauth_google",
             redirectUrl,
             redirectUrlComplete: "/",
+            continueSignUp: true,
+            continueSignIn: true,
           });
           return;
         }
@@ -104,6 +106,8 @@ function AuthModalInner({ clerk }: { clerk: ClerkInstance }) {
             strategy: "oauth_apple",
             redirectUrl,
             redirectUrlComplete: "/",
+            continueSignUp: true,
+            continueSignIn: true,
           });
           return;
         }

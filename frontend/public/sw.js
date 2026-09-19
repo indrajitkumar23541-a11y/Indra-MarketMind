@@ -1,5 +1,5 @@
-// Indra-MarketMind Institutional Service Worker v6
-const CACHE_NAME = "indra-marketmind-v6";
+// Indra-MarketMind Institutional Service Worker v7
+const CACHE_NAME = "indra-marketmind-v7";
 const STATIC_ASSETS = [
   "/",
   "/manifest.webmanifest",
@@ -44,6 +44,11 @@ self.addEventListener("fetch", (event) => {
   // External services (Clerk, Google OAuth, Cloudflare Turnstile, Unavatar, Yahoo Finance)
   // MUST be fetched directly by the browser to prevent CSP, CORS, and cross-world worker failures.
   if (url.origin !== self.location.origin) {
+    return;
+  }
+
+  // Never intercept or cache SSO callback or auth handshakes
+  if (url.pathname.startsWith("/sso-callback")) {
     return;
   }
 
